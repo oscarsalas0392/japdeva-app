@@ -1,0 +1,11 @@
+{
+  "errores": {
+    "conexion": "Ocurrió un error al conectar con el servidor.",
+    "timeout": "La solicitud tardó demasiado. Intente nuevamente.",
+    "servidor": "Error interno del servidor. Contacte al administrador.",
+    "noAutorizado": "Su sesión ha expirado. Inicie sesión nuevamente."
+  },
+  "exito": {
+    "operacion": "Operación realizada con éxito."
+  }
+}

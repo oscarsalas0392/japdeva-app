@@ -1,0 +1,188 @@
+import { inject, Injectable } from '@angular/core';
+import { ApiService } from './api.service';
+import { environment } from '../../../environments/environment';
+import { RespuestaModel } from '../models/respuesta.model';
+import { RespuestaListaModel } from '../models/respuesta-lista.model';
+import { UsuarioRespuestaModel } from '../models/usuarios/usuario.model';
+import { AgregarUsuarioSolicitudModel } from '../models/usuarios/agregar-usuario-solicitud.model';
+import { ActualizarUsuarioSolicitudModel } from '../models/usuarios/actualizar-usuario-solicitud.model';
+import { ActualizarContrasenaRequest } from '../models/usuarios/actualizar-contrasena-request.model';
+import { RolRespuestaModel } from '../models/usuarios/rol.model';
+import { TipoCedulaRespuestaModel } from '../models/usuarios/tipo-cedula.model';
+import { DepartamentoRespuestaModel } from '../models/usuarios/departamento.model';
+import { UsuarioRolRespuestaModel } from '../models/usuarios/usuario-rol.model';
+import { AgregarUsuarioRolRequest } from '../models/usuarios/agregar-usuario-rol-request.model';
+import { ActualizarUsuarioRolSolicitudModel } from '../models/usuarios/actualizar-usuario-rol-solicitud.model';
+import { DepartamentoUsuarioRespuestaModel } from '../models/usuarios/departamento-usuario.model';
+import { AgregarDepartamentoUsuarioSolicitudModel } from '../models/usuarios/agregar-departamento-usuario-solicitud.model';
+
+@Injectable({ providedIn: 'root' })
+export class UsuariosService {
+  private readonly api = inject(ApiService);
+  private readonly epUsuario = environment.endpoints.usuarios.usuario;
+  private readonly epRol = environment.endpoints.usuarios.rol;
+  private readonly epTipoCedula = environment.endpoints.usuarios.tipoCedula;
+  private readonly epDepartamento = environment.endpoints.usuarios.departamento;
+  private readonly epUsuarioRol = environment.endpoints.usuarios.usuarioRol;
+  private readonly epDepartamentoUsuario = environment.endpoints.usuarios.departamentoUsuario;
+
+  // ── Usuario ──────────────────────────────────────────────────────────────
+
+  /**
+   * Obtiene todos los usuarios del sistema.
+   */
+  obtenerTodos(): Promise<RespuestaModel<RespuestaListaModel<UsuarioRespuestaModel>>> {
+    return this.api.get(this.epUsuario.obtenerTodos);
+  }
+
+  /**
+   * Obtiene un usuario por su identificador.
+   * @param id Identificador del usuario.
+   */
+  obtenerPorId(id: number): Promise<RespuestaModel<UsuarioRespuestaModel>> {
+    return this.api.get(this.epUsuario.obtenerPorId, { id });
+  }
+
+  /**
+   * Registra un nuevo usuario en el sistema.
+   * @param solicitud Datos del nuevo usuario.
+   */
+  agregar(solicitud: AgregarUsuarioSolicitudModel): Promise<RespuestaModel<void>> {
+    return this.api.post(this.epUsuario.agregar, solicitud);
+  }
+
+  /**
+   * Actualiza los datos de un usuario existente.
+   * @param solicitud Datos actualizados del usuario.
+   */
+  actualizar(solicitud: ActualizarUsuarioSolicitudModel): Promise<RespuestaModel<void>> {
+    return this.api.put(this.epUsuario.actualizar, solicitud);
+  }
+
+  /**
+   * Actualiza la contraseña de un usuario.
+   * @param solicitud Contraseña anterior y nueva.
+   */
+  actualizarContrasena(solicitud: ActualizarContrasenaRequest): Promise<RespuestaModel<void>> {
+    return this.api.put(this.epUsuario.actualizarContrasena, solicitud);
+  }
+
+  /**
+   * Elimina un usuario por su identificador.
+   * @param id Identificador del usuario.
+   */
+  eliminar(id: number): Promise<RespuestaModel<void>> {
+    return this.api.delete(this.epUsuario.eliminar, { id });
+  }
+
+  // ── Rol ──────────────────────────────────────────────────────────────────
+
+  /**
+   * Obtiene todos los roles disponibles.
+   */
+  obtenerRoles(): Promise<RespuestaModel<RespuestaListaModel<RolRespuestaModel>>> {
+    return this.api.get(this.epRol.obtenerTodos);
+  }
+
+  /**
+   * Obtiene un rol por su identificador.
+   * @param id Identificador del rol.
+   */
+  obtenerRolPorId(id: number): Promise<RespuestaModel<RolRespuestaModel>> {
+    return this.api.get(this.epRol.obtenerPorId, { id });
+  }
+
+  // ── Tipo Cédula ───────────────────────────────────────────────────────────
+
+  /**
+   * Obtiene todos los tipos de cédula disponibles.
+   */
+  obtenerTiposCedula(): Promise<RespuestaModel<RespuestaListaModel<TipoCedulaRespuestaModel>>> {
+    return this.api.get(this.epTipoCedula.obtenerTodos);
+  }
+
+  /**
+   * Obtiene un tipo de cédula por su identificador.
+   * @param id Identificador del tipo de cédula.
+   */
+  obtenerTipoCedulaPorId(id: number): Promise<RespuestaModel<TipoCedulaRespuestaModel>> {
+    return this.api.get(this.epTipoCedula.obtenerPorId, { id });
+  }
+
+  // ── Departamento ──────────────────────────────────────────────────────────
+
+  /**
+   * Obtiene todos los departamentos disponibles.
+   */
+  obtenerDepartamentos(): Promise<RespuestaModel<RespuestaListaModel<DepartamentoRespuestaModel>>> {
+    return this.api.get(this.epDepartamento.obtenerTodos);
+  }
+
+  /**
+   * Obtiene un departamento por su identificador.
+   * @param id Identificador del departamento.
+   */
+  obtenerDepartamentoPorId(id: number): Promise<RespuestaModel<DepartamentoRespuestaModel>> {
+    return this.api.get(this.epDepartamento.obtenerPorId, { id });
+  }
+
+  // ── Usuario Rol ───────────────────────────────────────────────────────────
+
+  /**
+   * Obtiene los roles asignados a un usuario.
+   * @param idUsuario Identificador del usuario.
+   */
+  obtenerRolesPorUsuario(idUsuario: number): Promise<RespuestaModel<RespuestaListaModel<UsuarioRolRespuestaModel>>> {
+    return this.api.get(this.epUsuarioRol.obtenerPorUsuario, { idUsuario });
+  }
+
+  /**
+   * Asigna un rol a un usuario.
+   * @param solicitud Datos de la asignación.
+   */
+  agregarRolUsuario(solicitud: AgregarUsuarioRolRequest): Promise<RespuestaModel<void>> {
+    return this.api.post(this.epUsuarioRol.actualizar, solicitud);
+  }
+
+  /**
+   * Actualiza el rol asignado a un usuario.
+   * @param solicitud Datos actualizados de la asignación.
+   */
+  actualizarRolUsuario(solicitud: ActualizarUsuarioRolSolicitudModel): Promise<RespuestaModel<void>> {
+    return this.api.put(this.epUsuarioRol.actualizar, solicitud);
+  }
+
+  /**
+   * Elimina la asignación de un rol a un usuario.
+   * @param id Identificador del registro de asignación.
+   */
+  eliminarRolUsuario(id: number): Promise<RespuestaModel<void>> {
+    return this.api.delete(this.epUsuarioRol.eliminar, { id });
+  }
+
+  // ── Departamento Usuario ──────────────────────────────────────────────────
+
+  /**
+   * Asigna un usuario a un departamento.
+   * @param solicitud Datos de la asignación.
+   */
+  agregarDepartamentoUsuario(solicitud: AgregarDepartamentoUsuarioSolicitudModel): Promise<RespuestaModel<void>> {
+    return this.api.post(this.epDepartamentoUsuario.agregar, solicitud);
+  }
+
+  /**
+   * Obtiene los departamentos asignados a un usuario.
+   * @param idUsuario Identificador del usuario.
+   */
+  obtenerDepartamentosPorUsuario(idUsuario: number): Promise<RespuestaModel<RespuestaListaModel<DepartamentoUsuarioRespuestaModel>>> {
+    return this.api.get(this.epDepartamentoUsuario.obtenerPorUsuario, { idUsuario });
+  }
+
+  /**
+   * Elimina la asignación de un usuario a un departamento.
+   * @param id Identificador del registro de asignación.
+   */
+  eliminarDepartamentoUsuario(id: number): Promise<RespuestaModel<void>> {
+    return this.api.delete(this.epDepartamentoUsuario.eliminar, { id });
+  }
+}
