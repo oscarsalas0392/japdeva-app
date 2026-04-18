@@ -1,0 +1,57 @@
+<ion-content class="fondo">
+  <app-decoracion-login posicion="top" />
+  <app-decoracion-login posicion="bottom" />
+  <div class="contenedor">
+
+    <app-logo-japdeva />
+
+    <ion-card class="login-card">
+      <ion-card-content>
+
+        <h2 class="titulo">{{ 'inicioSesion.titulo' | translate }}</h2>
+
+        <form [formGroup]="form" (ngSubmit)="enviar()">
+
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('usuario')!"
+              tipo="email"
+              placeholder="inicioSesion.usuario"
+              autocomplete="email"
+              mensajeError="inicioSesion.validacion.correoInvalido"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('contrasena')!"
+              tipo="password"
+              placeholder="inicioSesion.contrasena"
+              autocomplete="current-password"
+              mensajeError="inicioSesion.validacion.contrasenaMínima"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <app-grupo-campo >
+            <app-enlaces-login />
+          </app-grupo-campo>
+
+          @if (mensajeError) {
+            <app-grupo-campo [bottom]="false">
+              <ion-text color="danger" class="error-global">
+                {{ mensajeError }}
+              </ion-text>
+            </app-grupo-campo>
+          }
+
+            <app-boton-cargando
+              etiqueta="inicioSesion.ingresar"
+              [cargando]="cargando"
+            />
+  
+        </form>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

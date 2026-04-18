@@ -1,0 +1,32 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.logo-img {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-height: 740px) {
+  .logo-container {
+    padding: 12px 16px;
+  }
+
+  .logo-img {
+    max-width: 240px;
+  }
+}
+
+@media (max-height: 667px) {
+  .logo-container {
+    padding: 8px 16px;
+  }
+
+  .logo-img {
+    max-width: 220px;
+  }
+}

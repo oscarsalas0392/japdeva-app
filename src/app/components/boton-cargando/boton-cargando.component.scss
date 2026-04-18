@@ -1,0 +1,14 @@
+.boton-cargando {
+  --text-transform: none;
+
+  &::part(native) {
+    text-transform: none;
+  }
+  --background:      var(--color-boton);
+  --border-radius:   12px;
+  --box-shadow:      none;
+  font-size:         16px;
+  font-weight:       600;
+  height:            48px;
+  margin-top:        16px;
+}

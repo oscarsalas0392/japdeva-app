@@ -1,0 +1,8 @@
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &--top    { margin-top:    16px; }
+  &--bottom { margin-bottom: 16px; }
+}

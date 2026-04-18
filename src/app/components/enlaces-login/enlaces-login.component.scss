@@ -1,0 +1,14 @@
+.enlaces {
+  display: flex;
+  justify-content: space-between;
+}
+
+.enlace {
+  font-size: 13px;
+  color: var(--color-texto-titulo);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

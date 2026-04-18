@@ -7,5 +7,17 @@
   },
   "exito": {
     "operacion": "Operación realizada con éxito."
+  },
+  "inicioSesion": {
+    "titulo": "Iniciar Sesión",
+    "usuario": "Usuario",
+    "contrasena": "Contraseña",
+    "ingresar": "Ingresar",
+    "registrese": "Regístrese",
+    "olvidoContrasena": "¿Olvidó su contraseña?",
+    "validacion": {
+      "correoInvalido": "Ingrese un correo electrónico válido.",
+      "contrasenaMínima": "La contraseña debe tener al menos 6 caracteres."
+    }
   }
 }

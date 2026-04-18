@@ -1,0 +1,13 @@
+<ion-button
+  [type]="tipo"
+  [expand]="expand"
+  [color]="color"
+  [disabled]="cargando || deshabilitado"
+  class="boton-cargando"
+>
+  @if (cargando) {
+    <ion-spinner name="crescent" />
+  } @else {
+    {{ etiqueta | translate }}
+  }
+</ion-button>

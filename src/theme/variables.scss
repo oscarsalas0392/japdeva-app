@@ -1,2 +1,36 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// ─── Colores personalizados ───────────────────────────────────────────────────
+
+:root {
+  // Paleta principal
+  --color-primario:        #2e86c1;
+  --color-primario-oscuro: #1a5276;
+  --color-boton:           #0d7fa5;
+
+  // Fondos
+  --color-fondo:           #f6f3f4;
+  --color-fondo-input:     #fbf9fa;
+  --color-borde-input:     #ebe6e7;
+  --color-placeholder:     #b0aab0;
+  --color-texto-input:     #364153;
+
+  // Textos
+  --color-texto-titulo:    #6a7282;
+  --color-texto-enlace:    #1a5276;
+
+  // Estados
+  --color-error:           #eb445a;
+  --color-exito:           #2dd36f;
+}
+
+// ─── Ionic CSS Variables ──────────────────────────────────────────────────────
+
+:root {
+  --ion-color-primary:          #0d7fa5;
+  --ion-color-primary-rgb:      13,127,165;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade:    #0a6484;
+  --ion-color-primary-tint:     #2d92b5;
+
+  --ion-color-danger:          #eb445a;
+  --ion-color-success:         #2dd36f;
+}

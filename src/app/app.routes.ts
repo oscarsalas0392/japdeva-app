@@ -3,6 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/tabs/tabs.routes').then((m) => m.routes),
+    redirectTo: 'inicio-sesion',
+    pathMatch: 'full',
   },
+  {
+    path: 'inicio-sesion',
+    loadComponent: () => import('./pages/inicio-sesion/inicio-sesion.page').then((m) => m.InicioSesionPage),
+  }
 ];
