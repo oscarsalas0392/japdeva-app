@@ -8,6 +8,28 @@
   "exito": {
     "operacion": "Operación realizada con éxito."
   },
+  "registro": {
+    "titulo": "Registro de usuario",
+    "volver": "Volver",
+    "registrarme": "Registrarme",
+    "tipoCedula": "Tipo de identificación",
+    "identificacion": "Identificación",
+    "nombre": "Nombre",
+    "apellidos": "Apellidos",
+    "correo": "Correo electrónico",
+    "contrasena": "Contraseña",
+    "confirmarContrasena": "Confirmar Contraseña",
+    "validacion": {
+      "tipoCedulaRequerido": "Seleccione un tipo de identificación.",
+      "identificacionRequerida": "Ingrese su número de identificación.",
+      "nombreRequerido": "Ingrese su nombre.",
+      "apellidosRequeridos": "Ingrese sus apellidos.",
+      "correoInvalido": "Ingrese un correo electrónico válido.",
+      "contrasenaMínima": "La contraseña debe tener al menos 6 caracteres.",
+      "confirmarRequerido": "Confirme su contraseña.",
+      "contrasenasDiferentes": "Las contraseñas no coinciden."
+    }
+  },
   "inicioSesion": {
     "titulo": "Iniciar Sesión",
     "usuario": "Usuario",

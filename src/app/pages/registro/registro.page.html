@@ -1,0 +1,108 @@
+<ion-content class="fondo">
+  <app-decoracion-login posicion="top" />
+  <app-decoracion-login posicion="bottom" />
+
+  
+<!-- BOTON DE VOLVER A INICIO DE SESIÓN
+  <div class="fila-volver">
+    <ion-button fill="clear" class="boton-volver" routerLink="/inicio-sesion">
+      <ion-icon slot="start" name="arrow-back-outline" />
+      {{ 'registro.volver' | translate }}
+    </ion-button>
+  </div>
+  -->
+
+  <div class="contenedor">
+
+    <app-logo-japdeva />
+
+    <ion-card class="registro-card">
+      <ion-card-content>
+
+        <h2 class="titulo">{{ 'registro.titulo' | translate }}</h2>
+
+        <form [formGroup]="form" (ngSubmit)="enviar()">
+
+          <app-grupo-campo>
+            <app-campo-select
+              [control]="form.get('idTipoCedula')!"
+              placeholder="registro.tipoCedula"
+              mensajeError="registro.validacion.tipoCedulaRequerido"
+              [opciones]="tiposCedula"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('identificacion')!"
+              tipo="text"
+              placeholder="registro.identificacion"
+              autocomplete="off"
+              mensajeError="registro.validacion.identificacionRequerida"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('nombre')!"
+              tipo="text"
+              placeholder="registro.nombre"
+              autocomplete="given-name"
+              mensajeError="registro.validacion.nombreRequerido"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('apellidos')!"
+              tipo="text"
+              placeholder="registro.apellidos"
+              autocomplete="family-name"
+              mensajeError="registro.validacion.apellidosRequeridos"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('correo')!"
+              tipo="email"
+              placeholder="registro.correo"
+              autocomplete="email"
+              mensajeError="registro.validacion.correoInvalido"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('contrasena')!"
+              tipo="password"
+              placeholder="registro.contrasena"
+              autocomplete="new-password"
+              mensajeError="registro.validacion.contrasenaMínima"
+              [enviado]="enviado"
+            />
+            <app-campo-formulario
+              [control]="form.get('confirmarContrasena')!"
+              tipo="password"
+              placeholder="registro.confirmarContrasena"
+              autocomplete="new-password"
+              mensajeError="registro.validacion.confirmarRequerido"
+              [enviado]="enviado"
+            />
+            @if (mismatchContrasena) {
+              <ion-text color="danger" class="error-mismatch">
+                {{ 'registro.validacion.contrasenasDiferentes' | translate }}
+              </ion-text>
+            }
+          </app-grupo-campo>
+
+          @if (mensajeError) {
+            <app-grupo-campo [bottom]="false">
+              <ion-text color="danger" class="error-global">
+                {{ mensajeError }}
+              </ion-text>
+            </app-grupo-campo>
+          }
+
+          <app-boton-cargando
+            etiqueta="registro.registrarme"
+            [cargando]="cargando"
+          />
+
+        </form>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

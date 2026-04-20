@@ -1,0 +1,21 @@
+<div class="campo-wrapper" [class.campo-wrapper--error]="invalido" [class.campo-wrapper--focus]="enfocado">
+  <ion-item class="campo" lines="none">
+    <ion-select
+      [formControl]="$any(control)"
+      [placeholder]="placeholder | translate"
+      interface="action-sheet"
+      cancelText="Cancelar"
+      (ionFocus)="enfocado = true"
+      (ionBlur)="enfocado = false"
+    >
+      @for (opcion of opciones; track opcion.valor) {
+        <ion-select-option [value]="opcion.valor">{{ opcion.etiqueta }}</ion-select-option>
+      }
+    </ion-select>
+  </ion-item>
+</div>
+@if (invalido) {
+  <ion-text color="danger" class="error-texto">
+    {{ mensajeError | translate }}
+  </ion-text>
+}

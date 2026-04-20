@@ -1,0 +1,97 @@
+ion-content.fondo {
+  --background: var(--color-fondo);
+  position: relative;
+}
+
+.fila-volver {
+  position: absolute;
+  top: calc(12px + var(--ion-safe-area-top, 0px));
+  left: 8px;
+  z-index: 10;
+}
+
+.boton-volver {
+  --color: white;
+  --padding-start: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 16px 24px 40px;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.registro-card {
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  margin: 0;
+
+  ion-card-content {
+    padding: 28px 24px 24px;
+  }
+}
+
+.titulo {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-texto-titulo);
+  margin: 0 0 24px;
+}
+
+.error-mismatch {
+  font-size: 12px;
+  margin: 2px 4px 8px;
+  display: block;
+}
+
+.error-global {
+  font-size: 12px;
+  display: block;
+}
+
+// Samsung Galaxy S8+ y similares (668px - 740px)
+@media (max-height: 740px) {
+  .contenedor {
+    gap: 14px;
+    padding: 12px 24px 28px;
+    justify-content: flex-start;
+    padding-top: 100px;
+  }
+
+  .titulo {
+    font-size: 1.25rem;
+    margin: 0 0 18px;
+  }
+}
+
+// iPhone SE y pantallas pequeñas (≤ 667px)
+@media (max-height: 667px) {
+  .contenedor {
+    gap: 10px;
+    padding: 8px 20px 20px;
+    justify-content: flex-start;
+    padding-top: 120px;
+  }
+
+  .registro-card ion-card-content {
+    padding: 20px 20px 16px;
+  }
+
+  .titulo {
+    font-size: 1.1rem;
+    margin: 0 0 14px;
+  }
+}

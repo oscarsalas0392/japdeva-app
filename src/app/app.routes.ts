@@ -9,5 +9,9 @@ export const routes: Routes = [
   {
     path: 'inicio-sesion',
     loadComponent: () => import('./pages/inicio-sesion/inicio-sesion.page').then((m) => m.InicioSesionPage),
-  }
+  },
+  {
+    path: 'registro',
+    loadComponent: () => import('./pages/registro/registro.page').then((m) => m.RegistroPage),
+  },
 ];
