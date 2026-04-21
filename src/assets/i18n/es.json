@@ -8,6 +8,21 @@
   "exito": {
     "operacion": "Operación realizada con éxito."
   },
+  "olvidoContrasena": {
+    "titulo": "¿Olvidaste tu contraseña?",
+    "descripcion": "Ingresa tu correo electrónico y te enviaremos un enlace para que puedas restablecer tu contraseña.",
+    "correo": "Correo registrado",
+    "enviar": "Enviar enlace",
+    "volver": "Volver",
+    "volverLogin": "Volver al inicio de sesión",
+    "exito": {
+      "titulo": "¡Correo enviado!",
+      "mensaje": "Revisa tu bandeja de entrada. Si tu correo está registrado, recibirás un enlace para restablecer tu contraseña."
+    },
+    "validacion": {
+      "correoInvalido": "Ingrese un correo electrónico válido."
+    }
+  },
   "registro": {
     "titulo": "Registro de usuario",
     "volver": "Volver",

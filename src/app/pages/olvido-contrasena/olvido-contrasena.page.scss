@@ -1,0 +1,120 @@
+ion-content.fondo {
+  --background: var(--color-fondo);
+  position: relative;
+}
+
+.fila-volver {
+  position: absolute;
+  top: calc(12px + var(--ion-safe-area-top, 0px));
+  left: 8px;
+  z-index: 10;
+}
+
+.boton-volver {
+  --color: white;
+  --padding-start: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 24px 40px;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  margin: 0;
+
+  ion-card-content {
+    padding: 28px 24px 24px;
+  }
+}
+
+.titulo {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-texto-titulo);
+  margin: 0 0 16px;
+}
+
+.descripcion {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-placeholder);
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.error-global {
+  font-size: 12px;
+  display: block;
+}
+
+// Estado de éxito
+.exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.exito-icono {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  ion-icon {
+    font-size: 32px;
+    color: var(--color-boton);
+  }
+}
+
+.boton-exito {
+  margin-top: 8px;
+  width: 100%;
+}
+
+// Samsung Galaxy S8+ y similares
+@media (max-height: 740px) {
+  .contenedor {
+    gap: 20px;
+    padding: 20px 24px 32px;
+  }
+}
+
+// iPhone SE y pantallas pequeñas
+@media (max-height: 667px) {
+  .contenedor {
+    gap: 16px;
+    padding: 16px 20px 24px;
+    justify-content: flex-start;
+    padding-top: 140px;
+  }
+
+  .card ion-card-content {
+    padding: 20px 20px 16px;
+  }
+
+  .titulo {
+    font-size: 1.2rem;
+  }
+}

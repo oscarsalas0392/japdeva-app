@@ -1,0 +1,76 @@
+<ion-content class="fondo">
+  <app-decoracion-login posicion="top" />
+  <app-decoracion-login posicion="bottom" />
+
+  <div class="fila-volver">
+    <ion-button fill="clear" class="boton-volver" routerLink="/inicio-sesion">
+      <ion-icon slot="start" name="arrow-back-outline" />
+      {{ 'olvidoContrasena.volver' | translate }}
+    </ion-button>
+  </div>
+
+  <div class="contenedor">
+
+    <app-logo-japdeva />
+
+    <ion-card class="card">
+      <ion-card-content>
+
+        @if (!exitoso) {
+
+          <h2 class="titulo">{{ 'olvidoContrasena.titulo' | translate }}</h2>
+
+          <p class="descripcion">{{ 'olvidoContrasena.descripcion' | translate }}</p>
+
+          <form [formGroup]="form" (ngSubmit)="enviar()">
+
+            <app-grupo-campo>
+              <app-campo-formulario
+                [control]="form.get('correo')!"
+                tipo="email"
+                placeholder="olvidoContrasena.correo"
+                autocomplete="email"
+                mensajeError="olvidoContrasena.validacion.correoInvalido"
+                [enviado]="enviado"
+              />
+            </app-grupo-campo>
+
+            @if (mensajeError) {
+              <app-grupo-campo [bottom]="false">
+                <ion-text color="danger" class="error-global">
+                  {{ mensajeError }}
+                </ion-text>
+              </app-grupo-campo>
+            }
+
+            <app-boton-cargando
+              etiqueta="olvidoContrasena.enviar"
+              [cargando]="cargando"
+            />
+
+          </form>
+
+        } @else {
+
+          <div class="exito">
+            <div class="exito-icono">
+              <ion-icon name="mail-outline" />
+            </div>
+            <h2 class="titulo">{{ 'olvidoContrasena.exito.titulo' | translate }}</h2>
+            <p class="descripcion">{{ 'olvidoContrasena.exito.mensaje' | translate }}</p>
+            <ion-button
+              expand="block"
+              class="boton-exito"
+              routerLink="/inicio-sesion"
+            >
+              {{ 'olvidoContrasena.volverLogin' | translate }}
+            </ion-button>
+          </div>
+
+        }
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
