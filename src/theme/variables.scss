@@ -33,4 +33,14 @@
 
   --ion-color-danger:          #eb445a;
   --ion-color-success:         #2dd36f;
+
+  // Forzar modo claro siempre — la app no soporta modo oscuro
+  --ion-background-color:          #ffffff;
+  --ion-background-color-rgb:      255,255,255;
+  --ion-text-color:                #000000;
+  --ion-text-color-rgb:            0,0,0;
+  --ion-card-background:           #ffffff;
+  --ion-item-background:           #ffffff;
+  --ion-toolbar-background:        #ffffff;
+  --ion-tab-bar-background:        #ffffff;
 }
