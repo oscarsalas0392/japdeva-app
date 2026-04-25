@@ -76,6 +76,7 @@ export class CambiarContrasenaPage {
     if (this.form.invalid) return;
 
     this.cargando = true;
+    this.form.disable();
 
     const usuario = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
     const { actual, nueva } = this.form.getRawValue();
@@ -87,6 +88,7 @@ export class CambiarContrasenaPage {
     });
 
     this.cargando = false;
+    this.form.enable();
 
     if (!respuesta.Exito) {
       this.popup.mostrar({

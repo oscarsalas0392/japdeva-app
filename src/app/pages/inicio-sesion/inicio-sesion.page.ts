@@ -65,6 +65,7 @@ export class InicioSesionPage implements OnInit {
     if (this.form.invalid) return;
 
     this.cargando = true;
+    this.form.disable();
 
     const { usuario, contrasena } = this.form.getRawValue();
 
@@ -80,6 +81,7 @@ export class InicioSesionPage implements OnInit {
     });
 
     this.cargando = false;
+    this.form.enable();
 
     if (!respuesta.Exito) {
       this.popup.mostrar({

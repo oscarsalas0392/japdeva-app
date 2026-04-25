@@ -59,6 +59,7 @@ export class EditarPerfilPage implements OnInit {
     if (this.form.invalid) return;
 
     this.cargando = true;
+    this.form.disable();
 
     const { nombre, apellidos } = this.form.getRawValue();
 
@@ -69,6 +70,7 @@ export class EditarPerfilPage implements OnInit {
     });
 
     this.cargando = false;
+    this.form.enable();
 
     if (!respuesta.Exito) {
       this.popup.mostrar({

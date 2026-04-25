@@ -52,12 +52,14 @@ export class OlvidoContrasenaPage {
     }
 
     this.cargando = true;
+    this.form.disable();
 
     const respuesta = await this.authService.olvidarContrasena({
       Correo: this.form.getRawValue().correo!,
     });
 
     this.cargando = false;
+    this.form.enable();
 
     if (!respuesta.Exito) {
       this.popup.mostrar({
