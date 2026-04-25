@@ -2,10 +2,6 @@
   <div class="backdrop" (click)="cerrar()"></div>
 
   <div class="popup popup--{{ config.tipo }}">
-    <button class="popup__cerrar" (click)="cerrar()">
-      <ion-icon name="close-outline" />
-    </button>
-
     <ion-icon [name]="icono" class="popup__icono" />
 
     <h3 class="popup__titulo">{{ config.titulo }}</h3>
