@@ -1,0 +1,14 @@
+@if (tipo === 'menu') {
+  <button class="fila fila--menu" (click)="filaClick.emit()">
+    <span class="fila__texto">{{ etiqueta }}</span>
+    <ion-icon name="chevron-forward-outline" class="fila__chevron" />
+  </button>
+} @else {
+  <div class="fila">
+    <div class="titulo_fila">
+      <ion-icon [name]="icono" class="fila__icono" />
+      <span class="fila__etiqueta">{{ etiqueta }}:</span>
+    </div>
+    <span class="fila__valor">{{ valor }}</span>
+  </div>
+}

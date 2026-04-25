@@ -1,0 +1,37 @@
+<app-pagina titulo="{{ 'perfil.titulo' | translate }}" [atras]="true">
+  @if (usuario()) {
+    <app-tarjeta>
+
+      <div class="tarjeta__header">
+        <div class="tarjeta__avatar">{{ iniciales() }}</div>
+        <div class="tarjeta__datos">
+          <span class="tarjeta__nombre">{{ usuario()!.nombre }} {{ usuario()!.apellidos }}</span>
+          <span class="tarjeta__id">{{ 'perfil.clienteId' | translate }}: {{ usuario()!.identificacion }}</span>
+        </div>
+        <button class="tarjeta__editar" (click)="irAEditarPerfil()">
+          <ion-icon name="create-outline" />
+        </button>
+      </div>
+
+      <app-fila icono="person-outline"
+        etiqueta="{{ 'perfil.nombre' | translate }}"
+        valor="{{ usuario()!.nombre }} {{ usuario()!.apellidos }}" />
+
+      <app-fila icono="mail-outline"
+        etiqueta="{{ 'perfil.email' | translate }}"
+        valor="{{ usuario()!.correo }}" />
+
+      <app-fila icono="card-outline"
+        etiqueta="{{ 'perfil.identificacion' | translate }}"
+        valor="{{ usuario()!.identificacion }}" />
+
+    </app-tarjeta>
+
+    <app-grupo-campo [top]="true" [bottom]="false">
+      <app-tarjeta [padding]="false">
+      <app-fila tipo="menu" [borde]="true" etiqueta="{{ 'perfil.cambiarContrasena' | translate }}" (filaClick)="irACambiarContrasena()" />
+      <app-fila tipo="menu" etiqueta="{{ 'perfil.terminosCondiciones' | translate }}" />
+    </app-tarjeta>
+    </app-grupo-campo>
+  }
+</app-pagina>

@@ -1,0 +1,36 @@
+<app-pagina titulo="{{ 'editarPerfil.titulo' | translate }}" [atras]="true">
+  <app-tarjeta>
+    <form class="formulario" [formGroup]="form" (ngSubmit)="enviar()">
+
+      <app-grupo-campo>
+        <app-campo-formulario
+          [control]="form.get('nombre')!"
+          tipo="text"
+          label="editarPerfil.nombre"
+          autocomplete="given-name"
+          mensajeError="editarPerfil.validacion.nombreRequerido"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo>
+        <app-campo-formulario
+          [control]="form.get('apellidos')!"
+          tipo="text"
+          label="editarPerfil.apellidos"
+          autocomplete="family-name"
+          mensajeError="editarPerfil.validacion.apellidosRequerido"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo [top]="true" [bottom]="false">
+        <app-boton-cargando
+          etiqueta="editarPerfil.guardar"
+          [cargando]="cargando"
+        />
+      </app-grupo-campo>
+
+    </form>
+  </app-tarjeta>
+</app-pagina>

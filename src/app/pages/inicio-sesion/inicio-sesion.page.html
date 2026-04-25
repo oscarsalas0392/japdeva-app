@@ -1,4 +1,4 @@
-<ion-content class="fondo">
+<ion-content class="fondo" [scrollY]="false">
   <app-decoracion-login posicion="top" />
   <app-decoracion-login posicion="bottom" />
   <div class="contenedor">
@@ -31,23 +31,24 @@
             />
           </app-grupo-campo>
 
-          <app-grupo-campo >
+          <div class="recordar-fila">
+            <app-check
+              label="inicioSesion.recordarCorreo"
+              [(checked)]="recordar"
+            />
+          </div>
+
+          <app-grupo-campo>
             <app-enlaces-login />
           </app-grupo-campo>
 
-          @if (mensajeError) {
-            <app-grupo-campo [bottom]="false">
-              <ion-text color="danger" class="error-global">
-                {{ mensajeError }}
-              </ion-text>
-            </app-grupo-campo>
-          }
-
+          <app-grupo-campo [top]="true" [bottom]="false">
             <app-boton-cargando
               etiqueta="inicioSesion.ingresar"
               [cargando]="cargando"
             />
-  
+          </app-grupo-campo>
+
         </form>
 
       </ion-card-content>

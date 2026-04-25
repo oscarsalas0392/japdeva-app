@@ -1,0 +1,16 @@
+<label class="check-label">
+  <input
+    type="checkbox"
+    class="check-input"
+    [checked]="checked"
+    (change)="toggle($event)"
+  />
+  <span class="check-box">
+    <svg class="check-icono" viewBox="0 0 12 10" fill="none">
+      <polyline points="1,5 4.5,8.5 11,1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  @if (label) {
+    <span class="check-texto">{{ label | translate }}</span>
+  }
+</label>

@@ -1,0 +1,55 @@
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0px;
+
+  .titulo_fila {
+    display: flex;
+    align-items: center;
+  }
+
+  &__icono {
+    font-size: 20px;
+    color: #b0aab0;
+    flex-shrink: 0;
+    width: 22px;
+    padding-right: .2rem;
+  }
+
+  &__etiqueta {
+    font-size: 14px;
+    color: #9ca3af;
+    white-space: nowrap;
+    min-width: 90px;
+  }
+
+  &__valor {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a202c;
+    text-align: right;
+    word-break: break-all;
+  }
+
+  &--menu {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    justify-content: space-between;
+    padding: 18px 16px;
+  }
+
+  &__texto {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a202c;
+  }
+
+  &__chevron {
+    font-size: 16px;
+    color: #b0aab0;
+  }
+}

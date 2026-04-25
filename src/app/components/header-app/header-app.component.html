@@ -1,0 +1,22 @@
+<div class="header">
+
+  @if (atras) {
+    <button class="header__atras" (click)="navegarAtras()">
+      <ion-icon name="arrow-back-outline" />
+    </button>
+  }
+
+  <div class="header__textos" [class.header__textos--con-atras]="atras">
+    @if (saludo) {
+      <span class="header__saludo">{{ saludo }}</span>
+    }
+    <span class="header__titulo">{{ titulo }}</span>
+  </div>
+
+  @if (!atras) {
+    <button class="header__cerrar-sesion" (click)="cerrarSesion()">
+      <ion-icon name="log-out-outline" />
+    </button>
+  }
+
+</div>

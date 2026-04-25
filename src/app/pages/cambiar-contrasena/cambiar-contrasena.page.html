@@ -1,0 +1,50 @@
+<app-pagina titulo="{{ 'cambiarContrasena.titulo' | translate }}" [atras]="true">
+  <app-tarjeta>
+    <form class="formulario" [formGroup]="form" (ngSubmit)="enviar()">
+
+      <app-grupo-campo>
+        <app-aviso tipo="info"
+        [titulo]="'cambiarContrasena.avisoTitulo' | translate"
+        [items]="avisoItems" />
+      </app-grupo-campo>
+
+      <app-grupo-campo>
+        <app-campo-formulario
+          [control]="form.get('actual')!"
+          tipo="password"
+          label="cambiarContrasena.actual"
+          autocomplete="current-password"
+          mensajeError="cambiarContrasena.validacion.minimaActual"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo>
+        <app-campo-formulario
+          [control]="form.get('nueva')!"
+          tipo="password"
+          label="cambiarContrasena.nueva"
+          autocomplete="new-password"
+          mensajeError="cambiarContrasena.validacion.minimaNueva"
+          [enviado]="enviado"
+        />
+        <app-campo-formulario
+          [control]="form.get('confirmar')!"
+          tipo="password"
+          label="cambiarContrasena.confirmar"
+          autocomplete="new-password"
+          mensajeError="cambiarContrasena.validacion.noCoinciden"
+          [enviado]="confirmarInvalido"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo [top]="true" [bottom]="false">
+        <app-boton-cargando
+          etiqueta="cambiarContrasena.guardar"
+          [cargando]="cargando"
+        />
+      </app-grupo-campo>
+
+    </form>
+  </app-tarjeta>
+</app-pagina>

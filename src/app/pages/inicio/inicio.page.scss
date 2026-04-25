@@ -1,0 +1,4 @@
+ion-content.contenido {
+  --background: var(--color-fondo);
+  --padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}

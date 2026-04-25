@@ -15,6 +15,7 @@ import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 export class CampoFormularioComponent {
   @Input() control!: AbstractControl;
   @Input() tipo: 'text' | 'email' | 'password' | 'number' = 'text';
+  @Input() label = '';
   @Input() placeholder = '';
   @Input() autocomplete = 'off';
   @Input() mensajeError = '';

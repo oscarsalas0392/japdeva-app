@@ -1,0 +1,102 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(340px, 90vw);
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px 24px 24px;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: slideUp 0.25s ease;
+
+  &__cerrar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-placeholder);
+    font-size: 22px;
+    line-height: 1;
+    padding: 4px;
+  }
+
+  &__icono {
+    font-size: 56px;
+    margin-bottom: 16px;
+  }
+
+  &__titulo {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-texto-titulo);
+    margin: 0 0 8px;
+  }
+
+  &__mensaje {
+    font-size: 14px;
+    color: var(--color-placeholder);
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+
+  &__acciones {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+  }
+
+  &__boton {
+    flex: 1;
+    width: 100%;
+    --border-radius: 12px;
+    --text-transform: none;
+
+    &::part(native) {
+      text-transform: none;
+    }
+
+    &--no {
+      --color: var(--color-texto-titulo);
+      --border-color: var(--color-borde-input);
+      --background: transparent;
+      --background-hover: var(--color-fondo);
+    }
+  }
+
+  // Icono por tipo
+  &--exito       .popup__icono { color: #1a7a4a; }
+  &--error       .popup__icono { color: #c0392b; }
+  &--advertencia .popup__icono { color: #d97706; }
+  &--info        .popup__icono { color: var(--color-boton); }
+
+  // Botón Sí/Aceptar por tipo
+  &--exito       .popup__boton:not(.popup__boton--no) { --background: #1a7a4a; }
+  &--error       .popup__boton:not(.popup__boton--no) { --background: #c0392b; }
+  &--advertencia .popup__boton:not(.popup__boton--no) { --background: #d97706; }
+  &--info        .popup__boton:not(.popup__boton--no) { --background: var(--color-boton); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, -45%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}

@@ -5,6 +5,8 @@ import { RespuestaModel } from '../models/respuesta.model';
 import { AuthRequest } from '../models/usuarios/auth-request.model';
 import { AutenticarUsuarioRespuestaModel } from '../models/usuarios/auth-response.model';
 import { OlvidoContrasenaRequest } from '../models/usuarios/olvido-contrasena-request.model';
+import { CambiarContrasenaRequest } from '../models/usuarios/cambiar-contrasena-request.model';
+import { ActualizarUsuarioSolicitudModel } from '../models/usuarios/actualizar-usuario-solicitud.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -26,5 +28,13 @@ export class AuthService {
    */
   olvidarContrasena(solicitud: OlvidoContrasenaRequest): Promise<RespuestaModel<void>> {
     return this.api.post(this.ep.olvidarContrasena, solicitud);
+  }
+
+  cambiarContrasena(solicitud: CambiarContrasenaRequest): Promise<RespuestaModel<void>> {
+    return this.api.put(environment.endpoints.usuarios.usuario.actualizarContrasena, solicitud);
+  }
+
+  actualizarPerfil(solicitud: ActualizarUsuarioSolicitudModel): Promise<RespuestaModel<void>> {
+    return this.api.put(environment.endpoints.usuarios.usuario.actualizar, solicitud);
   }
 }

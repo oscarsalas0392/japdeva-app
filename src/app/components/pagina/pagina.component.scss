@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  contain: layout size style;
+}
+
+ion-content.contenido {
+  --background: var(--color-fondo);
+  --padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  --padding-top: 1rem;
+}

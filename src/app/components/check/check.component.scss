@@ -1,0 +1,50 @@
+.check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.check-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.check-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--color-borde-input);
+  border-radius: 5px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+
+  .check-icono {
+    width: 12px;
+    height: 10px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+}
+
+.check-input:checked + .check-box {
+  background: var(--color-boton);
+  border-color: var(--color-boton);
+
+  .check-icono {
+    opacity: 1;
+  }
+}
+
+.check-texto {
+  font-size: 13px;
+  color: var(--color-texto-titulo);
+}

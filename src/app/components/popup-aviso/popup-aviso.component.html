@@ -1,0 +1,32 @@
+@if (config) {
+  <div class="backdrop" (click)="cerrar()"></div>
+
+  <div class="popup popup--{{ config.tipo }}">
+    <button class="popup__cerrar" (click)="cerrar()">
+      <ion-icon name="close-outline" />
+    </button>
+
+    <ion-icon [name]="icono" class="popup__icono" />
+
+    <h3 class="popup__titulo">{{ config.titulo }}</h3>
+    <p class="popup__mensaje">{{ config.mensaje }}</p>
+
+    @switch (config.modo) {
+      @case ('confirmacion') {
+        <div class="popup__acciones">
+          <ion-button class="popup__boton popup__boton--no" expand="block" fill="outline" (click)="cerrar(false)">
+            No
+          </ion-button>
+          <ion-button class="popup__boton" expand="block" (click)="cerrar(true)">
+            Sí
+          </ion-button>
+        </div>
+      }
+      @default {
+        <ion-button class="popup__boton" expand="block" (click)="cerrar()">
+          Aceptar
+        </ion-button>
+      }
+    }
+  </div>
+}

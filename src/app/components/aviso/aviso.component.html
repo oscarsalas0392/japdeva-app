@@ -1,0 +1,18 @@
+<div class="aviso aviso--{{ tipo }}">
+  <ion-icon [name]="icono" class="aviso__icono" />
+  <div class="aviso__contenido">
+    @if (titulo) {
+      <span class="aviso__titulo">{{ titulo }}</span>
+    }
+    @if (mensaje) {
+      <span class="aviso__mensaje">{{ mensaje }}</span>
+    }
+    @if (items.length) {
+      <ul class="aviso__lista">
+        @for (item of items; track item) {
+          <li>{{ item | translate }}</li>
+        }
+      </ul>
+    }
+  </div>
+</div>

@@ -23,9 +23,10 @@ export class ApiService {
    */
   async get<T>(endpoint: string, params?: QueryParams): Promise<RespuestaModel<T>> {
     try {
-      const respuesta = await firstValueFrom(
-        this.http.get<RespuestaModel<T>>(`${this.api}${endpoint}`, { params: this.construirParametros(params) }).pipe(timeout(this.timeoutMs))
+      const raw = await firstValueFrom(
+        this.http.get<any>(`${this.api}${endpoint}`, { params: this.construirParametros(params) }).pipe(timeout(this.timeoutMs))
       );
+      const respuesta = this.normalizar<T>(raw);
       this.guardarToken(respuesta);
       return respuesta;
     } catch (error) {
@@ -42,9 +43,10 @@ export class ApiService {
    */
   async post<T>(endpoint: string, body: unknown): Promise<RespuestaModel<T>> {
     try {
-      const respuesta = await firstValueFrom(
-        this.http.post<RespuestaModel<T>>(`${this.api}${endpoint}`, body).pipe(timeout(this.timeoutMs))
+      const raw = await firstValueFrom(
+        this.http.post<any>(`${this.api}${endpoint}`, body).pipe(timeout(this.timeoutMs))
       );
+      const respuesta = this.normalizar<T>(raw);
       this.guardarToken(respuesta);
       return respuesta;
     } catch (error) {
@@ -60,9 +62,10 @@ export class ApiService {
    */
   async put<T>(endpoint: string, body: unknown): Promise<RespuestaModel<T>> {
     try {
-      const respuesta = await firstValueFrom(
-        this.http.put<RespuestaModel<T>>(`${this.api}${endpoint}`, body).pipe(timeout(this.timeoutMs))
+      const raw = await firstValueFrom(
+        this.http.put<any>(`${this.api}${endpoint}`, body).pipe(timeout(this.timeoutMs))
       );
+      const respuesta = this.normalizar<T>(raw);
       this.guardarToken(respuesta);
       return respuesta;
     } catch (error) {
@@ -78,9 +81,10 @@ export class ApiService {
    */
   async delete<T>(endpoint: string, params?: QueryParams): Promise<RespuestaModel<T>> {
     try {
-      const respuesta = await firstValueFrom(
-        this.http.delete<RespuestaModel<T>>(`${this.api}${endpoint}`, { params: this.construirParametros(params) })
+      const raw = await firstValueFrom(
+        this.http.delete<any>(`${this.api}${endpoint}`, { params: this.construirParametros(params) })
       );
+      const respuesta = this.normalizar<T>(raw);
       this.guardarToken(respuesta);
       return respuesta;
     } catch (error) {
@@ -114,6 +118,23 @@ export class ApiService {
     }
   }
 
+  private normalizar<T>(raw: any): RespuestaModel<T> {
+    const datosRaw = raw.Datos ?? raw.datos;
+    let datos: T | undefined;
+    if (typeof datosRaw === 'string') {
+      try { datos = JSON.parse(datosRaw) as T; } catch { datos = datosRaw as T; }
+    } else {
+      datos = datosRaw;
+    }
+    return {
+      Exito:         raw.Exito         ?? raw.exito         ?? false,
+      Identificador: raw.Identificador ?? raw.identificador ?? '',
+      Mensaje:       raw.Mensaje       ?? raw.mensaje       ?? '',
+      Datos:         datos,
+      Token:         raw.Token         ?? raw.token,
+    };
+  }
+
   /**
    * Genera una respuesta de error estándar cuando falla la petición HTTP.
    * @param error Error capturado en el catch.
@@ -125,8 +146,12 @@ export class ApiService {
     if (error instanceof TimeoutError) {
       clave = Mensajes.errores.timeout;
     } else if (error instanceof HttpErrorResponse && error.status === 401) {
-      clave = Mensajes.errores.noAutorizado;
       this.limpiarToken();
+      const mensajeApi = error.error?.mensaje || error.error?.Mensaje;
+      if (mensajeApi) {
+        return { Exito: false, Identificador: '', Mensaje: mensajeApi };
+      }
+      clave = Mensajes.errores.noAutorizado;
     } else {
       clave = Mensajes.errores.conexion;
     }

@@ -1,0 +1,61 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-boton);
+  padding: 16px 20px;
+  padding-top: calc(16px + env(safe-area-inset-top));
+
+  &__atras {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+
+  &__textos {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+
+    &--con-atras .header__titulo {
+      font-size: 18px;
+    }
+  }
+
+  &__saludo {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+  }
+
+  &__titulo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  &__cerrar-sesion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+}

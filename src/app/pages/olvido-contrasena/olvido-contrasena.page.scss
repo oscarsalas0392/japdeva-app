@@ -1,0 +1,59 @@
+ion-content.fondo {
+  --background: var(--color-fondo);
+  position: relative;
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 24px 40px;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card {
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  margin: 0;
+
+  ion-card-content {
+    padding: 28px 24px 24px;
+  }
+}
+
+.titulo {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-texto-titulo);
+  margin: 0 0 8px;
+}
+
+
+.volver {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.enlace-volver {
+  font-size: 13px;
+  color: var(--color-boton);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-height: 740px) {
+  .contenedor { gap: 20px; padding: 20px 24px 32px; }
+}
+
+@media (max-height: 667px) {
+  .contenedor { gap: 16px; padding: 16px 20px 24px; justify-content: flex-start; padding-top: 140px; }
+  .login-card ion-card-content { padding: 20px 20px 16px; }
+  .titulo { font-size: 1.3rem; margin: 0 0 8px; }
+}

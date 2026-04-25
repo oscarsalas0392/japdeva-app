@@ -1,6 +1,16 @@
+.campo-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-texto-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
 .campo-wrapper {
-  border: 1px solid var(--color-borde-input);
-  border-radius: 8px;
+  border: 1.5px solid var(--color-borde-input);
+  border-radius: 10px;
   overflow: hidden;
   margin-bottom: 4px;
   transition: border-color 0.2s;
@@ -15,7 +25,7 @@
 }
 
 .campo {
-  --background: var(--color-fondo-input);
+  --background: #fff;
   --color: var(--color-texto-input);
   --placeholder-color: var(--color-placeholder);
   --placeholder-opacity: 1;
@@ -23,6 +33,7 @@
   --inner-border-width: 0;
   --padding-start: 14px;
   --inner-padding-end: 4px;
+  --min-height: 48px;
 }
 
 .ojo-boton {
@@ -39,6 +50,7 @@
 
 .error-texto {
   font-size: 12px;
-  margin: 2px 4px 8px;
+  color: var(--ion-color-danger);
+  margin: 4px 2px 0;
   display: block;
 }

@@ -1,3 +1,6 @@
+@if (label) {
+  <span class="campo-label">{{ label | translate }}</span>
+}
 <div class="campo-wrapper" [class.campo-wrapper--error]="invalido" [class.campo-wrapper--focus]="enfocado">
   <ion-item class="campo" lines="none">
     <ion-input

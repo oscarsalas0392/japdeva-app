@@ -4,7 +4,8 @@ export const Mensajes = {
     conexion:    'errores.conexion',
     timeout:     'errores.timeout',
     servidor:    'errores.servidor',
-    noAutorizado: 'errores.noAutorizado',
+    noAutorizado:          'errores.noAutorizado',
+    credencialesInvalidas: 'errores.credencialesInvalidas',
   },
   exito: {
     operacion: 'exito.operacion',

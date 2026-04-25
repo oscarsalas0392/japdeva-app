@@ -14,7 +14,7 @@ import { EstadoApp } from './app/core/state/app.state';
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({ scrollAssist: false, scrollPadding: false }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideStore([EstadoApp]),

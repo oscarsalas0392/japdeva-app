@@ -1,12 +1,15 @@
 {
   "errores": {
-    "conexion": "Ocurrió un error al conectar con el servidor.",
+    "conexion": "Ocurrió un error, por favor intentelo más tarde.",
     "timeout": "La solicitud tardó demasiado. Intente nuevamente.",
     "servidor": "Error interno del servidor. Contacte al administrador.",
-    "noAutorizado": "Su sesión ha expirado. Inicie sesión nuevamente."
+    "noAutorizado": "Su sesión ha expirado. Inicie sesión nuevamente.",
+    "credencialesInvalidas": "Correo o contraseña incorrectos.",
+    "titulo": "Error"
   },
   "exito": {
-    "operacion": "Operación realizada con éxito."
+    "operacion": "Operación realizada con éxito.",
+    "titulo": "Éxito"
   },
   "inicioSesion": {
     "titulo": "Iniciar Sesión",
@@ -15,9 +18,68 @@
     "ingresar": "Ingresar",
     "registrese": "Regístrese",
     "olvidoContrasena": "¿Olvidó su contraseña?",
+    "recordarCorreo": "Recordar correo",
     "validacion": {
       "correoInvalido": "Ingrese un correo electrónico válido.",
       "contrasenaMínima": "La contraseña debe tener al menos 6 caracteres."
+    }
+  },
+  "perfil": {
+    "titulo": "Mi Perfil",
+    "clienteId": "Cliente ID",
+    "nombre": "Nombre",
+    "apellidos": "Apellidos",
+    "email": "Email",
+    "identificacion": "Identificación",
+    "cambiarContrasena": "Cambiar contraseña",
+    "terminosCondiciones": "Términos y condiciones"
+  },
+  "cambiarContrasena": {
+    "titulo": "Cambiar contraseña",
+    "actual": "Contraseña actual",
+    "nueva": "Contraseña nueva",
+    "confirmar": "Confirmar contraseña",
+    "guardar": "Guardar cambios",
+    "avisoTitulo": "Tu nueva contraseña debe tener:",
+    "avisoItems": [
+      "Mínimo 8 caracteres",
+      "Una mayúscula y un número",
+      "Ser distinta a la actual"
+    ],
+    "exito": "Su contraseña ha sido actualizada correctamente.",
+    "error": "No fue posible actualizar la contraseña. Verifique que la contraseña actual sea correcta.",
+    "validacion": {
+      "minimaActual": "La contraseña debe tener al menos 8 caracteres.",
+      "minimaNueva": "Debe tener mínimo 8 caracteres, una mayúscula y un número.",
+      "noCoinciden": "Las contraseñas no coinciden."
+    }
+  },
+  "cerrarSesion": {
+    "confirmaTitulo": "Cerrar sesión",
+    "confirmaMsg": "¿Está seguro que desea cerrar sesión?"
+  },
+  "editarPerfil": {
+    "titulo": "Editar Perfil",
+    "nombre": "Nombre",
+    "apellidos": "Apellidos",
+    "guardar": "Guardar cambios",
+    "exito": "Su perfil ha sido actualizado correctamente.",
+    "error": "No fue posible actualizar el perfil. Intente nuevamente.",
+    "validacion": {
+      "nombreRequerido": "El nombre es requerido.",
+      "apellidosRequerido": "Los apellidos son requeridos."
+    }
+  },
+  "olvidoContrasena": {
+    "titulo": "Recuperar Contraseña",
+    "descripcion": "Ingrese su correo electrónico y le enviaremos una contraseña temporal.",
+    "correo": "Correo electrónico",
+    "enviar": "Enviar",
+    "volver": "Volver al inicio de sesión",
+    "exitoTitulo": "¡Correo enviado!",
+    "exitoMensaje": "Hemos enviado una contraseña temporal a su correo electrónico.",
+    "validacion": {
+      "correoInvalido": "Ingrese un correo electrónico válido."
     }
   }
 }

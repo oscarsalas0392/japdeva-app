@@ -1,0 +1,49 @@
+<ion-content class="fondo" [scrollY]="false">
+  <app-decoracion-login posicion="top" />
+  <app-decoracion-login posicion="bottom" />
+  <div class="contenedor">
+
+    <app-logo-japdeva />
+
+    <ion-card class="login-card">
+      <ion-card-content>
+
+        <h2 class="titulo">{{ 'olvidoContrasena.titulo' | translate }}</h2>
+
+        <app-grupo-campo>
+          <app-aviso tipo="info" [mensaje]="'olvidoContrasena.descripcion' | translate" />
+        </app-grupo-campo>
+
+        <form [formGroup]="form" (ngSubmit)="enviar()">
+
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('correo')!"
+              tipo="email"
+              placeholder="olvidoContrasena.correo"
+              autocomplete="email"
+              mensajeError="olvidoContrasena.validacion.correoInvalido"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <app-grupo-campo [top]="true" [bottom]="false">
+            <app-boton-cargando
+              etiqueta="olvidoContrasena.enviar"
+              [cargando]="cargando"
+            />
+          </app-grupo-campo>
+
+        </form>
+
+        <div class="volver">
+          <a routerLink="/inicio-sesion" class="enlace-volver">
+            {{ 'olvidoContrasena.volver' | translate }}
+          </a>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
