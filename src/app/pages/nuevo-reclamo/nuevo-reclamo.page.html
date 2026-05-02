@@ -1,0 +1,59 @@
+<app-pagina titulo="{{ 'nuevoReclamo.titulo' | translate }}" [atras]="true">
+
+  <app-seccion-header
+    icono="document-text-outline"
+    titulo="nuevoReclamo.headerTitulo"
+    subtitulo="nuevoReclamo.headerSubtitulo"
+  />
+
+  <app-tarjeta class="contenido">
+    <form [formGroup]="form" (ngSubmit)="enviar()">
+
+      <app-grupo-campo>
+        <app-campo-formulario
+          [control]="form.get('titulo')!"
+          tipo="text"
+          label="nuevoReclamo.titulo_campo"
+          placeholder="nuevoReclamo.tituloPlaceholder"
+          hint="nuevoReclamo.tituloHint"
+          mensajeError="nuevoReclamo.validacion.tituloRequerido"
+          [requerido]="true"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo>
+        <app-campo-textarea
+          [control]="form.get('descripcion')!"
+          label="nuevoReclamo.descripcion"
+          placeholder="nuevoReclamo.descripcionPlaceholder"
+          hint="nuevoReclamo.descripcionHint"
+          mensajeError="nuevoReclamo.validacion.descripcionRequerida"
+          [requerido]="true"
+          [filas]="5"
+          [maxLength]="1000"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo>
+        <app-adjuntar-archivo
+          label="nuevoReclamo.adjuntos"
+          [archivo]="archivo"
+          [requerido]="true"
+          [enviado]="enviado"
+          (archivoChange)="archivo = $event"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo [top]="true" [bottom]="false">
+        <app-boton-cargando
+          etiqueta="nuevoReclamo.enviar"
+          [cargando]="cargando"
+        />
+      </app-grupo-campo>
+
+    </form>
+  </app-tarjeta>
+
+</app-pagina>

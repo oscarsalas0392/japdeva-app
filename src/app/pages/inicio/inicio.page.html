@@ -1,2 +1,12 @@
 <app-pagina [saludo]="saludo()" titulo="Mis Reclamos">
+
+  <app-seccion-header titulo="inicio.casosRecientes" />
+
+  <app-estado-vacio
+    titulo="inicio.sinReclamos"
+    subtitulo="inicio.sinReclamosDesc"
+    etiquetaBoton="inicio.crearReclamo"
+    (accion)="irANuevoReclamo()"
+  />
+
 </app-pagina>

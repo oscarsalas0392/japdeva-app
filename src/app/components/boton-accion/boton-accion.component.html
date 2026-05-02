@@ -1,0 +1,13 @@
+<button
+  type="button"
+  class="boton-accion"
+  [class.boton-accion--solid]="tipo === 'solid'"
+  [class.boton-accion--outline]="tipo === 'outline'"
+  [class.boton-accion--full]="ancho === 'full'"
+  (click)="accion.emit()"
+>
+  @if (icono) {
+    <ion-icon [name]="icono" class="boton-accion__icono" />
+  }
+  <span>{{ etiqueta | translate }}</span>
+</button>

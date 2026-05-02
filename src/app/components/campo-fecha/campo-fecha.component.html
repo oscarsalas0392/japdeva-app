@@ -1,0 +1,62 @@
+@if (label) {
+  <span class="campo-label">{{ label | translate }}</span>
+}
+<div
+  class="campo-wrapper"
+  [class.campo-wrapper--error]="invalido"
+  (click)="abrir()"
+>
+  <div class="campo-interior">
+    <ion-icon name="calendar-outline" class="campo-icono" />
+    <span class="campo-valor" [class.campo-placeholder]="!valorFormateado">
+      {{ valorFormateado || (placeholder | translate) }}
+    </span>
+    @if (valorFormateado) {
+      <ion-button fill="clear" class="limpiar-boton" (click)="limpiar($event)">
+        <ion-icon slot="icon-only" name="close-outline" />
+      </ion-button>
+    }
+  </div>
+</div>
+@if (invalido) {
+  <ion-text color="danger" class="error-texto">
+    {{ mensajeError | translate }}
+  </ion-text>
+}
+
+<ion-modal
+  [isOpen]="modalAbierto"
+  [breakpoints]="[0, 1]"
+  [initialBreakpoint]="1"
+  (didDismiss)="cancelar()"
+  class="fecha-modal"
+>
+  <ng-template>
+    <div class="sheet-container">
+
+      <div class="sheet-handle"></div>
+
+      <div class="sheet-header">
+        <button class="sheet-btn sheet-btn--cancelar" (click)="cancelar()">
+          {{ 'CANCELAR' | translate }}
+        </button>
+        <span class="sheet-titulo">{{ label | translate }}</span>
+        <button class="sheet-btn sheet-btn--confirmar" (click)="confirmar()">
+          {{ 'ACEPTAR' | translate }}
+        </button>
+      </div>
+
+      <ion-datetime
+        presentation="date"
+        [preferWheel]="true"
+        [value]="valorTemp"
+        [min]="min"
+        [max]="max"
+        locale="es-CR"
+        (ionChange)="alCambiar($event)"
+        class="fecha-picker"
+      />
+
+    </div>
+  </ng-template>
+</ion-modal>

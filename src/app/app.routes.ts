@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/inicio-sesion/inicio-sesion.page').then((m) => m.InicioSesionPage),
   },
   {
+    path: 'registro',
+    loadComponent: () => import('./pages/registro/registro.page').then((m) => m.RegistroPage),
+  },
+  {
     path: 'olvido-contrasena',
     loadComponent: () => import('./pages/olvido-contrasena/olvido-contrasena.page').then((m) => m.OlvidoContrasenaPage),
   },
@@ -29,5 +33,9 @@ export const routes: Routes = [
   {
     path: 'editar-perfil',
     loadComponent: () => import('./pages/editar-perfil/editar-perfil.page').then((m) => m.EditarPerfilPage),
+  },
+  {
+    path: 'nuevo-reclamo',
+    loadComponent: () => import('./pages/nuevo-reclamo/nuevo-reclamo.page').then((m) => m.NuevoReclamoPage),
   },
 ];

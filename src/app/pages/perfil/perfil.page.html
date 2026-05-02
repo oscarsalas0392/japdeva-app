@@ -19,11 +19,19 @@
 
       <app-fila icono="mail-outline"
         etiqueta="{{ 'perfil.email' | translate }}"
-        valor="{{ usuario()!.correo }}" />
+        valor="{{ usuario()!.correo | mascaraCorreo }}" />
 
       <app-fila icono="card-outline"
         etiqueta="{{ 'perfil.identificacion' | translate }}"
         valor="{{ usuario()!.identificacion }}" />
+
+      <app-fila icono="call-outline"
+        etiqueta="{{ 'perfil.telefono' | translate }}"
+        valor="{{ usuario()!.telefono }}" />
+
+      <app-fila icono="calendar-outline"
+        etiqueta="{{ 'perfil.fechaNacimiento' | translate }}"
+        valor="{{ formatearFecha(usuario()!.fechaNacimiento) }}" />
 
     </app-tarjeta>
 

@@ -1,0 +1,35 @@
+@if (label || requerido) {
+  <div class="campo-label-fila">
+    @if (label) {
+      <span class="campo-label">{{ label | translate }}</span>
+    }
+    @if (requerido) {
+      <span class="campo-requerido">{{ 'campos.requerido' | translate }}</span>
+    }
+  </div>
+}
+
+@if (!archivo) {
+  <label class="adjuntar-btn" [class.adjuntar-btn--error]="invalido">
+    <ion-icon name="attach-outline" />
+    {{ 'adjuntarArchivo.seleccionar' | translate }}
+    <input
+      type="file"
+      [accept]="accept"
+      class="adjuntar-input"
+      (change)="seleccionar($event)"
+    />
+  </label>
+} @else {
+  <div class="archivo-item">
+    <ion-icon name="document-outline" class="archivo-icono" />
+    <span class="archivo-nombre">{{ archivo.NombreArchivo }}</span>
+    <button type="button" class="archivo-eliminar" (click)="eliminar($event)">
+      <ion-icon name="close-circle-outline" />
+    </button>
+  </div>
+}
+
+@if (invalido) {
+  <span class="error-texto">{{ 'adjuntarArchivo.requerido' | translate }}</span>
+}

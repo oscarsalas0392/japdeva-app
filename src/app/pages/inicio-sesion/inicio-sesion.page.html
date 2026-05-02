@@ -13,14 +13,23 @@
         <form [formGroup]="form" (ngSubmit)="enviar()">
 
           <app-grupo-campo>
-            <app-campo-formulario
-              [control]="form.get('usuario')!"
-              tipo="email"
-              placeholder="inicioSesion.usuario"
-              autocomplete="email"
-              mensajeError="inicioSesion.validacion.correoInvalido"
-              [enviado]="enviado"
-            />
+
+            <!-- Correo enmascarado: al tocarlo se borra y permite editar -->
+            @if (correoGuardado && !correoEditando) {
+              <div class="campo-enmascarado" (click)="editarCorreo()">
+                {{ correoGuardado | mascaraCorreo }}
+              </div>
+            } @else {
+              <app-campo-formulario
+                [control]="form.get('usuario')!"
+                tipo="email"
+                placeholder="inicioSesion.usuario"
+                autocomplete="email"
+                mensajeError="inicioSesion.validacion.correoInvalido"
+                [enviado]="enviado"
+              />
+            }
+
             <app-campo-formulario
               [control]="form.get('contrasena')!"
               tipo="password"
@@ -29,6 +38,7 @@
               mensajeError="inicioSesion.validacion.contrasenaMínima"
               [enviado]="enviado"
             />
+
           </app-grupo-campo>
 
           <div class="recordar-fila">

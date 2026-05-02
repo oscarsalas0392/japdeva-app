@@ -10,19 +10,17 @@
 }
 <div class="campo-wrapper" [class.campo-wrapper--error]="invalido" [class.campo-wrapper--focus]="enfocado">
   <ion-item class="campo" lines="none">
-    <ion-input
+    <ion-select
       [formControl]="$any(control)"
-      [type]="tipoActual"
       [placeholder]="placeholder | translate"
-      [autocomplete]="autocomplete"
+      [interface]="interfaz"
       (ionFocus)="enfocado = true"
       (ionBlur)="enfocado = false"
-    />
-    @if (esContrasena) {
-      <ion-button slot="end" fill="clear" class="ojo-boton" (click)="mostrarContrasena = !mostrarContrasena">
-        <ion-icon slot="icon-only" [name]="mostrarContrasena ? 'eye-off-outline' : 'eye-outline'" class="ojo-icono" />
-      </ion-button>
-    }
+    >
+      @for (opcion of opciones; track opcion.valor) {
+        <ion-select-option [value]="opcion.valor">{{ opcion.etiqueta }}</ion-select-option>
+      }
+    </ion-select>
   </ion-item>
 </div>
 @if (invalido) {

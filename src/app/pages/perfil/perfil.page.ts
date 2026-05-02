@@ -2,8 +2,9 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
+import { MascaraCorreoPipe } from '../../core/pipes/mascara-correo.pipe';
 import { addIcons } from 'ionicons';
-import { personOutline, mailOutline, cardOutline, createOutline } from 'ionicons/icons';
+import { personOutline, mailOutline, cardOutline, createOutline, callOutline, calendarOutline } from 'ionicons/icons';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { TarjetaComponent } from '../../components/tarjeta/tarjeta.component';
 import { FilaComponent } from '../../components/fila/fila.component';
@@ -17,7 +18,7 @@ import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
   standalone: true,
-  imports: [IonIcon, TranslateModule, PaginaComponent, TarjetaComponent, FilaComponent, GrupoCampoComponent],
+  imports: [IonIcon, TranslateModule, MascaraCorreoPipe, PaginaComponent, TarjetaComponent, FilaComponent, GrupoCampoComponent],
 })
 export class PerfilPage {
   private readonly estadoService = inject(EstadoAppService);
@@ -27,7 +28,16 @@ export class PerfilPage {
   readonly iniciales = signal('');
 
   constructor() {
-    addIcons({ personOutline, mailOutline, cardOutline, createOutline });
+    addIcons({ personOutline, mailOutline, cardOutline, createOutline, callOutline, calendarOutline });
+  }
+
+  formatearFecha(iso: string | null | undefined): string {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    return `${dia}/${mes}/${d.getFullYear()}`;
   }
 
   irACambiarContrasena(): void {

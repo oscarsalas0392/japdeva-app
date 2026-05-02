@@ -36,6 +36,22 @@ ion-content.fondo {
   margin: 4px 0 8px;
 }
 
+.campo-enmascarado {
+  border: 1.5px solid var(--color-borde-input);
+  border-radius: 10px;
+  background: #fff;
+  min-height: 48px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: var(--color-texto-input);
+  margin-bottom: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
 .error-global {
   font-size: 12px;
   display: block;

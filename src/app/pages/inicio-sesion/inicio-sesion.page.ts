@@ -14,6 +14,7 @@ import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.serv
 import { AuthService } from '../../core/services/auth.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
+import { MascaraCorreoPipe } from '../../core/pipes/mascara-correo.pipe';
 
 const CLAVE_CORREO = 'correo_recordado';
 
@@ -25,6 +26,7 @@ const CLAVE_CORREO = 'correo_recordado';
   imports: [
     ReactiveFormsModule,
     TranslateModule,
+    MascaraCorreoPipe,
     IonContent, IonCard, IonCardContent,
     LogoJapdevaComponent,
     DecoracionLoginComponent,
@@ -48,36 +50,48 @@ export class InicioSesionPage implements OnInit {
     contrasena: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  cargando = false;
-  enviado = false;
-  recordar = false;
+  cargando        = false;
+  enviado         = false;
+  recordar        = false;
+  correoGuardado: string | null = null;
+  correoEditando  = false;
 
   ngOnInit(): void {
-    const correoGuardado = localStorage.getItem(CLAVE_CORREO);
-    if (correoGuardado) {
-      this.form.patchValue({ usuario: correoGuardado });
+    const guardado = localStorage.getItem(CLAVE_CORREO);
+    if (guardado) {
+      this.correoGuardado = guardado;
       this.recordar = true;
     }
   }
 
+  editarCorreo(): void {
+    this.correoEditando = true;
+    this.form.patchValue({ usuario: '' });
+  }
+
   async enviar(): Promise<void> {
     this.enviado = true;
-    if (this.form.invalid) return;
+
+    const usandoGuardado = !!this.correoGuardado && !this.correoEditando;
+    if (!usandoGuardado && this.form.get('usuario')!.invalid) return;
+    if (this.form.get('contrasena')!.invalid) return;
 
     this.cargando = true;
     this.form.disable();
 
-    const { usuario, contrasena } = this.form.getRawValue();
+    const correo = usandoGuardado
+      ? this.correoGuardado!
+      : this.form.getRawValue().usuario!;
 
     if (this.recordar) {
-      localStorage.setItem(CLAVE_CORREO, usuario!);
+      localStorage.setItem(CLAVE_CORREO, correo);
     } else {
       localStorage.removeItem(CLAVE_CORREO);
     }
 
     const respuesta = await this.authService.autenticar({
-      Correo: usuario!,
-      Contrasena: contrasena!,
+      Correo:     correo,
+      Contrasena: this.form.getRawValue().contrasena!,
     });
 
     this.cargando = false;

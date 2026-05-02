@@ -1,0 +1,139 @@
+<ion-content class="fondo" [scrollY]="false">
+  <app-decoracion-login posicion="top" />
+  <div class="contenedor">
+
+    <app-logo-japdeva />
+
+    <div class="card">
+      <div class="card__body">
+
+        <h2 class="titulo">{{ 'registro.titulo' | translate }}</h2>
+
+        <form [formGroup]="form" (ngSubmit)="enviar()">
+
+          <!-- Tipo de cédula -->
+          <app-grupo-campo>
+            <app-campo-select
+              [control]="form.get('idTipoCedula')!"
+              label="registro.tipoCedula"
+              placeholder="registro.seleccioneTipo"
+              mensajeError="registro.validacion.tipoCedulaRequerido"
+              [opciones]="opcionesTipoCedula()"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <!-- Identificación -->
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('identificacion')!"
+              tipo="text"
+              label="registro.identificacion"
+              [mensajeError]="mensajeErrorIdentificacion()"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <!-- Nombre y Apellidos -->
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('nombre')!"
+              tipo="text"
+              label="registro.nombre"
+              autocomplete="given-name"
+              mensajeError="registro.validacion.nombreRequerido"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('apellidos')!"
+              tipo="text"
+              label="registro.apellidos"
+              autocomplete="family-name"
+              mensajeError="registro.validacion.apellidosRequerido"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <!-- Contacto -->
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('correo')!"
+              tipo="email"
+              label="registro.correo"
+              autocomplete="email"
+              mensajeError="registro.validacion.correoInvalido"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('telefono')!"
+              tipo="text"
+              label="registro.telefono"
+              autocomplete="tel"
+              mensajeError="registro.validacion.telefonoRequerido"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <!-- Fecha de nacimiento -->
+          <app-grupo-campo>
+            <app-campo-fecha
+              [control]="form.get('fechaNacimiento')!"
+              label="registro.fechaNacimiento"
+              placeholder="DD/MM/YYYY"
+              mensajeError="registro.validacion.fechaNacimientoRequerida"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <!-- Contraseña -->
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('contrasena')!"
+              tipo="password"
+              label="registro.contrasena"
+              autocomplete="new-password"
+              mensajeError="registro.validacion.contrasenaMinima"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <app-grupo-campo>
+            <app-campo-formulario
+              [control]="form.get('confirmarContrasena')!"
+              tipo="password"
+              label="registro.confirmarContrasena"
+              autocomplete="new-password"
+              mensajeError="registro.validacion.contrasenaNoCoincide"
+              [enviado]="enviado"
+            />
+          </app-grupo-campo>
+
+          <!-- Botón registrar -->
+          <app-grupo-campo [top]="true" [bottom]="false">
+            <app-boton-cargando
+              etiqueta="registro.registrarse"
+              [cargando]="cargando"
+            />
+          </app-grupo-campo>
+
+        </form>
+
+        <!-- Link a login -->
+        <div class="pie">
+          <span class="pie__texto">{{ 'registro.yaTengosCuenta' | translate }}</span>
+          <button type="button" class="pie__enlace" (click)="irALogin()">
+            {{ 'registro.iniciarSesion' | translate }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</ion-content>

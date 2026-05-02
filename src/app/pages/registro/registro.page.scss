@@ -1,0 +1,74 @@
+ion-content.fondo {
+  --background: var(--color-fondo);
+}
+
+// Acceso directo al scroll container real del ion-content
+ion-content.fondo::part(scroll) {
+  display: flex;
+  flex-direction: column;
+}
+
+.contenedor {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 40px;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.card {
+  flex: 1;
+  min-height: 0;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.card__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 24px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.titulo {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-texto-titulo);
+  margin: 0 0 28px;
+}
+
+
+.pie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.pie__texto {
+  font-size: 13px;
+  color: var(--color-placeholder);
+}
+
+.pie__enlace {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-boton);
+  cursor: pointer;
+  padding: 0;
+}

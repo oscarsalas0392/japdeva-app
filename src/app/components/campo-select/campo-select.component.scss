@@ -45,25 +45,17 @@
 .campo {
   --background: #fff;
   --color: var(--color-texto-input);
-  --placeholder-color: var(--color-placeholder);
-  --placeholder-opacity: 1;
   --border-width: 0;
   --inner-border-width: 0;
   --padding-start: 14px;
   --inner-padding-end: 4px;
   --min-height: 48px;
-}
 
-.ojo-boton {
-  --color: var(--color-placeholder);
-  --padding-end: 8px;
-  --padding-start: 4px;
-  margin: 0;
-  height: 100%;
-}
-
-.ojo-icono {
-  font-size: 18px;
+  ion-select {
+    width: 100%;
+    --placeholder-color: var(--color-placeholder);
+    --placeholder-opacity: 1;
+  }
 }
 
 .error-texto {

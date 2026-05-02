@@ -6,6 +6,7 @@ import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { TarjetaComponent } from '../../components/tarjeta/tarjeta.component';
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { CampoFormularioComponent } from '../../components/campo-formulario/campo-formulario.component';
+import { CampoFechaComponent } from '../../components/campo-fecha/campo-fecha.component';
 import { BotonCargandoComponent } from '../../components/boton-cargando/boton-cargando.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -25,6 +26,7 @@ import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth
     TarjetaComponent,
     GrupoCampoComponent,
     CampoFormularioComponent,
+    CampoFechaComponent,
     BotonCargandoComponent,
   ],
 })
@@ -39,8 +41,10 @@ export class EditarPerfilPage implements OnInit {
   private usuarioId = 0;
 
   readonly form = this.fb.group({
-    nombre:    ['', [Validators.required]],
-    apellidos: ['', [Validators.required]],
+    nombre:          ['', [Validators.required]],
+    apellidos:       ['', [Validators.required]],
+    telefono:        ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    fechaNacimiento: [<string | null>null, [Validators.required]],
   });
 
   cargando = false;
@@ -50,7 +54,12 @@ export class EditarPerfilPage implements OnInit {
     const u = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
     if (u) {
       this.usuarioId = u.id;
-      this.form.patchValue({ nombre: u.nombre, apellidos: u.apellidos });
+      this.form.patchValue({
+        nombre: u.nombre,
+        apellidos: u.apellidos,
+        telefono: u.telefono,
+        fechaNacimiento: u.fechaNacimiento,
+      });
     }
   }
 
@@ -61,12 +70,14 @@ export class EditarPerfilPage implements OnInit {
     this.cargando = true;
     this.form.disable();
 
-    const { nombre, apellidos } = this.form.getRawValue();
+    const { nombre, apellidos, telefono, fechaNacimiento } = this.form.getRawValue();
 
     const respuesta = await this.authService.actualizarPerfil({
       Id: this.usuarioId,
       Nombre: nombre!,
       Apellidos: apellidos!,
+      Telefono: telefono!,
+      FechaNacimiento: fechaNacimiento!,
     });
 
     this.cargando = false;
@@ -87,6 +98,8 @@ export class EditarPerfilPage implements OnInit {
         ...u,
         nombre: nombre!,
         apellidos: apellidos!,
+        telefono: telefono!,
+        fechaNacimiento: fechaNacimiento!,
       });
     }
 

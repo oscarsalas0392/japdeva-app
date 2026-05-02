@@ -1,0 +1,44 @@
+.boton-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+
+  &__icono {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  &--outline {
+    background: transparent;
+    border: 1.5px solid var(--color-boton);
+    color: var(--color-boton);
+
+    &:active {
+      background: var(--color-boton);
+      color: #fff;
+    }
+  }
+
+  &--full {
+    width: 100%;
+    justify-content: center;
+  }
+
+  &--solid {
+    background: var(--color-boton);
+    border: 1.5px solid var(--color-boton);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(13, 127, 165, 0.3);
+
+    &:active {
+      opacity: 0.85;
+    }
+  }
+}

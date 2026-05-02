@@ -1,4 +1,9 @@
 {
+  "ACEPTAR": "Aceptar",
+  "CANCELAR": "Cancelar",
+  "campos": {
+    "requerido": "Requerido"
+  },
   "errores": {
     "conexion": "Ocurrió un error, por favor intentelo más tarde.",
     "timeout": "La solicitud tardó demasiado. Intente nuevamente.",
@@ -19,6 +24,7 @@
     "registrese": "Regístrese",
     "olvidoContrasena": "¿Olvidó su contraseña?",
     "recordarCorreo": "Recordar correo",
+    "cambiar": "Cambiar",
     "validacion": {
       "correoInvalido": "Ingrese un correo electrónico válido.",
       "contrasenaMínima": "La contraseña debe tener al menos 6 caracteres."
@@ -31,6 +37,8 @@
     "apellidos": "Apellidos",
     "email": "Email",
     "identificacion": "Identificación",
+    "telefono": "Teléfono",
+    "fechaNacimiento": "Fecha de nacimiento",
     "cambiarContrasena": "Cambiar contraseña",
     "terminosCondiciones": "Términos y condiciones"
   },
@@ -54,6 +62,13 @@
       "noCoinciden": "Las contraseñas no coinciden."
     }
   },
+  "inicio": {
+    "casosRecientes": "Casos Recientes",
+    "nuevoReclamo": "Nuevo Reclamo",
+    "crearReclamo": "Crear mi primer reclamo",
+    "sinReclamos": "Aún no tienes reclamos",
+    "sinReclamosDesc": "Te ayudamos paso a paso a registrar tu primer caso."
+  },
   "cerrarSesion": {
     "confirmaTitulo": "Cerrar sesión",
     "confirmaMsg": "¿Está seguro que desea cerrar sesión?"
@@ -62,12 +77,71 @@
     "titulo": "Editar Perfil",
     "nombre": "Nombre",
     "apellidos": "Apellidos",
+    "telefono": "Teléfono",
+    "fechaNacimiento": "Fecha de nacimiento",
     "guardar": "Guardar cambios",
     "exito": "Su perfil ha sido actualizado correctamente.",
     "error": "No fue posible actualizar el perfil. Intente nuevamente.",
     "validacion": {
       "nombreRequerido": "El nombre es requerido.",
-      "apellidosRequerido": "Los apellidos son requeridos."
+      "apellidosRequerido": "Los apellidos son requeridos.",
+      "telefonoRequerido": "Ingrese un número de teléfono válido.",
+      "fechaNacimientoRequerido": "La fecha de nacimiento es requerida."
+    }
+  },
+  "registro": {
+    "titulo": "Crear Cuenta",
+    "tipoCedula": "Tipo de cédula",
+    "seleccioneTipo": "Seleccione un tipo",
+    "identificacion": "Identificación",
+    "nombre": "Nombre",
+    "apellidos": "Apellidos",
+    "correo": "Correo electrónico",
+    "telefono": "Teléfono",
+    "fechaNacimiento": "Fecha de nacimiento",
+    "contrasena": "Contraseña",
+    "confirmarContrasena": "Confirmar contraseña",
+    "registrarse": "Registrarse",
+    "yaTengosCuenta": "¿Ya tiene una cuenta?",
+    "iniciarSesion": "Iniciar sesión",
+    "exito": "Su cuenta ha sido creada exitosamente. Ya puede iniciar sesión.",
+    "error": "No fue posible crear la cuenta. Intente nuevamente.",
+    "validacion": {
+      "tipoCedulaRequerido": "Seleccione un tipo de cédula.",
+      "identificacionRequerida": "La identificación es requerida.",
+      "identificacionFormato": "Formato inválido para {{ tipo }}.",
+      "nombreRequerido": "El nombre es requerido.",
+      "apellidosRequerido": "Los apellidos son requeridos.",
+      "correoInvalido": "Ingrese un correo electrónico válido.",
+      "telefonoRequerido": "Ingrese un número de teléfono válido.",
+      "fechaNacimientoRequerida": "La fecha de nacimiento es requerida.",
+      "contrasenaMinima": "La contraseña debe tener al menos 6 caracteres.",
+      "contrasenaNoCoincide": "Las contraseñas no coinciden."
+    }
+  },
+  "adjuntarArchivo": {
+    "label": "Documento adjunto",
+    "seleccionar": "Adjuntar PDF",
+    "requerido": "Debe adjuntar un documento PDF."
+  },
+  "nuevoReclamo": {
+    "titulo": "Nuevo Reclamo",
+    "headerTitulo": "Presentá tu reclamo",
+    "headerSubtitulo": "Contanos qué sucedió. Recibirás respuesta en 5 a 10 días hábiles por correo.",
+    "titulo_campo": "Título",
+    "tituloPlaceholder": "Ej. Cobro indebido en tarifa",
+    "tituloHint": "Resumí tu reclamo en una frase corta.",
+    "descripcion": "Descripción",
+    "descripcionPlaceholder": "Describa detalladamente su reclamo...",
+    "descripcionHint": "Incluí fechas, montos o cualquier detalle relevante.",
+    "adjuntos": "Documentos adjuntos",
+    "adjuntarArchivo": "Adjuntar PDF",
+    "enviar": "Enviar Reclamo",
+    "exito": "Su reclamo ha sido enviado exitosamente.",
+    "error": "No fue posible enviar el reclamo. Intente nuevamente.",
+    "validacion": {
+      "tituloRequerido": "El título es requerido.",
+      "descripcionRequerida": "La descripción es requerida."
     }
   },
   "olvidoContrasena": {

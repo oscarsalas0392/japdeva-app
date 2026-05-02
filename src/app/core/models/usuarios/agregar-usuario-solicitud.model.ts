@@ -17,4 +17,10 @@ export interface AgregarUsuarioSolicitudModel {
 
   /** Contraseña del usuario. */
   Contrasena: string;
+
+  /** Número de teléfono del usuario. */
+  Telefono: string;
+
+  /** Fecha de nacimiento del usuario (ISO 8601: YYYY-MM-DD). */
+  FechaNacimiento: string;
 }

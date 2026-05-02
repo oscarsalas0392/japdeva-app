@@ -1,0 +1,37 @@
+@if (label || requerido) {
+  <div class="campo-label-fila">
+    @if (label) {
+      <span class="campo-label">{{ label | translate }}</span>
+    }
+    @if (requerido) {
+      <span class="campo-requerido">{{ 'campos.requerido' | translate }}</span>
+    }
+  </div>
+}
+<div
+  class="campo-wrapper"
+  [class.campo-wrapper--error]="invalido"
+  [class.campo-wrapper--focus]="enfocado"
+>
+  <textarea
+    [formControl]="$any(control)"
+    class="textarea"
+    [rows]="filas"
+    [maxlength]="maxLength"
+    [placeholder]="placeholder | translate"
+    (focus)="enfocado = true"
+    (blur)="enfocado = false"
+  ></textarea>
+</div>
+<div class="campo-footer">
+  @if (invalido) {
+    <ion-text color="danger" class="error-texto">{{ mensajeError | translate }}</ion-text>
+  } @else if (hint) {
+    <span class="campo-hint">{{ hint | translate }}</span>
+  } @else {
+    <span></span>
+  }
+  <span class="contador" [class.contador--limite]="caracteresRestantes <= 20">
+    {{ caracteresRestantes }}
+  </span>
+</div>

@@ -24,6 +24,27 @@
         />
       </app-grupo-campo>
 
+      <app-grupo-campo>
+        <app-campo-formulario
+          [control]="form.get('telefono')!"
+          tipo="text"
+          label="editarPerfil.telefono"
+          autocomplete="tel"
+          mensajeError="editarPerfil.validacion.telefonoRequerido"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
+      <app-grupo-campo>
+        <app-campo-fecha
+          [control]="form.get('fechaNacimiento')!"
+          label="editarPerfil.fechaNacimiento"
+          placeholder="DD/MM/YYYY"
+          mensajeError="editarPerfil.validacion.fechaNacimientoRequerido"
+          [enviado]="enviado"
+        />
+      </app-grupo-campo>
+
       <app-grupo-campo [top]="true" [bottom]="false">
         <app-boton-cargando
           etiqueta="editarPerfil.guardar"

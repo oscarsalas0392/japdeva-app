@@ -1,0 +1,22 @@
+@if (icono || subtitulo) {
+  <!-- Modo descriptivo: ícono + título + subtítulo -->
+  <div class="header-descriptivo">
+    @if (icono) {
+      <div class="header-descriptivo__icono-wrapper">
+        <ion-icon [name]="icono" class="header-descriptivo__icono" />
+      </div>
+    }
+    <div class="header-descriptivo__textos">
+      <span class="header-descriptivo__titulo">{{ titulo | translate }}</span>
+      @if (subtitulo) {
+        <span class="header-descriptivo__subtitulo">{{ subtitulo | translate }}</span>
+      }
+    </div>
+  </div>
+} @else {
+  <!-- Modo simple: título + ng-content a la derecha -->
+  <div class="seccion-header">
+    <span class="seccion-header__titulo">{{ titulo | translate }}</span>
+    <ng-content />
+  </div>
+}

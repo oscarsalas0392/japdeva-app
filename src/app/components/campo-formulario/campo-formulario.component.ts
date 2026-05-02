@@ -20,6 +20,8 @@ export class CampoFormularioComponent {
   @Input() autocomplete = 'off';
   @Input() mensajeError = '';
   @Input() enviado = false;
+  @Input() requerido = false;
+  @Input() hint = '';
 
   enfocado = false;
   mostrarContrasena = false;

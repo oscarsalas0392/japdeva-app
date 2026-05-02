@@ -1,0 +1,18 @@
+<app-tarjeta>
+  <div class="estado-vacio">
+    <div class="estado-vacio__icono-wrapper">
+      <ion-icon [name]="icono" class="estado-vacio__icono" />
+    </div>
+    <span class="estado-vacio__titulo">{{ titulo | translate }}</span>
+    <span class="estado-vacio__subtitulo">{{ subtitulo | translate }}</span>
+    @if (etiquetaBoton) {
+      <app-boton-accion
+        [etiqueta]="etiquetaBoton"
+        [icono]="iconoBoton"
+        tipo="solid"
+        ancho="full"
+        (accion)="accion.emit()"
+      />
+    }
+  </div>
+</app-tarjeta>

@@ -4,4 +4,6 @@ export interface AutenticarUsuarioRespuestaModel {
   apellidos: string;
   correo: string;
   identificacion: string;
+  telefono: string;
+  fechaNacimiento: string;
 }
