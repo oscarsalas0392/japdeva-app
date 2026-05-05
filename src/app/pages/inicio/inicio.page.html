@@ -2,11 +2,28 @@
 
   <app-seccion-header titulo="inicio.casosRecientes" />
 
-  <app-estado-vacio
-    titulo="inicio.sinReclamos"
-    subtitulo="inicio.sinReclamosDesc"
-    etiquetaBoton="inicio.crearReclamo"
-    (accion)="irANuevoReclamo()"
-  />
+  @if (cargando()) {
+    <div class="cargando">
+      <ion-spinner name="crescent" />
+    </div>
+  } @else if (reclamos().length === 0) {
+    <app-estado-vacio
+      titulo="inicio.sinReclamos"
+      subtitulo="inicio.sinReclamosDesc"
+      etiquetaBoton="inicio.crearReclamo"
+      (accion)="irANuevoReclamo()"
+    />
+  } @else {
+    <div class="lista">
+      @for (reclamo of reclamos(); track reclamo.id) {
+        <app-item-seleccionable
+          [opciones]="opcionesReclamo"
+          (accion)="manejarAccion($event, reclamo)"
+        >
+          <app-item-reclamo [reclamo]="reclamo" />
+        </app-item-seleccionable>
+      }
+    </div>
+  }
 
 </app-pagina>

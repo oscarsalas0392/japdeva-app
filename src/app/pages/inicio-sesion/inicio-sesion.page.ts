@@ -2,7 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { IonContent, IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonContent, IonCard, IonCardContent, IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { fingerPrintOutline } from 'ionicons/icons';
+import { NativeBiometric } from 'capacitor-native-biometric';
 import { LogoJapdevaComponent } from '../../components/logo-japdeva/logo-japdeva.component';
 import { DecoracionLoginComponent } from '../../components/decoracion-login/decoracion-login.component';
 import { CampoFormularioComponent } from '../../components/campo-formulario/campo-formulario.component';
@@ -16,7 +19,9 @@ import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { MascaraCorreoPipe } from '../../core/pipes/mascara-correo.pipe';
 
-const CLAVE_CORREO = 'correo_recordado';
+const CLAVE_CORREO    = 'correo_recordado';
+const CLAVE_BIOMETRIA = 'biometria_habilitada';
+const SERVER_ID       = 'japdeva_app';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -27,7 +32,7 @@ const CLAVE_CORREO = 'correo_recordado';
     ReactiveFormsModule,
     TranslateModule,
     MascaraCorreoPipe,
-    IonContent, IonCard, IonCardContent,
+    IonContent, IonCard, IonCardContent, IonIcon,
     LogoJapdevaComponent,
     DecoracionLoginComponent,
     CampoFormularioComponent,
@@ -38,29 +43,119 @@ const CLAVE_CORREO = 'correo_recordado';
   ],
 })
 export class InicioSesionPage implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly authService   = inject(AuthService);
   private readonly estadoService = inject(EstadoAppService);
-  private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
-  private readonly popup = inject(PopupAvisoService);
-  private readonly translate = inject(TranslateService);
+  private readonly router        = inject(Router);
+  private readonly fb            = inject(FormBuilder);
+  private readonly popup         = inject(PopupAvisoService);
+  private readonly translate     = inject(TranslateService);
 
   readonly form = this.fb.group({
     usuario:    ['', [Validators.required, Validators.email]],
     contrasena: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  cargando        = false;
-  enviado         = false;
-  recordar        = false;
+  cargando              = false;
+  enviado               = false;
+  recordar              = false;
   correoGuardado: string | null = null;
-  correoEditando  = false;
+  correoEditando        = false;
+  biometriaDisponible   = false;
+  esFaceId              = false;
+  cargandoBiometria     = false;
 
-  ngOnInit(): void {
+  constructor() {
+    addIcons({ fingerPrintOutline });
+  }
+
+  async ngOnInit(): Promise<void> {
     const guardado = localStorage.getItem(CLAVE_CORREO);
     if (guardado) {
       this.correoGuardado = guardado;
       this.recordar = true;
+    }
+    await this.verificarBiometria();
+  }
+
+  private async verificarBiometria(): Promise<void> {
+    if (!this.correoGuardado) return;
+    if (localStorage.getItem(CLAVE_BIOMETRIA) !== 'true') return;
+
+    try {
+      const result = await NativeBiometric.isAvailable();
+      if (result.isAvailable) {
+        this.biometriaDisponible = true;
+        this.esFaceId = result.biometryType === 2; // FaceID = 2
+      }
+    } catch {
+      this.biometriaDisponible = false;
+    }
+  }
+
+  async autenticarConBiometria(): Promise<void> {
+    this.cargandoBiometria = true;
+    try {
+      // 1. Verificar identidad biométrica
+      await NativeBiometric.verifyIdentity({
+        reason: this.translate.instant('inicioSesion.biometriaRazon'),
+        title:  this.translate.instant('inicioSesion.biometriaTitulo'),
+      });
+
+      // 2. Recuperar credenciales del keychain
+      const credenciales = await NativeBiometric.getCredentials({ server: SERVER_ID });
+
+      // 3. Autenticar contra el backend con las credenciales guardadas
+      const respuesta = await this.authService.autenticar({
+        Correo:     credenciales.username,
+        Contrasena: credenciales.password,
+      });
+
+      if (!respuesta.Exito) {
+        this.popup.mostrar({
+          tipo: 'error',
+          titulo: this.translate.instant('errores.titulo'),
+          mensaje: this.translate.instant('errores.credencialesInvalidas'),
+        });
+        return;
+      }
+
+      await this.estadoService.guardar(ClavesEstado.usuario, respuesta.Datos);
+      await this.router.navigate(['/inicio'], { replaceUrl: true });
+
+    } catch {
+      // Usuario canceló o biometría falló — no mostrar error
+    } finally {
+      this.cargandoBiometria = false;
+    }
+  }
+
+  private async ofrecerBiometria(correo: string, contrasena: string): Promise<void> {
+    try {
+      const result = await NativeBiometric.isAvailable();
+      if (!result.isAvailable) return;
+      if (localStorage.getItem(CLAVE_BIOMETRIA) === 'true') return;
+
+      const tipo = this.esFaceId
+        ? this.translate.instant('inicioSesion.faceId')
+        : this.translate.instant('inicioSesion.huella');
+
+      const confirmado = await this.popup.confirmar({
+        tipo: 'info',
+        titulo: this.translate.instant('inicioSesion.biometriaTitulo'),
+        mensaje: this.translate.instant('inicioSesion.biometriaMsg', { tipo }),
+      });
+
+      if (confirmado) {
+        // Guardar credenciales en keychain nativo del dispositivo
+        await NativeBiometric.setCredentials({
+          username: correo,
+          password: contrasena,
+          server:   SERVER_ID,
+        });
+        localStorage.setItem(CLAVE_BIOMETRIA, 'true');
+      }
+    } catch {
+      // Ignorar errores al configurar biometría
     }
   }
 
@@ -82,16 +177,19 @@ export class InicioSesionPage implements OnInit {
     const correo = usandoGuardado
       ? this.correoGuardado!
       : this.form.getRawValue().usuario!;
+    const contrasena = this.form.getRawValue().contrasena!;
 
     if (this.recordar) {
       localStorage.setItem(CLAVE_CORREO, correo);
     } else {
       localStorage.removeItem(CLAVE_CORREO);
+      localStorage.removeItem(CLAVE_BIOMETRIA);
+      await NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
     }
 
     const respuesta = await this.authService.autenticar({
       Correo:     correo,
-      Contrasena: this.form.getRawValue().contrasena!,
+      Contrasena: contrasena,
     });
 
     this.cargando = false;
@@ -107,6 +205,11 @@ export class InicioSesionPage implements OnInit {
     }
 
     await this.estadoService.guardar(ClavesEstado.usuario, respuesta.Datos);
+
+    if (this.recordar) {
+      await this.ofrecerBiometria(correo, contrasena);
+    }
+
     await this.router.navigate(['/inicio'], { replaceUrl: true });
   }
 }

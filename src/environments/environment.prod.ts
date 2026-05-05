@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: ' https://9578-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
+  apiUrl: 'https://617c-186-151-100-181.ngrok-free.app',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
@@ -51,6 +51,7 @@ export const environment = {
       reclamo: {
         agregar: '/Reclamos/api/Reclamo/AgregarReclamo',
         obtenerPorUsuario: '/Reclamos/api/Reclamo/ObtenerReclamoPorUsuario',
+        obtenerPorUsuarioOrdenado: '/Reclamos/api/Reclamo/ObtenerReclamoPorUsuarioOrdenado',
         obtenerPorDepartamento: '/Reclamos/api/Reclamo/ObtenerReclamoPorDepartamento',
         obtenerPorFechaEstado: '/Reclamos/api/Reclamo/ObtenerReclamoPorFechaEstado',
       },

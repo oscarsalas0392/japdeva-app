@@ -23,8 +23,17 @@ log.txt
 /platforms
 /plugins
 
-# Android
-/android
+# Android - ignorar archivos generados pero mantener configuración
+/android/**
+
+# Mantener archivos de configuración modificados
+!/android/app/src/
+!/android/app/src/main/
+!/android/app/src/main/AndroidManifest.xml
+!/android/app/src/main/res/
+!/android/app/src/main/res/xml/
+!/android/app/src/main/res/xml/network_security_config.xml
+!/android/app/src/main/res/xml/file_paths.xml
 
 # Compiled output
 /dist

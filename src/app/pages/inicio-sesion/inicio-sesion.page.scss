@@ -36,6 +36,53 @@ ion-content.fondo {
   margin: 4px 0 8px;
 }
 
+.biometria-separador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 12px;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-borde-input);
+  }
+
+  span {
+    font-size: 12px;
+    color: var(--color-placeholder);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.biometria-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  background: transparent;
+  border: 1.5px solid var(--color-boton);
+  border-radius: 12px;
+  color: var(--color-boton);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  ion-icon {
+    font-size: 22px;
+  }
+
+  &:active {
+    background: rgba(13, 127, 165, 0.06);
+  }
+}
+
 .campo-enmascarado {
   border: 1.5px solid var(--color-borde-input);
   border-radius: 10px;

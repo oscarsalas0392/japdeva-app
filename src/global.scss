@@ -35,3 +35,26 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 /* @import '@ionic/angular/css/palettes/dark.system.css'; */
+
+// Estilos globales del action sheet de acciones
+.accion-sheet {
+  --button-color: var(--color-texto-titulo);
+  --button-color-destructive: var(--ion-color-danger);
+
+  .action-sheet-group {
+    border-radius: 16px 16px 0 0;
+  }
+
+  .action-sheet-button {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .action-sheet-button .action-sheet-icon {
+    color: var(--color-boton);
+  }
+
+  .action-sheet-destructive .action-sheet-icon {
+    color: var(--ion-color-danger);
+  }
+}

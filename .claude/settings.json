@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\oscar\\\\source\\\\repos\\\\japdeva-app\\\\src\\\\app\\\\components\\\\adjuntar-archivo\" -Force)",
-      "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\oscar\\\\source\\\\repos\\\\japdeva-app\\\\src\\\\app\\\\pages\\\\nuevo-reclamo\" -Force)"
+      "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\oscar\\\\source\\\\repos\\\\japdeva-app\\\\src\\\\app\\\\pages\\\\nuevo-reclamo\" -Force)",
+      "Bash(npx cap *)",
+      "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\oscar\\\\source\\\\repos\\\\japdeva-app\\\\src\\\\app\\\\components\\\\item-seleccionable\" -Force)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\oscar\\source\\repos\\japdeva-app\\src\\app\\components"
     ]
   }
 }

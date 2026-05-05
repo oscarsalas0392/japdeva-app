@@ -2,3 +2,19 @@ ion-content.contenido {
   --background: var(--color-fondo);
   --padding-bottom: calc(64px + env(safe-area-inset-bottom));
 }
+
+.cargando {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+
+  ion-spinner {
+    color: var(--color-boton);
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.lista {
+  padding: 0 16px;
+}

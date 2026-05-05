@@ -25,6 +25,14 @@
     "olvidoContrasena": "¿Olvidó su contraseña?",
     "recordarCorreo": "Recordar correo",
     "cambiar": "Cambiar",
+    "o": "o",
+    "usarHuella": "Usar huella digital",
+    "usarFaceId": "Usar Face ID",
+    "biometriaRazon": "Ingrese para acceder a su cuenta",
+    "biometriaTitulo": "Inicio rápido",
+    "biometriaMsg": "¿Desea activar el inicio de sesión con {{ tipo }} para la próxima vez?",
+    "huella": "huella digital",
+    "faceId": "Face ID",
     "validacion": {
       "correoInvalido": "Ingrese un correo electrónico válido.",
       "contrasenaMínima": "La contraseña debe tener al menos 6 caracteres."
@@ -67,7 +75,11 @@
     "nuevoReclamo": "Nuevo Reclamo",
     "crearReclamo": "Crear mi primer reclamo",
     "sinReclamos": "Aún no tienes reclamos",
-    "sinReclamosDesc": "Te ayudamos paso a paso a registrar tu primer caso."
+    "sinReclamosDesc": "Te ayudamos paso a paso a registrar tu primer caso.",
+    "acciones": {
+      "ver": "Ver detalle",
+      "nuevo": "Crear nuevo reclamo"
+    }
   },
   "cerrarSesion": {
     "confirmaTitulo": "Cerrar sesión",

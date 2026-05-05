@@ -1,0 +1,16 @@
+<div class="item" (click)="seleccionar.emit(reclamo)">
+  <div class="item__contenido">
+    <div class="item__fila-top">
+      <span class="item__codigo">{{ codigo }}</span>
+      <ion-icon name="chevron-forward-outline" class="item__flecha" />
+    </div>
+    <span class="item__titulo">{{ reclamo.titulo }}</span>
+    <p class="item__descripcion">{{ reclamo.descripcion }}</p>
+    <div class="item__fila-bottom">
+      <span class="item__estado" [class]="claseEstado">
+        {{ reclamo.descripcionEstadoReclamo }}
+      </span>
+      <span class="item__fecha">{{ fechaFormateada }}</span>
+    </div>
+  </div>
+</div>

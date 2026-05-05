@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-boton);
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    pointer-events: none;
+  }
+
+  &--presionado {
+    transform: scale(0.985);
+
+    &::after {
+      opacity: 0.06;
+    }
+  }
+}
