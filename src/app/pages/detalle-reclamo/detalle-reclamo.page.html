@@ -1,0 +1,50 @@
+<app-pagina titulo="{{ 'detalleReclamo.titulo' | translate }}" [atras]="true">
+  @if (reclamo()) {
+    <div class="pagina">
+
+      <p class="consecutivo">{{ 'detalleReclamo.consecutivo' | translate }}: {{ codigo }}</p>
+
+      <app-campo-detalle
+        titulo="detalleReclamo.tituloReclamo"
+        [valor]="reclamo()!.titulo"
+      />
+
+      <app-campo-detalle
+        titulo="detalleReclamo.descripcion"
+        [valor]="reclamo()!.descripcion"
+      />
+
+      <app-lista-documentos [documentos]="documentos()" />
+
+      <!-- Timeline seguimiento -->
+      <section class="seccion">
+        <h2 class="seccion__titulo">{{ 'detalleReclamo.seguimiento' | translate }}</h2>
+        @if (cargando()) {
+          <div class="cargando"><ion-spinner name="crescent" /></div>
+        } @else if (historial().length === 0) {
+          <p class="sin-datos">{{ 'detalleReclamo.sinHistorial' | translate }}</p>
+        } @else {
+          <div class="timeline">
+            @for (paso of historial(); track paso.id; let i = $index; let ultimo = $last) {
+              <div class="paso">
+                <div class="paso__izq">
+                  <div class="paso__punto" [class]="clasePunto(i)"></div>
+                  @if (!ultimo) {
+                    <div class="paso__linea"></div>
+                  }
+                </div>
+                <div class="paso__contenido">
+                  <span class="paso__titulo">{{ paso.descripcionEstadoDetalleReclamo }}</span>
+                  @if (paso.fechaRegistro) {
+                    <span class="paso__fecha">{{ formatearFecha(paso.fechaRegistro) }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+    </div>
+  }
+</app-pagina>

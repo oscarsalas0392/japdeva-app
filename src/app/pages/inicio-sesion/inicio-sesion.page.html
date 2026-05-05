@@ -65,8 +65,17 @@
           <div class="biometria-separador">
             <span>{{ 'inicioSesion.o' | translate }}</span>
           </div>
-          <button type="button" class="biometria-btn" (click)="autenticarConBiometria()">
-            <ion-icon name="finger-print-outline" />
+          <button
+            type="button"
+            class="biometria-btn"
+            [disabled]="cargandoBiometria"
+            (click)="autenticarConBiometria()"
+          >
+            @if (cargandoBiometria) {
+              <ion-spinner name="crescent" class="biometria-spinner" />
+            } @else {
+              <ion-icon name="finger-print-outline" />
+            }
             {{ (esFaceId ? 'inicioSesion.usarFaceId' : 'inicioSesion.usarHuella') | translate }}
           </button>
         }

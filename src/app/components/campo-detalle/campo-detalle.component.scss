@@ -1,0 +1,23 @@
+.campo-detalle {
+  margin-bottom: 28px;
+
+  &__titulo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-texto-titulo);
+    margin: 0 0 12px;
+  }
+
+  &__caja {
+    background: var(--color-fondo-detalle);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  &__texto {
+    font-size: 14px;
+    color: var(--color-texto-input);
+    line-height: 1.6;
+    margin: 0;
+  }
+}

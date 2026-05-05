@@ -1,0 +1,29 @@
+<section class="lista-docs">
+  <h2 class="lista-docs__titulo">{{ titulo | translate }}</h2>
+
+  @if (documentos.length === 0) {
+    <p class="lista-docs__vacio">{{ 'detalleReclamo.sinDocumentos' | translate }}</p>
+  } @else {
+    <div class="lista-docs__items">
+      @for (doc of documentos; track doc.id) {
+        <div class="doc-item">
+          <div class="doc-item__info">
+            <span class="doc-item__nombre">{{ doc.nombreDocumento }}</span>
+            <span class="doc-item__meta">PDF • {{ tamanoArchivo(doc.documento) }}</span>
+          </div>
+          <button
+            class="doc-item__btn"
+            [disabled]="descargando() === doc.id"
+            (click)="descargar(doc)"
+          >
+            @if (descargando() === doc.id) {
+              <ion-spinner name="crescent" class="doc-item__spinner" />
+            } @else {
+              <ion-icon name="cloud-download-outline" />
+            }
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

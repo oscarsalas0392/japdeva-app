@@ -24,8 +24,8 @@ export class DetalleReclamoService {
    * Obtiene el detalle activo de un reclamo.
    * @param idReclamo Identificador del reclamo.
    */
-  obtener(idReclamo: number): Promise<RespuestaModel<DetalleReclamoRespuestaModel>> {
-    return this.api.get(this.ep.obtener, { idReclamo });
+  obtener(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DetalleReclamoRespuestaModel>>> {
+    return this.api.get(this.ep.obtener, { 'id-reclamo': idReclamo, pagina });
   }
 
   /**

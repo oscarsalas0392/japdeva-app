@@ -136,6 +136,18 @@
     "seleccionar": "Adjuntar PDF",
     "requerido": "Debe adjuntar un documento PDF."
   },
+  "detalleReclamo": {
+    "titulo": "Detalle del Reclamo",
+    "consecutivo": "Número consecutivo",
+    "tituloReclamo": "Título del reclamo",
+    "descripcion": "Descripción del reclamo",
+    "documentos": "Documentos adjuntos",
+    "seguimiento": "Seguimiento del caso",
+    "sinDocumentos": "No hay documentos adjuntos.",
+    "sinHistorial": "No hay historial disponible.",
+    "errorDescarga": "No fue posible descargar el documento.",
+    "descargaExito": "{{ nombre }} guardado en la carpeta Descargas."
+  },
   "nuevoReclamo": {
     "titulo": "Nuevo Reclamo",
     "headerTitulo": "Presentá tu reclamo",

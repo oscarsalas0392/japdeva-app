@@ -41,8 +41,8 @@ export class InicioPage implements OnInit {
   private usuarioId = 0;
 
   readonly opcionesReclamo: OpcionAccionModel[] = [
-    { id: 'ver',      etiqueta: 'inicio.acciones.ver' },
-    { id: 'nuevo',    etiqueta: 'inicio.acciones.nuevo',    icono: 'add-circle-outline' },
+    { id: 'ver',   etiqueta: 'inicio.acciones.ver' },
+    { id: 'nuevo', etiqueta: 'inicio.acciones.nuevo', icono: 'add-circle-outline' },
   ];
 
   async ngOnInit(): Promise<void> {
@@ -52,6 +52,13 @@ export class InicioPage implements OnInit {
       this.saludo.set(`Hola, ${u.nombre}`);
     }
     await this.cargarReclamos();
+  }
+
+  // Se ejecuta cada vez que el usuario regresa a esta pantalla
+  async ionViewWillEnter(): Promise<void> {
+    if (this.usuarioId) {
+      await this.cargarReclamos();
+    }
   }
 
   async cargarReclamos(): Promise<void> {
@@ -70,7 +77,7 @@ export class InicioPage implements OnInit {
   manejarAccion(accionId: string, reclamo: ReclamoRespuestaModel): void {
     switch (accionId) {
       case 'ver':
-        this.router.navigate(['/detalle-reclamo', reclamo.id]);
+        this.router.navigate(['/detalle-reclamo', reclamo.id], { state: { reclamo } });
         break;
       case 'nuevo':
         this.router.navigate(['/nuevo-reclamo']);

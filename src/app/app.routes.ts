@@ -38,4 +38,8 @@ export const routes: Routes = [
     path: 'nuevo-reclamo',
     loadComponent: () => import('./pages/nuevo-reclamo/nuevo-reclamo.page').then((m) => m.NuevoReclamoPage),
   },
+  {
+    path: 'detalle-reclamo/:id',
+    loadComponent: () => import('./pages/detalle-reclamo/detalle-reclamo.page').then((m) => m.DetalleReclamoPage),
+  },
 ];

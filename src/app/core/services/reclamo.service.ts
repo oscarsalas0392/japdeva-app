@@ -55,15 +55,15 @@ export class ReclamoService {
    * Obtiene los documentos adjuntos por el usuario de un reclamo.
    * @param idReclamo Identificador del reclamo.
    */
-  obtenerDocumentosUsuario(idReclamo: number): Promise<RespuestaModel<RespuestaListaModel<DocumentoUsuarioRespuestaModel>>> {
-    return this.api.get(this.epDocUsuario.obtener, { idReclamo });
+  obtenerDocumentosUsuario(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoUsuarioRespuestaModel>>> {
+    return this.api.get(this.epDocUsuario.obtener, { 'id-reclamo': idReclamo, pagina });
   }
 
   /**
    * Obtiene el histórico de documentos de usuario de un reclamo.
    * @param idReclamo Identificador del reclamo.
    */
-  obtenerHistoricoDocumentosUsuario(idReclamo: number): Promise<RespuestaModel<RespuestaListaModel<DocumentoUsuarioRespuestaModel>>> {
-    return this.api.get(this.epDocUsuario.historico, { idReclamo });
+  obtenerHistoricoDocumentosUsuario(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoUsuarioRespuestaModel>>> {
+    return this.api.get(this.epDocUsuario.historico, { 'id-reclamo': idReclamo, pagina });
   }
 }

@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { IonContent, IonCard, IonCardContent, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonCard, IonCardContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { fingerPrintOutline } from 'ionicons/icons';
 import { NativeBiometric } from 'capacitor-native-biometric';
@@ -32,7 +32,7 @@ const SERVER_ID       = 'japdeva_app';
     ReactiveFormsModule,
     TranslateModule,
     MascaraCorreoPipe,
-    IonContent, IonCard, IonCardContent, IonIcon,
+    IonContent, IonCard, IonCardContent, IonIcon, IonSpinner,
     LogoJapdevaComponent,
     DecoracionLoginComponent,
     CampoFormularioComponent,
@@ -160,8 +160,15 @@ export class InicioSesionPage implements OnInit {
   }
 
   editarCorreo(): void {
-    this.correoEditando = true;
+    this.correoEditando    = true;
+    this.biometriaDisponible = false;
     this.form.patchValue({ usuario: '' });
+
+    // Limpiar correo guardado y credenciales del keychain
+    // para que otro usuario no pueda ingresar con la huella del anterior
+    localStorage.removeItem(CLAVE_CORREO);
+    localStorage.removeItem(CLAVE_BIOMETRIA);
+    NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
   }
 
   async enviar(): Promise<void> {
