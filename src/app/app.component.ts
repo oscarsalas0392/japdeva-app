@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonMenu } from '@ionic/angular/standalone';
 import { Filesystem } from '@capacitor/filesystem';
 import { PopupAvisoComponent } from './components/popup-aviso/popup-aviso.component';
+import { MenuUsuarioExternoComponent } from './components/menu-usuario-externo/menu-usuario-externo.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet, PopupAvisoComponent],
+  styleUrls: ['app.component.scss'],
+  imports: [IonApp, IonRouterOutlet, IonMenu, PopupAvisoComponent, MenuUsuarioExternoComponent],
 })
 export class AppComponent implements OnInit {
 

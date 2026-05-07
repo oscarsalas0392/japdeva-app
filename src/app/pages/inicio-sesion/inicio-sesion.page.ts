@@ -94,17 +94,22 @@ export class InicioSesionPage implements OnInit {
 
   async autenticarConBiometria(): Promise<void> {
     this.cargandoBiometria = true;
+
+    // 1. Verificar identidad — si el usuario cancela, salir silenciosamente
     try {
-      // 1. Verificar identidad biométrica
       await NativeBiometric.verifyIdentity({
         reason: this.translate.instant('inicioSesion.biometriaRazon'),
         title:  this.translate.instant('inicioSesion.biometriaTitulo'),
       });
+    } catch {
+      this.cargandoBiometria = false;
+      return;
+    }
 
-      // 2. Recuperar credenciales del keychain
+    // 2. Recuperar credenciales y autenticar
+    try {
       const credenciales = await NativeBiometric.getCredentials({ server: SERVER_ID });
 
-      // 3. Autenticar contra el backend con las credenciales guardadas
       const respuesta = await this.authService.autenticar({
         Correo:     credenciales.username,
         Contrasena: credenciales.password,
@@ -123,7 +128,15 @@ export class InicioSesionPage implements OnInit {
       await this.router.navigate(['/inicio'], { replaceUrl: true });
 
     } catch {
-      // Usuario canceló o biometría falló — no mostrar error
+      // Las credenciales no se encontraron — limpiar biometría y pedir contraseña
+      localStorage.removeItem(CLAVE_BIOMETRIA);
+      NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
+      this.biometriaDisponible = false;
+      this.popup.mostrar({
+        tipo: 'error',
+        titulo: this.translate.instant('errores.titulo'),
+        mensaje: 'No se pudieron recuperar las credenciales. Ingrese su contraseña.',
+      });
     } finally {
       this.cargandoBiometria = false;
     }

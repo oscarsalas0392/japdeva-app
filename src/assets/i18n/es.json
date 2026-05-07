@@ -168,6 +168,10 @@
       "descripcionRequerida": "La descripción es requerida."
     }
   },
+  "buscar": {
+    "sinResultados": "Sin resultados",
+    "sinResultadosDesc": "No se encontraron reclamos con los criterios de búsqueda."
+  },
   "olvidoContrasena": {
     "titulo": "Recuperar Contraseña",
     "descripcion": "Ingrese su correo electrónico y le enviaremos una contraseña temporal.",

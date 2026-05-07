@@ -1,0 +1,61 @@
+.pagina {
+  padding: 20px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px;
+  background: var(--color-boton);
+  border-radius: 16px;
+
+  &__icono {
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 28px;
+      color: #fff;
+    }
+  }
+
+  &__titulo {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+  }
+
+  &__subtitulo {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+}
+
+.tarjeta {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+
+  &__texto {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--color-texto-input);
+    margin: 0;
+  }
+}

@@ -1,4 +1,10 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+
+  <ion-menu contentId="main-content" side="start">
+    <app-menu-usuario-externo />
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
   <app-popup-aviso />
+
 </ion-app>

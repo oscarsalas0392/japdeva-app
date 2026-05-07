@@ -1,4 +1,6 @@
-<app-header-app [titulo]="titulo" [saludo]="saludo" [atras]="atras" />
+<app-overlay-cargando [cargando]="cargando" />
+
+<app-header-app [titulo]="titulo" [saludo]="saludo" [atras]="atras" [buscar]="buscar" (terminoBusqueda)="terminoBusqueda.emit($event)" />
 
 <ion-content class="contenido" [scrollY]="scrollY">
   <ng-content />

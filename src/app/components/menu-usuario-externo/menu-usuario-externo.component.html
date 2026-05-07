@@ -1,0 +1,40 @@
+<div class="menu">
+
+  <div class="menu__header">
+    <app-logo-japdeva />
+  </div>
+
+  <nav class="menu__nav">
+
+    <button class="menu__item" (click)="navegar('/perfil')">
+      <ion-icon name="person-outline" />
+      <span>Mi Perfil</span>
+    </button>
+
+    <button class="menu__item menu__item--padre" (click)="toggleReclamos()">
+      <ion-icon name="document-text-outline" />
+      <span>Reclamos</span>
+      <ion-icon class="menu__chevron" [name]="reclamosAbierto() ? 'chevron-up-outline' : 'chevron-down-outline'" />
+    </button>
+
+    @if (reclamosAbierto()) {
+      <div class="menu__submenu">
+        <button class="menu__item menu__item--hijo" (click)="navegar('/nuevo-reclamo')">
+          <ion-icon name="add-circle-outline" />
+          <span>Nuevo Reclamo</span>
+        </button>
+        <button class="menu__item menu__item--hijo" (click)="navegar('/buscar')">
+          <ion-icon name="search-outline" />
+          <span>Buscar Reclamos</span>
+        </button>
+      </div>
+    }
+
+    <button class="menu__item" (click)="navegar('/informacion')">
+      <ion-icon name="information-circle-outline" />
+      <span>Información</span>
+    </button>
+
+  </nav>
+
+</div>

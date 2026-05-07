@@ -6,7 +6,8 @@ import { environment } from '../../../environments/environment';
 import { RespuestaModel } from '../models/respuesta.model';
 import { Mensajes } from '../constants/mensajes.constants';
 
-type QueryParams = Record<string, string | number | boolean>;
+type QueryParamValue = string | number | boolean | string[];
+type QueryParams = Record<string, QueryParamValue>;
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -168,7 +169,11 @@ export class ApiService {
     let parametrosHttp = new HttpParams();
     if (parametros) {
       Object.entries(parametros).forEach(([key, value]) => {
-        parametrosHttp = parametrosHttp.set(key, value);
+        if (Array.isArray(value)) {
+          value.forEach(v => parametrosHttp = parametrosHttp.append(key, v));
+        } else {
+          parametrosHttp = parametrosHttp.set(key, value);
+        }
       });
     }
     return parametrosHttp;

@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronForwardOutline } from 'ionicons/icons';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
-import { EstadoReclamoEnum } from '../../core/models/reclamos/estado-reclamo.enum';
+import { GeneralesService } from '../../core/services/generales.service';
 
 @Component({
   selector: 'app-item-reclamo',
@@ -16,28 +16,21 @@ export class ItemReclamoComponent {
   @Input() reclamo!: ReclamoRespuestaModel;
   @Output() seleccionar = new EventEmitter<ReclamoRespuestaModel>();
 
+  private readonly generales = inject(GeneralesService);
+
   constructor() {
     addIcons({ chevronForwardOutline });
   }
 
   get codigo(): string {
-    return `RC-${String(this.reclamo.id)}`;
+    return this.generales.codigoReclamo(this.reclamo.id, this.reclamo.fechaRegistro);
   }
 
   get fechaFormateada(): string {
-    const d = new Date(this.reclamo.fechaRegistro);
-    if (isNaN(d.getTime())) return '';
-    const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-    return `${d.getDate()} ${meses[d.getMonth()]} ${d.getFullYear()}`;
+    return this.generales.formatearFecha(this.reclamo.fechaRegistro);
   }
 
   get claseEstado(): string {
-    switch (this.reclamo.idEstadoReclamo) {
-      case EstadoReclamoEnum.Pendiente:  return 'estado--pendiente';
-      case EstadoReclamoEnum.EnProceso:  return 'estado--en-proceso';
-      case EstadoReclamoEnum.Completado: return 'estado--completado';
-      case EstadoReclamoEnum.Rechazado:  return 'estado--rechazado';
-      default:                           return 'estado--pendiente';
-    }
+    return this.generales.claseEstadoReclamo(this.reclamo.idEstadoReclamo);
   }
 }

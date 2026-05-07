@@ -1,10 +1,6 @@
 export const environment = {
   production: false,
-<<<<<<< Updated upstream
-  apiUrl: 'https://617c-186-151-100-181.ngrok-free.app',
-=======
-  apiUrl: 'https://9578-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
->>>>>>> Stashed changes
+  apiUrl: 'https://5c16-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
@@ -49,6 +45,10 @@ export const environment = {
       },
       menu: {
         obtenerPorPerfil: '/Parametros/api/Menu/ObtenerMenusPorPerfil',
+      },
+      parametro: {
+        obtenerPorNombre:  '/Parametros/api/Parametro/ObtenerParametroPorNombre',
+        obtenerPorNombres: '/Parametros/api/Parametro/ObtenerParametrosPorNombres',
       },
     },
     reclamos: {

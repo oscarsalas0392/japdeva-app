@@ -42,4 +42,16 @@ export const routes: Routes = [
     path: 'detalle-reclamo/:id',
     loadComponent: () => import('./pages/detalle-reclamo/detalle-reclamo.page').then((m) => m.DetalleReclamoPage),
   },
+  {
+    path: 'buscar',
+    loadComponent: () => import('./pages/buscar/buscar.page').then((m) => m.BuscarPage),
+  },
+  {
+    path: 'terminos-condiciones',
+    loadComponent: () => import('./pages/terminos-condiciones/terminos-condiciones.page').then((m) => m.TerminosCondicionesPage),
+  },
+  {
+    path: 'informacion',
+    loadComponent: () => import('./pages/informacion/informacion.page').then((m) => m.InformacionPage),
+  },
 ];

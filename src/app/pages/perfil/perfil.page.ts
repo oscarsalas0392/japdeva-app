@@ -12,6 +12,7 @@ import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.co
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { GeneralesService } from '../../core/services/generales.service';
 
 @Component({
   selector: 'app-perfil',
@@ -22,7 +23,8 @@ import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth
 })
 export class PerfilPage {
   private readonly estadoService = inject(EstadoAppService);
-  private readonly router = inject(Router);
+  private readonly router        = inject(Router);
+  readonly generales             = inject(GeneralesService);
 
   readonly usuario = signal<AutenticarUsuarioRespuestaModel | null>(null);
   readonly iniciales = signal('');
@@ -31,21 +33,16 @@ export class PerfilPage {
     addIcons({ personOutline, mailOutline, cardOutline, createOutline, callOutline, calendarOutline });
   }
 
-  formatearFecha(iso: string | null | undefined): string {
-    if (!iso) return '';
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return iso;
-    const dia = String(d.getDate()).padStart(2, '0');
-    const mes = String(d.getMonth() + 1).padStart(2, '0');
-    return `${dia}/${mes}/${d.getFullYear()}`;
-  }
-
   irACambiarContrasena(): void {
     this.router.navigate(['/cambiar-contrasena']);
   }
 
   irAEditarPerfil(): void {
     this.router.navigate(['/editar-perfil']);
+  }
+
+  irATerminos(): void {
+    this.router.navigate(['/terminos-condiciones']);
   }
 
   async ionViewWillEnter(): Promise<void> {

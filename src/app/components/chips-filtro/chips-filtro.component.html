@@ -1,0 +1,14 @@
+<div class="filtros-wrapper">
+  <ion-icon name="funnel-outline" class="filtros__icono" />
+  <div class="filtros">
+    @for (filtro of filtros; track filtro.id) {
+      <button
+        class="filtro"
+        [class.filtro--activo]="activo === filtro.id"
+        (click)="filtroSeleccionado.emit(filtro.id)"
+      >
+        {{ filtro.etiqueta }}
+      </button>
+    }
+  </div>
+</div>
