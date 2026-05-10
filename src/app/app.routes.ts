@@ -54,4 +54,16 @@ export const routes: Routes = [
     path: 'informacion',
     loadComponent: () => import('./pages/informacion/informacion.page').then((m) => m.InformacionPage),
   },
+  {
+    path: 'buscar-usuario-cedula',
+    loadComponent: () => import('./pages/buscar-usuario-cedula/buscar-usuario-cedula.page').then((m) => m.BuscarUsuarioCedulaPage),
+  },
+  {
+    path: 'gestion-usuarios',
+    loadComponent: () => import('./pages/gestion-usuarios/gestion-usuarios.page').then((m) => m.GestionUsuariosPage),
+  },
+  {
+    path: 'inicio-usuario-interno',
+    loadComponent: () => import('./pages/inicio-usuario-interno/inicio-usuario-interno.page').then((m) => m.InicioUsuarioInternoPage),
+  },
 ];

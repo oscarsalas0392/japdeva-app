@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://5c16-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
+  apiUrl: 'https://34ae-2803-f340-1205-1602-445-5467-3fce-6ac0.ngrok-free.app',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
@@ -11,6 +11,7 @@ export const environment = {
       usuario: {
         obtenerTodos: '/Usuarios/api/Usuario/ObtenerTodosLosUsuarios',
         obtenerPorId: '/Usuarios/api/Usuario/ObtenerUsuarioPorId',
+        obtenerPorIdentificacion: '/Usuarios/api/Usuario/ObtenerUsuarioPorIdentificacion',
         agregar: '/Usuarios/api/Usuario/AgregarUsuario',
         actualizar: '/Usuarios/api/Usuario/ActualizarUsuario',
         actualizarContrasena: '/Usuarios/api/Usuario/ActualizarContrasena',
@@ -29,13 +30,13 @@ export const environment = {
         obtenerPorId: '/Usuarios/api/Departamento/ObtenerDepartamentoPorId',
       },
       usuarioRol: {
-        obtenerPorUsuario: '/Usuarios/api/UsuarioRol/ObtenerRolesPorUsuario',
+        obtenerPorUsuario: '/Usuarios/api/UsuarioRol/ObtenerRolPorUsuario',
         actualizar: '/Usuarios/api/UsuarioRol/ActualizarUsuarioRol',
         eliminar: '/Usuarios/api/UsuarioRol/EliminarUsuarioRol',
       },
       departamentoUsuario: {
         agregar: '/Usuarios/api/DepartamentoUsuario/AgregarDepartamentoUsuario',
-        obtenerPorUsuario: '/Usuarios/api/DepartamentoUsuario/ObtenerDepartamentosPorUsuario',
+        obtenerPorUsuario: '/Usuarios/api/DepartamentoUsuario/ObtenerDepartamentoPorUsuario',
         eliminar: '/Usuarios/api/DepartamentoUsuario/EliminarDepartamentoUsuario',
       },
     },

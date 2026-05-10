@@ -33,6 +33,16 @@
         etiqueta="{{ 'perfil.fechaNacimiento' | translate }}"
         valor="{{ generales.formatearFecha(usuario()!.fechaNacimiento, 'corto') }}" />
 
+      @if (esInterno()) {
+        <app-fila icono="shield-outline"
+          etiqueta="{{ 'perfil.rol' | translate }}"
+          [valor]="descRol()" />
+
+        <app-fila icono="briefcase-outline"
+          etiqueta="{{ 'perfil.departamento' | translate }}"
+          [valor]="descDepto()" />
+      }
+
     </app-tarjeta>
 
     <app-grupo-campo [top]="true" [bottom]="false">

@@ -43,6 +43,10 @@ export class UsuariosService {
     return this.api.get(this.epUsuario.obtenerPorId, { id });
   }
 
+  obtenerPorIdentificacion(identificacion: string): Promise<RespuestaModel<UsuarioRespuestaModel>> {
+    return this.api.get(this.epUsuario.obtenerPorIdentificacion, { identificacion });
+  }
+
   /**
    * Registra un nuevo usuario en el sistema.
    * @param solicitud Datos del nuevo usuario.
@@ -80,7 +84,7 @@ export class UsuariosService {
   /**
    * Obtiene todos los roles disponibles.
    */
-  obtenerRoles(): Promise<RespuestaModel<RespuestaListaModel<RolRespuestaModel>>> {
+  obtenerRoles(): Promise<RespuestaModel<RolRespuestaModel[]>> {
     return this.api.get(this.epRol.obtenerTodos);
   }
 
@@ -97,7 +101,7 @@ export class UsuariosService {
   /**
    * Obtiene todos los tipos de cédula disponibles.
    */
-  obtenerTiposCedula(): Promise<RespuestaModel<RespuestaListaModel<TipoCedulaRespuestaModel>>> {
+  obtenerTiposCedula(): Promise<RespuestaModel<TipoCedulaRespuestaModel[]>> {
     return this.api.get(this.epTipoCedula.obtenerTodos);
   }
 
@@ -114,7 +118,7 @@ export class UsuariosService {
   /**
    * Obtiene todos los departamentos disponibles.
    */
-  obtenerDepartamentos(): Promise<RespuestaModel<RespuestaListaModel<DepartamentoRespuestaModel>>> {
+  obtenerDepartamentos(): Promise<RespuestaModel<DepartamentoRespuestaModel[]>> {
     return this.api.get(this.epDepartamento.obtenerTodos);
   }
 
@@ -132,8 +136,8 @@ export class UsuariosService {
    * Obtiene los roles asignados a un usuario.
    * @param idUsuario Identificador del usuario.
    */
-  obtenerRolesPorUsuario(idUsuario: number): Promise<RespuestaModel<RespuestaListaModel<UsuarioRolRespuestaModel>>> {
-    return this.api.get(this.epUsuarioRol.obtenerPorUsuario, { idUsuario });
+  obtenerRolPorUsuario(idUsuario: number): Promise<RespuestaModel<UsuarioRolRespuestaModel>> {
+    return this.api.get(this.epUsuarioRol.obtenerPorUsuario, { 'id-usuario': idUsuario });
   }
 
   /**
@@ -174,8 +178,8 @@ export class UsuariosService {
    * Obtiene los departamentos asignados a un usuario.
    * @param idUsuario Identificador del usuario.
    */
-  obtenerDepartamentosPorUsuario(idUsuario: number): Promise<RespuestaModel<RespuestaListaModel<DepartamentoUsuarioRespuestaModel>>> {
-    return this.api.get(this.epDepartamentoUsuario.obtenerPorUsuario, { idUsuario });
+  obtenerDepartamentoPorUsuario(idUsuario: number): Promise<RespuestaModel<DepartamentoUsuarioRespuestaModel>> {
+    return this.api.get(this.epDepartamentoUsuario.obtenerPorUsuario, { 'id-usuario': idUsuario });
   }
 
   /**

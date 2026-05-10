@@ -6,7 +6,6 @@ export interface DetalleReclamoRespuestaModel {
   idNivelProceso: number;
   idDepartamento: number;
   nombreDepartamento: string;
-  idEstadoDetalleReclamo: number;
   descripcionEstadoDetalleReclamo: string;
   descripcion: string;
   fechaRegistro: string;

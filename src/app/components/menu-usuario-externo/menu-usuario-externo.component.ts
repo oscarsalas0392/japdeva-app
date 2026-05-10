@@ -42,8 +42,9 @@ export class MenuUsuarioExternoComponent {
     this.reclamosAbierto.update(v => !v);
   }
 
-  async navegar(ruta: string): Promise<void> {
-    await this.menuCtrl.close();
-    await this.router.navigate([ruta]);
+  navegar(ruta: string): void {
+    this.menuCtrl.close().then(() => {
+      setTimeout(() => this.router.navigate([ruta]), 150);
+    });
   }
 }

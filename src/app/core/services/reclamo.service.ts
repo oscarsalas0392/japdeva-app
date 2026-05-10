@@ -37,8 +37,8 @@ export class ReclamoService {
    * Obtiene los reclamos asignados a un departamento.
    * @param idDepartamento Identificador del departamento.
    */
-  obtenerPorDepartamento(idDepartamento: number): Promise<RespuestaModel<RespuestaListaModel<ReclamoRespuestaModel>>> {
-    return this.api.get(this.ep.obtenerPorDepartamento, { idDepartamento });
+  obtenerPorDepartamento(idDepartamento: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<ReclamoRespuestaModel>>> {
+    return this.api.get(this.ep.obtenerPorDepartamento, { 'id-departamento': idDepartamento, pagina });
   }
 
   /**
