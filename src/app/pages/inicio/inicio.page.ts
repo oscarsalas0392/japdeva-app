@@ -1,12 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { IonSpinner } from '@ionic/angular/standalone';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { SeccionHeaderComponent } from '../../components/seccion-header/seccion-header.component';
-import { EstadoVacioComponent } from '../../components/estado-vacio/estado-vacio.component';
-import { ItemReclamoComponent } from '../../components/item-reclamo/item-reclamo.component';
-import { ItemSeleccionableComponent } from '../../components/item-seleccionable/item-seleccionable.component';
+import { ListaReclamosComponent } from '../../components/lista-reclamos/lista-reclamos.component';
+import { BotonNuevoReclamoComponent } from '../../components/boton-nuevo-reclamo/boton-nuevo-reclamo.component';
 import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
@@ -21,12 +19,10 @@ import { ReclamoService } from '../../core/services/reclamo.service';
   standalone: true,
   imports: [
     TranslateModule,
-    IonSpinner,
     PaginaComponent,
     SeccionHeaderComponent,
-    EstadoVacioComponent,
-    ItemReclamoComponent,
-    ItemSeleccionableComponent,
+    ListaReclamosComponent,
+    BotonNuevoReclamoComponent,
   ],
 })
 export class InicioPage implements OnInit {
@@ -41,8 +37,7 @@ export class InicioPage implements OnInit {
   private usuarioId = 0;
 
   readonly opcionesReclamo: OpcionAccionModel[] = [
-    { id: 'ver',   etiqueta: 'inicio.acciones.ver' },
-    { id: 'nuevo', etiqueta: 'inicio.acciones.nuevo', icono: 'add-circle-outline' },
+    { id: 'ver', etiqueta: 'inicio.acciones.ver' }
   ];
 
   async ngOnInit(): Promise<void> {
@@ -54,7 +49,6 @@ export class InicioPage implements OnInit {
     await this.cargarReclamos();
   }
 
-  // Se ejecuta cada vez que el usuario regresa a esta pantalla
   async ionViewWillEnter(): Promise<void> {
     if (this.usuarioId) {
       await this.cargarReclamos();

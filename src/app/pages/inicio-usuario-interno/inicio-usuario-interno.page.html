@@ -1,0 +1,14 @@
+<app-pagina [saludo]="saludo()" titulo="{{ 'inicioUsuarioInterno.titulo' | translate }}" [cargando]="cargando()">
+
+  <app-seccion-header titulo="inicioUsuarioInterno.casosPendientes" />
+
+  <app-lista-reclamos
+    [reclamos]="reclamos()"
+    [opciones]="opcionesReclamo"
+    [cargando]="cargando()"
+    tituloVacio="inicioUsuarioInterno.sinCasos"
+    subtituloVacio="inicioUsuarioInterno.sinCasosDesc"
+    (accion)="manejarAccion($event.accionId, $event.reclamo)"
+  />
+
+</app-pagina>

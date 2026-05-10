@@ -1,0 +1,55 @@
+<app-pagina titulo="{{ 'gestionUsuarios.titulo' | translate }}" [atras]="true">
+
+    @if (usuario()) {
+
+      <app-tarjeta>
+        <app-fila icono="person-outline"
+          etiqueta="{{ 'gestionUsuarios.nombre' | translate }}"
+          valor="{{ usuario()!.nombre }} {{ usuario()!.apellidos }}" />
+
+        <app-fila icono="card-outline"
+          etiqueta="{{ 'gestionUsuarios.cedula' | translate }}"
+          [valor]="usuario()!.identificacion" />
+
+        <app-fila icono="mail-outline"
+          etiqueta="{{ 'gestionUsuarios.correo' | translate }}"
+          [valor]="usuario()!.correo" />
+
+        <app-fila icono="shield-outline"
+          etiqueta="{{ 'gestionUsuarios.rolActual' | translate }}"
+          [valor]="rolActual" />
+
+        <app-fila icono="briefcase-outline"
+          etiqueta="{{ 'gestionUsuarios.deptoActual' | translate }}"
+          [valor]="deptoActual" />
+      </app-tarjeta>
+
+      <form [formGroup]="formAsignacion" (ngSubmit)="guardar()">
+        <app-campo-select
+          label="gestionUsuarios.rol"
+          placeholder="gestionUsuarios.seleccioneRol"
+          formControlName="idRol"
+          [control]="formAsignacion.get('idRol')!"
+          mensajeError="gestionUsuarios.rolRequerido"
+          [enviado]="enviado"
+          [opciones]="roles()"
+        />
+        <app-campo-select
+          label="gestionUsuarios.departamento"
+          placeholder="gestionUsuarios.seleccioneDepartamento"
+          formControlName="idDepartamento"
+          [control]="formAsignacion.get('idDepartamento')!"
+          mensajeError="gestionUsuarios.departamentoRequerido"
+          [enviado]="enviado"
+          [opciones]="departamentos()"
+        />
+        <app-boton-cargando
+          etiqueta="gestionUsuarios.guardar"
+          tipo="submit"
+          [cargando]="guardando()"
+        />
+      </form>
+
+    }
+
+</app-pagina>

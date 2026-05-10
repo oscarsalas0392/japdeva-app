@@ -1,29 +1,18 @@
-<app-pagina [saludo]="saludo()" titulo="Mis Reclamos">
+<app-pagina [saludo]="saludo()" titulo="Mis Reclamos" [cargando]="cargando()">
 
   <app-seccion-header titulo="inicio.casosRecientes" />
 
-  @if (cargando()) {
-    <div class="cargando">
-      <ion-spinner name="crescent" />
-    </div>
-  } @else if (reclamos().length === 0) {
-    <app-estado-vacio
-      titulo="inicio.sinReclamos"
-      subtitulo="inicio.sinReclamosDesc"
-      etiquetaBoton="inicio.crearReclamo"
-      (accion)="irANuevoReclamo()"
-    />
-  } @else {
-    <div class="lista">
-      @for (reclamo of reclamos(); track reclamo.id) {
-        <app-item-seleccionable
-          [opciones]="opcionesReclamo"
-          (accion)="manejarAccion($event, reclamo)"
-        >
-          <app-item-reclamo [reclamo]="reclamo" />
-        </app-item-seleccionable>
-      }
-    </div>
-  }
+  <app-boton-nuevo-reclamo (accion)="irANuevoReclamo()" />
+
+  <app-lista-reclamos
+    [reclamos]="reclamos()"
+    [opciones]="opcionesReclamo"
+    [cargando]="cargando()"
+    tituloVacio="inicio.sinReclamos"
+    subtituloVacio="inicio.sinReclamosDesc"
+    etiquetaBotonVacio="inicio.crearReclamo"
+    (accion)="manejarAccion($event.accionId, $event.reclamo)"
+    (accionVacio)="irANuevoReclamo()"
+  />
 
 </app-pagina>

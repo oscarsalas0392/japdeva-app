@@ -1,0 +1,19 @@
+<app-pagina titulo="Información" [atras]="true" [cargando]="cargando()">
+
+
+    <app-grid-columnas>
+      <app-tarjeta-contacto icono="call-outline" etiqueta="Teléfono" [valor]="telefono()" />
+      <app-tarjeta-contacto icono="mail-outline" etiqueta="Email"    [valor]="email()" />
+    </app-grid-columnas>
+
+    
+  <app-grupo-campo [top]="true">
+    <app-tarjeta-oficina [nombre]="nombreOficina()" [direccion]="direccion()" [horario]="horario()" />
+  </app-grupo-campo>
+
+  <app-grupo-campo [top]="true">
+    <app-lista-faqs [faqs]="faqs()" />
+  </app-grupo-campo>
+
+
+</app-pagina>

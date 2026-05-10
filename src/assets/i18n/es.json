@@ -47,6 +47,8 @@
     "identificacion": "Identificación",
     "telefono": "Teléfono",
     "fechaNacimiento": "Fecha de nacimiento",
+    "rol": "Rol",
+    "departamento": "Departamento",
     "cambiarContrasena": "Cambiar contraseña",
     "terminosCondiciones": "Términos y condiciones"
   },
@@ -69,6 +71,12 @@
       "minimaNueva": "Debe tener mínimo 8 caracteres, una mayúscula y un número.",
       "noCoinciden": "Las contraseñas no coinciden."
     }
+  },
+  "inicioUsuarioInterno": {
+    "titulo": "Reclamos del Departamento",
+    "casosPendientes": "Casos Pendientes",
+    "sinCasos": "Sin casos asignados",
+    "sinCasosDesc": "No hay reclamos pendientes en el departamento."
   },
   "inicio": {
     "casosRecientes": "Casos Recientes",
@@ -167,6 +175,40 @@
       "tituloRequerido": "El título es requerido.",
       "descripcionRequerida": "La descripción es requerida."
     }
+  },
+  "buscar": {
+    "sinResultados": "Sin resultados",
+    "sinResultadosDesc": "No se encontraron reclamos con los criterios de búsqueda."
+  },
+  "gestionUsuarios": {
+    "titulo": "Gestión Usuarios",
+    "nombre": "Nombre",
+    "cedula": "Cédula",
+    "correo": "Correo",
+    "rolActual": "Rol actual",
+    "deptoActual": "Departamento actual",
+    "rol": "Rol",
+    "departamento": "Departamento",
+    "seleccioneRol": "Seleccione un rol",
+    "rolRequerido": "Seleccione un rol.",
+    "seleccioneDepartamento": "Seleccione un departamento",
+    "departamentoRequerido": "Seleccione un departamento.",
+    "guardar": "Guardar cambios",
+    "exito": "Rol y departamento actualizados correctamente."
+  },
+  "buscarUsuarioCedula": {
+    "titulo": "Buscar Usuario",
+    "tipoCedula": "Tipo de cédula",
+    "seleccioneTipo": "Seleccione un tipo",
+    "tipoCedulaRequerido": "Seleccione el tipo de cédula.",
+    "cedula": "Número de cédula",
+    "cedulaPlaceholder": "Ingrese el número de cédula",
+    "cedulaRequerida": "Ingrese el número de cédula.",
+    "buscar": "Buscar",
+    "formatoInvalido": "Formato inválido",
+    "formatoInvalidoDesc": "Formato inválido para {{ tipo }}.",
+    "sinResultados": "Sin resultados",
+    "sinResultadosDesc": "No se encontró un usuario con esa cédula."
   },
   "olvidoContrasena": {
     "titulo": "Recuperar Contraseña",

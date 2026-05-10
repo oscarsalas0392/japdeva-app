@@ -13,10 +13,24 @@
     <span class="header__titulo">{{ titulo }}</span>
   </div>
 
-  @if (!atras) {
+  @if (!atras && !buscar) {
     <button class="header__cerrar-sesion" (click)="cerrarSesion()">
       <ion-icon name="log-out-outline" />
     </button>
   }
 
 </div>
+
+@if (buscar) {
+  <div class="header__busqueda">
+    <div class="header__busqueda-campo">
+      <ion-icon name="search-outline" class="header__busqueda-icono" />
+      <input
+        class="header__busqueda-input"
+        type="search"
+        placeholder="Buscar por número o descripción..."
+        (input)="terminoBusqueda.emit($any($event.target).value)"
+      />
+    </div>
+  </div>
+}

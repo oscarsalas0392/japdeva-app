@@ -1,0 +1,17 @@
+<div class="seccion-card">
+  <div class="seccion-card__header">
+    <ion-icon name="help-circle-outline" />
+    <h2>Preguntas frecuentes</h2>
+  </div>
+  @for (faq of items(); track $index) {
+    <div class="faq">
+      <button class="faq__pregunta" (click)="toggle($index)">
+        <span>{{ faq.pregunta }}</span>
+        <ion-icon [name]="faq.abierto ? 'chevron-up-outline' : 'chevron-down-outline'" />
+      </button>
+      @if (faq.abierto) {
+        <p class="faq__respuesta">{{ faq.respuesta }}</p>
+      }
+    </div>
+  }
+</div>

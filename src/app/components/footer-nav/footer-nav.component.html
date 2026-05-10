@@ -1,6 +1,6 @@
 <div class="footer-nav">
 
-  <a routerLink="/inicio" routerLinkActive="activo" class="nav-item">
+  <a [routerLink]="rutaInicio()" routerLinkActive="activo" class="nav-item">
     <ion-icon name="home-outline" />
     <span>Inicio</span>
   </a>
@@ -10,9 +10,9 @@
     <span>Perfil</span>
   </a>
 
-  <a routerLink="/nuevo-reclamo" class="nav-item nav-item--fab">
-    <ion-icon name="add-outline" />
-  </a>
+  <button class="nav-item nav-item--fab" (click)="abrirMenu()">
+    <ion-icon name="menu-outline" />
+  </button>
 
   <a routerLink="/informacion" routerLinkActive="activo" class="nav-item">
     <ion-icon name="document-text-outline" />

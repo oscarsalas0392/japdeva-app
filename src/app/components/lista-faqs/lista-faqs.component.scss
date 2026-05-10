@@ -1,0 +1,68 @@
+.seccion-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  padding: 18px 16px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+
+    ion-icon {
+      font-size: 22px;
+      color: var(--color-boton);
+      flex-shrink: 0;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-texto-titulo);
+      margin: 0;
+    }
+  }
+}
+
+.faq {
+  border-top: 1px solid var(--color-borde-input);
+
+  &:first-of-type {
+    border-top: none;
+  }
+
+  &__pregunta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 14px 0;
+    cursor: pointer;
+    text-align: left;
+    gap: 12px;
+
+    span {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-texto-titulo);
+      flex: 1;
+    }
+
+    ion-icon {
+      font-size: 16px;
+      color: var(--color-boton);
+      flex-shrink: 0;
+    }
+  }
+
+  &__respuesta {
+    font-size: 13px;
+    color: var(--color-boton);
+    line-height: 1.6;
+    margin: 0 0 14px;
+    padding-left: 2px;
+  }
+}

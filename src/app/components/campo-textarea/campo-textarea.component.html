@@ -3,9 +3,6 @@
     @if (label) {
       <span class="campo-label">{{ label | translate }}</span>
     }
-    @if (requerido) {
-      <span class="campo-requerido">{{ 'campos.requerido' | translate }}</span>
-    }
   </div>
 }
 <div
@@ -26,8 +23,6 @@
 <div class="campo-footer">
   @if (invalido) {
     <ion-text color="danger" class="error-texto">{{ mensajeError | translate }}</ion-text>
-  } @else if (hint) {
-    <span class="campo-hint">{{ hint | translate }}</span>
   } @else {
     <span></span>
   }

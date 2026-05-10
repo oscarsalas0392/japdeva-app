@@ -1,0 +1,21 @@
+@if (reclamos.length > 0) {
+  @if (mostrarConteo) {
+    <p class="resultados">
+      {{ reclamos.length }} resultado{{ reclamos.length !== 1 ? 's' : '' }} encontrado{{ reclamos.length !== 1 ? 's' : '' }}
+    </p>
+  }
+  <div class="lista">
+    @for (reclamo of reclamos; track reclamo.id) {
+      <app-item-seleccionable [opciones]="opciones" (accion)="accion.emit({ accionId: $event, reclamo })">
+        <app-item-reclamo [reclamo]="reclamo" />
+      </app-item-seleccionable>
+    }
+  </div>
+} @else if (!cargando) {
+  <app-estado-vacio
+    [titulo]="tituloVacio"
+    [subtitulo]="subtituloVacio"
+    [etiquetaBoton]="etiquetaBotonVacio"
+    (accion)="accionVacio.emit()"
+  />
+}

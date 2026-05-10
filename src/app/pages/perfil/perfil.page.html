@@ -31,14 +31,24 @@
 
       <app-fila icono="calendar-outline"
         etiqueta="{{ 'perfil.fechaNacimiento' | translate }}"
-        valor="{{ formatearFecha(usuario()!.fechaNacimiento) }}" />
+        valor="{{ generales.formatearFecha(usuario()!.fechaNacimiento, 'corto') }}" />
+
+      @if (esInterno()) {
+        <app-fila icono="shield-outline"
+          etiqueta="{{ 'perfil.rol' | translate }}"
+          [valor]="descRol()" />
+
+        <app-fila icono="briefcase-outline"
+          etiqueta="{{ 'perfil.departamento' | translate }}"
+          [valor]="descDepto()" />
+      }
 
     </app-tarjeta>
 
     <app-grupo-campo [top]="true" [bottom]="false">
       <app-tarjeta [padding]="false">
       <app-fila tipo="menu" [borde]="true" etiqueta="{{ 'perfil.cambiarContrasena' | translate }}" (filaClick)="irACambiarContrasena()" />
-      <app-fila tipo="menu" etiqueta="{{ 'perfil.terminosCondiciones' | translate }}" />
+      <app-fila tipo="menu" etiqueta="{{ 'perfil.terminosCondiciones' | translate }}" (filaClick)="irATerminos()" />
     </app-tarjeta>
     </app-grupo-campo>
   }

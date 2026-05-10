@@ -1,0 +1,13 @@
+<app-pagina titulo="Buscar Reclamos" [atras]="true" [buscar]="true" [cargando]="cargando()" (terminoBusqueda)="onBusqueda($event)">
+
+  <app-chips-filtro [filtros]="filtros" [activo]="estadoActivo()" (filtroSeleccionado)="seleccionarFiltro($event)" />
+
+  <app-lista-reclamos
+    [reclamos]="reclamosFiltrados()"
+    [opciones]="opcionesReclamo"
+    [cargando]="cargando()"
+    [mostrarConteo]="true"
+    (accion)="manejarAccion($event.accionId, $event.reclamo)"
+  />
+
+</app-pagina>

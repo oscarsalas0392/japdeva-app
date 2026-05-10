@@ -1,4 +1,4 @@
-<app-pagina titulo="{{ 'detalleReclamo.titulo' | translate }}" [atras]="true">
+<app-pagina titulo="{{ 'detalleReclamo.titulo' | translate }}" [atras]="true" [cargando]="cargando()">
   @if (reclamo()) {
     <div class="pagina">
 
@@ -16,33 +16,15 @@
 
       <app-lista-documentos [documentos]="documentos()" />
 
-      <!-- Timeline seguimiento -->
+      <!-- Estado actual -->
       <section class="seccion">
         <h2 class="seccion__titulo">{{ 'detalleReclamo.seguimiento' | translate }}</h2>
-        @if (cargando()) {
-          <div class="cargando"><ion-spinner name="crescent" /></div>
-        } @else if (historial().length === 0) {
-          <p class="sin-datos">{{ 'detalleReclamo.sinHistorial' | translate }}</p>
-        } @else {
-          <div class="timeline">
-            @for (paso of historial(); track paso.id; let i = $index; let ultimo = $last) {
-              <div class="paso">
-                <div class="paso__izq">
-                  <div class="paso__punto" [class]="clasePunto(i)"></div>
-                  @if (!ultimo) {
-                    <div class="paso__linea"></div>
-                  }
-                </div>
-                <div class="paso__contenido">
-                  <span class="paso__titulo">{{ paso.descripcionEstadoDetalleReclamo }}</span>
-                  @if (paso.fechaRegistro) {
-                    <span class="paso__fecha">{{ formatearFecha(paso.fechaRegistro) }}</span>
-                  }
-                </div>
-              </div>
-            }
-          </div>
-        }
+        <div class="estado-actual">
+          <span class="estado-actual__badge" [class]="claseEstado">{{ reclamo()!.descripcionEstadoReclamo }}</span>
+          @if (estadoActual?.fechaRegistro) {
+            <span class="estado-actual__fecha">{{ generales.formatearFecha(estadoActual!.fechaRegistro) }}</span>
+          }
+        </div>
       </section>
 
     </div>

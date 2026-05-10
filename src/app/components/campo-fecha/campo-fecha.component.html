@@ -7,7 +7,6 @@
   (click)="abrir()"
 >
   <div class="campo-interior">
-    <ion-icon name="calendar-outline" class="campo-icono" />
     <span class="campo-valor" [class.campo-placeholder]="!valorFormateado">
       {{ valorFormateado || (placeholder | translate) }}
     </span>

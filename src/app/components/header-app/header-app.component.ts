@@ -1,9 +1,9 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logOutOutline, arrowBackOutline } from 'ionicons/icons';
+import { logOutOutline, arrowBackOutline, searchOutline } from 'ionicons/icons';
 import { TranslateService } from '@ngx-translate/core';
 import { PopupAvisoService } from '../popup-aviso/popup-aviso.service';
 import { EstadoAppService } from '../../core/state/app.service';
@@ -20,6 +20,8 @@ export class HeaderAppComponent {
   @Input() saludo = '';
   @Input() titulo = '';
   @Input() atras = false;
+  @Input() buscar = false;
+  @Output() terminoBusqueda = new EventEmitter<string>();
 
   private readonly popup = inject(PopupAvisoService);
   private readonly translate = inject(TranslateService);
@@ -29,7 +31,7 @@ export class HeaderAppComponent {
   private readonly location = inject(Location);
 
   constructor() {
-    addIcons({ logOutOutline, arrowBackOutline });
+    addIcons({ logOutOutline, arrowBackOutline, searchOutline });
   }
 
   navegarAtras(): void {

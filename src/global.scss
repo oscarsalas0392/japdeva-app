@@ -42,7 +42,7 @@
   --button-color-destructive: var(--ion-color-danger);
 
   .action-sheet-group {
-    border-radius: 16px 16px 0 0;
+   
   }
 
   .action-sheet-button {
@@ -56,5 +56,10 @@
 
   .action-sheet-destructive .action-sheet-icon {
     color: var(--ion-color-danger);
+  }
+
+  .action-sheet-group-cancel .action-sheet-button {
+    border: none !important;
+    box-shadow: none !important;
   }
 }

@@ -15,12 +15,14 @@ import { BotonCargandoComponent } from '../../components/boton-cargando/boton-ca
 import { CheckComponent } from '../../components/check/check.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
+import { UsuariosService } from '../../core/services/usuarios.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { MascaraCorreoPipe } from '../../core/pipes/mascara-correo.pipe';
 
 const CLAVE_CORREO    = 'correo_recordado';
 const CLAVE_BIOMETRIA = 'biometria_habilitada';
+const ROLES_INTERNOS  = [1, 2, 3];
 const SERVER_ID       = 'japdeva_app';
 
 @Component({
@@ -43,12 +45,13 @@ const SERVER_ID       = 'japdeva_app';
   ],
 })
 export class InicioSesionPage implements OnInit {
-  private readonly authService   = inject(AuthService);
-  private readonly estadoService = inject(EstadoAppService);
-  private readonly router        = inject(Router);
-  private readonly fb            = inject(FormBuilder);
-  private readonly popup         = inject(PopupAvisoService);
-  private readonly translate     = inject(TranslateService);
+  private readonly authService      = inject(AuthService);
+  private readonly usuariosService  = inject(UsuariosService);
+  private readonly estadoService    = inject(EstadoAppService);
+  private readonly router           = inject(Router);
+  private readonly fb               = inject(FormBuilder);
+  private readonly popup            = inject(PopupAvisoService);
+  private readonly translate        = inject(TranslateService);
 
   readonly form = this.fb.group({
     usuario:    ['', [Validators.required, Validators.email]],
@@ -94,17 +97,22 @@ export class InicioSesionPage implements OnInit {
 
   async autenticarConBiometria(): Promise<void> {
     this.cargandoBiometria = true;
+
+    // 1. Verificar identidad — si el usuario cancela, salir silenciosamente
     try {
-      // 1. Verificar identidad biométrica
       await NativeBiometric.verifyIdentity({
         reason: this.translate.instant('inicioSesion.biometriaRazon'),
         title:  this.translate.instant('inicioSesion.biometriaTitulo'),
       });
+    } catch {
+      this.cargandoBiometria = false;
+      return;
+    }
 
-      // 2. Recuperar credenciales del keychain
+    // 2. Recuperar credenciales y autenticar
+    try {
       const credenciales = await NativeBiometric.getCredentials({ server: SERVER_ID });
 
-      // 3. Autenticar contra el backend con las credenciales guardadas
       const respuesta = await this.authService.autenticar({
         Correo:     credenciales.username,
         Contrasena: credenciales.password,
@@ -120,10 +128,19 @@ export class InicioSesionPage implements OnInit {
       }
 
       await this.estadoService.guardar(ClavesEstado.usuario, respuesta.Datos);
-      await this.router.navigate(['/inicio'], { replaceUrl: true });
+      await this.guardarRol(respuesta.Datos!.id);
+      await this.navegarSegunRol();
 
     } catch {
-      // Usuario canceló o biometría falló — no mostrar error
+      // Las credenciales no se encontraron — limpiar biometría y pedir contraseña
+      localStorage.removeItem(CLAVE_BIOMETRIA);
+      NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
+      this.biometriaDisponible = false;
+      this.popup.mostrar({
+        tipo: 'error',
+        titulo: this.translate.instant('errores.titulo'),
+        mensaje: 'No se pudieron recuperar las credenciales. Ingrese su contraseña.',
+      });
     } finally {
       this.cargandoBiometria = false;
     }
@@ -212,11 +229,28 @@ export class InicioSesionPage implements OnInit {
     }
 
     await this.estadoService.guardar(ClavesEstado.usuario, respuesta.Datos);
+    await this.guardarRol(respuesta.Datos!.id);
 
     if (this.recordar) {
       await this.ofrecerBiometria(correo, contrasena);
     }
 
-    await this.router.navigate(['/inicio'], { replaceUrl: true });
+    await this.navegarSegunRol();
+  }
+
+  private async navegarSegunRol(): Promise<void> {
+    const idRol = await this.estadoService.obtener<number>(ClavesEstado.idRol);
+    const ruta = ROLES_INTERNOS.includes(idRol ?? 0) ? '/inicio-usuario-interno' : '/inicio';
+    await this.router.navigate([ruta], { replaceUrl: true });
+  }
+
+  private async guardarRol(idUsuario: number): Promise<void> {
+    try {
+      const r = await this.usuariosService.obtenerRolPorUsuario(idUsuario);
+      const idRol = r.Exito && r.Datos ? r.Datos.idRol : null;
+      await this.estadoService.guardar(ClavesEstado.idRol, idRol);
+    } catch {
+      // Si falla, no bloquear el login
+    }
   }
 }
