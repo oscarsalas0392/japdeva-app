@@ -1,10 +1,6 @@
 export const environment = {
   production: false,
-<<<<<<< Updated upstream
   apiUrl: 'https://localhost:7069',
-=======
-  apiUrl: 'https://9578-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
->>>>>>> Stashed changes
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
