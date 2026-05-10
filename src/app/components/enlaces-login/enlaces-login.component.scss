@@ -1,10 +1,12 @@
 .enlaces {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .enlace {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--color-texto-titulo);
   text-decoration: none;
 
