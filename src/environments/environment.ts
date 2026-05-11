@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://34ae-2803-f340-1205-1602-445-5467-3fce-6ac0.ngrok-free.app',
+  apiUrl: 'https://pluck-morale-grumbling.ngrok-free.dev',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
