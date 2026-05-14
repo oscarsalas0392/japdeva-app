@@ -74,12 +74,20 @@ export class RegistroPage implements OnInit {
   cargando = false;
   enviado = false;
 
+  private readonly opcionesPredeterminadas: OpcionSelectModel[] = [
+    { valor: 1, etiqueta: 'Cédula Nacional'},
+    { valor: 2, etiqueta: 'Pasaporte'},
+    { valor: 3, etiqueta: 'DIMEX'}
+  ];
+
 async ngOnInit(): Promise<void> {
     const respuesta = await this.usuariosService.obtenerTiposCedula();
     if (respuesta.Exito && Array.isArray(respuesta.Datos)) {
       const activos = respuesta.Datos.filter(t => t.activo);
       this.tiposCedula.set(activos);
       this.opcionesTipoCedula.set(activos.map(t => ({ valor: t.id, etiqueta: t.tipo })));
+    } else {
+      this.opcionesTipoCedula.set(this.opcionesPredeterminadas);
     }
 
     this.form.get('idTipoCedula')!.valueChanges
