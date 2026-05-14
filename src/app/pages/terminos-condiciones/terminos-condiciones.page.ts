@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { shieldCheckmarkOutline } from 'ionicons/icons';
@@ -10,6 +10,7 @@ import { ParametrosService } from '../../core/services/parametros.service';
   templateUrl: './terminos-condiciones.page.html',
   styleUrls: ['./terminos-condiciones.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PaginaComponent, IonIcon],
 })
 export class TerminosCondicionesPage implements OnInit {

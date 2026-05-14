@@ -144,6 +144,9 @@
     "seleccionar": "Adjuntar PDF",
     "requerido": "Debe adjuntar un documento PDF."
   },
+  "expediente": {
+    "sinDocumentos": "No hay documentos en el expediente."
+  },
   "detalleReclamo": {
     "titulo": "Detalle del Reclamo",
     "consecutivo": "Número consecutivo",
@@ -175,6 +178,37 @@
       "tituloRequerido": "El título es requerido.",
       "descripcionRequerida": "La descripción es requerida."
     }
+  },
+  "atenderReclamo": {
+    "titulo": "Atender Reclamo",
+    "infoCliente": "Información del Cliente",
+    "detallesReclamo": "Detalles del Reclamo",
+    "archivoCliente": "Archivo adjunto por el cliente",
+    "nombre": "Nombre",
+    "email": "Email",
+    "telefono": "Teléfono",
+    "tipo": "Tipo",
+    "fechaCreacion": "Fecha de creación",
+    "descripcion_campo": "Descripción:",
+    "codigo": "Código",
+    "titulo_campo": "Título",
+    "usuario": "Usuario",
+    "fecha": "Fecha",
+    "estado": "Estado",
+    "seleccioneEstado": "Seleccione un estado",
+    "expediente": "Expediente Digital",
+    "estadoRequerido": "Seleccione un estado.",
+    "siguienteNivel": "Siguiente departamento",
+    "seleccioneNivel": "Seleccione el departamento destino",
+    "descripcion": "Notas de gestión",
+    "descripcionPlaceholder": "Describa las acciones realizadas...",
+    "descripcionRequerida": "Ingrese una descripción.",
+    "resolucion": "Resolución",
+    "resolucionPlaceholder": "Describa la resolución aplicada...",
+    "resolucionRequerida": "Ingrese la resolución.",
+    "guardar": "Guardar gestión",
+    "exito": "El reclamo ha sido atendido correctamente.",
+    "atender": "Atender"
   },
   "buscar": {
     "sinResultados": "Sin resultados",

@@ -40,6 +40,16 @@
   &--error {
     border-color: var(--ion-color-danger);
   }
+
+  &--readonly {
+    background: var(--color-fondo-detalle);
+    border-color: var(--color-borde-input);
+
+    .campo {
+      --background: var(--color-fondo-detalle);
+      --color: var(--color-texto-titulo);
+    }
+  }
 }
 
 .campo {

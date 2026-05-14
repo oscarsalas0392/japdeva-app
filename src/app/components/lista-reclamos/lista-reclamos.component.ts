@@ -20,6 +20,7 @@ export class ListaReclamosComponent {
   @Input() tituloVacio = 'buscar.sinResultados';
   @Input() subtituloVacio = 'buscar.sinResultadosDesc';
   @Input() etiquetaBotonVacio = '';
+  @Input() mostrarEstadoDetalle = false;
   @Output() accion = new EventEmitter<{ accionId: string; reclamo: ReclamoRespuestaModel }>();
   @Output() accionVacio = new EventEmitter<void>();
 }

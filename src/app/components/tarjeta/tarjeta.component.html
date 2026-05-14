@@ -1,3 +1,13 @@
 <div class="tarjeta" [class.tarjeta--sin-padding]="!padding">
+  @if (titulo) {
+    <div class="tarjeta__encabezado">
+      @if (icono) {
+        <div class="tarjeta__icono-wrapper">
+          <ion-icon [name]="icono" class="tarjeta__icono" />
+        </div>
+      }
+      <span class="tarjeta__titulo">{{ titulo | translate }}</span>
+    </div>
+  }
   <ng-content />
 </div>

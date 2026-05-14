@@ -63,6 +63,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/gestion-usuarios/gestion-usuarios.page').then((m) => m.GestionUsuariosPage),
   },
   {
+    path: 'atender-reclamo/:id',
+    loadComponent: () => import('./pages/atender-reclamo/atender-reclamo.page').then((m) => m.AtenderReclamoPage),
+  },
+  {
     path: 'inicio-usuario-interno',
     loadComponent: () => import('./pages/inicio-usuario-interno/inicio-usuario-interno.page').then((m) => m.InicioUsuarioInternoPage),
   },

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
@@ -17,6 +17,7 @@ import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
   templateUrl: './inicio-usuario-interno.page.html',
   styleUrls: ['./inicio-usuario-interno.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslateModule, PaginaComponent, SeccionHeaderComponent, ListaReclamosComponent],
 })
 export class InicioUsuarioInternoPage implements OnInit {
@@ -32,7 +33,7 @@ export class InicioUsuarioInternoPage implements OnInit {
   private idDepartamento = 0;
 
   readonly opcionesReclamo: OpcionAccionModel[] = [
-    { id: 'ver', etiqueta: 'inicio.acciones.ver' },
+    { id: 'atender', etiqueta: 'atenderReclamo.atender' },
   ];
 
   async ngOnInit(): Promise<void> {
@@ -63,8 +64,8 @@ export class InicioUsuarioInternoPage implements OnInit {
   }
 
   manejarAccion(accionId: string, reclamo: ReclamoRespuestaModel): void {
-    if (accionId === 'ver') {
-      this.router.navigate(['/detalle-reclamo', reclamo.id], { state: { reclamo } });
+    if (accionId === 'atender') {
+      this.router.navigate(['/atender-reclamo', reclamo.id], { state: { reclamo } });
     }
   }
 }

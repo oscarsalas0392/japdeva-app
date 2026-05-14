@@ -1,0 +1,55 @@
+<section class="expediente">
+  @if (documentos.length === 0) {
+    <p class="expediente__vacio">{{ 'expediente.sinDocumentos' | translate }}</p>
+  } @else {
+    <div class="expediente__lista">
+      @for (doc of visibles; track doc.id) {
+        <div class="expediente-item">
+
+          @if (doc.nombreDepartamento) {
+            <div class="expediente-item__departamento">
+              <span>{{ doc.nombreDepartamento }}</span>
+            </div>
+          }
+
+          @if (doc.descripcionDetalleReclamo) {
+            <p class="expediente-item__descripcion">{{ doc.descripcionDetalleReclamo }}</p>
+          }
+
+          @if (doc.nombreDocumento) {
+          <div class="expediente-item__documento">
+            <div class="expediente-item__doc-info">
+              <ion-icon name="document-text-outline" class="expediente-item__icono-doc" />
+              <div class="expediente-item__doc-texto">
+                <span class="expediente-item__nombre">{{ doc.nombreDocumento }}</span>
+                @if (tamanoArchivo(doc.documento)) {
+                  <span class="expediente-item__meta">{{ tamanoArchivo(doc.documento) }}</span>
+                }
+              </div>
+            </div>
+            <button
+              class="expediente-item__btn"
+              [disabled]="descargando() === doc.id"
+              (click)="descargar(doc)"
+            >
+              @if (descargando() === doc.id) {
+                <ion-spinner name="crescent" class="expediente-item__spinner" />
+              } @else {
+                <ion-icon name="cloud-download-outline" />
+              }
+            </button>
+          </div>
+          }
+
+        </div>
+      }
+    </div>
+
+    @if (hayMas) {
+      <button class="expediente__ver-mas" (click)="expandido.set(!expandido())">
+        <ion-icon [name]="expandido() ? 'chevron-up-outline' : 'chevron-down-outline'" />
+        <span>{{ expandido() ? 'Ver menos' : 'Ver ' + restantes + ' más' }}</span>
+      </button>
+    }
+  }
+</section>

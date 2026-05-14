@@ -14,6 +14,7 @@ import { GeneralesService } from '../../core/services/generales.service';
 })
 export class ItemReclamoComponent {
   @Input() reclamo!: ReclamoRespuestaModel;
+  @Input() mostrarEstadoDetalle = false;
   @Output() seleccionar = new EventEmitter<ReclamoRespuestaModel>();
 
   private readonly generales = inject(GeneralesService);

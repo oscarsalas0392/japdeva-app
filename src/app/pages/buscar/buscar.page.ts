@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
@@ -19,6 +19,7 @@ import { ChipFiltro } from '../../components/chips-filtro/chips-filtro.component
   templateUrl: './buscar.page.html',
   styleUrls: ['./buscar.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslateModule, PaginaComponent, ChipsFiltroComponent, ListaReclamosComponent],
 })
 export class BuscarPage implements OnInit {

@@ -28,6 +28,18 @@ export class DetalleReclamoService {
     return this.api.get(this.ep.obtener, { 'id-reclamo': idReclamo, pagina });
   }
 
+  obtenerPorId(idDetalle: number): Promise<RespuestaModel<DetalleReclamoRespuestaModel>> {
+    return this.api.get(this.ep.obtenerPorId, { 'id-detalle': idDetalle });
+  }
+
+  obtenerPorDepartamentoYEstado(idDepartamento: number, idEstadoDetalle: number, idReclamo: number): Promise<RespuestaModel<DetalleReclamoRespuestaModel>> {
+    return this.api.get(this.ep.obtenerPorDepartamentoEstado, {
+      'id-departamento':  idDepartamento,
+      'id-estado-detalle': idEstadoDetalle,
+      'id-reclamo':        idReclamo,
+    });
+  }
+
   /**
    * Edita el detalle de un reclamo (estado, asignación, descripción).
    * @param solicitud Datos actualizados del detalle.
@@ -58,8 +70,12 @@ export class DetalleReclamoService {
    * Obtiene los documentos internos de un reclamo.
    * @param idReclamo Identificador del reclamo.
    */
-  obtenerDocumentosPorReclamo(idReclamo: number): Promise<RespuestaModel<RespuestaListaModel<DocumentoInternoRespuestaModel>>> {
-    return this.api.get(this.epDocInterno.obtenerPorReclamo, { idReclamo });
+  obtenerDocumentosPorReclamo(idDetalleReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoInternoRespuestaModel>>> {
+    return this.api.get(this.epDocInterno.obtenerPorReclamo, { 'id-reclamo-detalle': idDetalleReclamo, pagina });
+  }
+
+  obtenerDocumentosPorIdReclamo(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoInternoRespuestaModel>>> {
+    return this.api.get(this.epDocInterno.obtenerPorIdReclamo, { 'id-reclamo': idReclamo, pagina });
   }
 
   /**
@@ -83,8 +99,8 @@ export class DetalleReclamoService {
   /**
    * Obtiene todos los estados disponibles para el detalle de un reclamo.
    */
-  obtenerEstados(): Promise<RespuestaModel<RespuestaListaModel<EstadoDetalleReclamoRespuestaModel>>> {
-    return this.api.get(this.epEstadoDetalle.obtenerTodos);
+  obtenerEstados(idNivel: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<EstadoDetalleReclamoRespuestaModel>>> {
+    return this.api.get(this.epEstadoDetalle.obtenerTodos, { 'id-nivel': idNivel, pagina });
   }
 
   // ── Orden Nivel ───────────────────────────────────────────────────────────
@@ -92,7 +108,7 @@ export class DetalleReclamoService {
   /**
    * Obtiene todos los niveles del flujo de proceso de reclamos.
    */
-  obtenerOrdenesNivel(): Promise<RespuestaModel<RespuestaListaModel<OrdenNivelRespuestaModel>>> {
-    return this.api.get(this.epOrdenNivel.obtenerTodos);
+  obtenerOrdenesNivel(idNivelSuperior: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<OrdenNivelRespuestaModel>>> {
+    return this.api.get(this.epOrdenNivel.obtenerTodos, { 'id-nivel-superior': idNivelSuperior, pagina });
   }
 }

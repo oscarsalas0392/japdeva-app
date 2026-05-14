@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { IonApp, IonRouterOutlet, IonMenu } from '@ionic/angular/standalone';
@@ -15,11 +16,13 @@ const ROLES_INTERNOS = [1, 2, 3];
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonApp, IonRouterOutlet, IonMenu, PopupAvisoComponent, MenuUsuarioExternoComponent, MenuUsuarioInternoComponent],
 })
 export class AppComponent implements OnInit {
   private readonly router        = inject(Router);
   private readonly estadoService = inject(EstadoAppService);
+  private readonly destroyRef    = inject(DestroyRef);
 
   readonly esInterno = signal(false);
 
@@ -27,7 +30,7 @@ export class AppComponent implements OnInit {
     await this.solicitarPermisos();
 
     this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
+      .pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.verificarRol());
   }
 

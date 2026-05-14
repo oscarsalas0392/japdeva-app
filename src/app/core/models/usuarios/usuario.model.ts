@@ -6,6 +6,7 @@ export interface UsuarioRespuestaModel {
   nombre: string;
   apellidos: string;
   correo: string;
+  telefono?: string;
   fechaRegistro: string;
   fechaEdicion?: string;
   activo: boolean;

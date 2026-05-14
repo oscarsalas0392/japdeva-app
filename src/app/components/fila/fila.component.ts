@@ -3,7 +3,7 @@ import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronForwardOutline } from 'ionicons/icons';
 
-export type TipoFila = 'campo' | 'menu';
+export type TipoFila = 'campo' | 'menu' | 'vertical';
 
 @Component({
   selector: 'app-fila',

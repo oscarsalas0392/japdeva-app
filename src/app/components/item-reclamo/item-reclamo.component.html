@@ -7,9 +7,13 @@
     <span class="item__titulo">{{ reclamo.titulo }}</span>
     <p class="item__descripcion">{{ reclamo.descripcion }}</p>
     <div class="item__fila-bottom">
-      <span class="item__estado" [class]="claseEstado">
-        {{ reclamo.descripcionEstadoReclamo }}
-      </span>
+      @if (mostrarEstadoDetalle && reclamo.descripcionEstadoDetalleReclamo) {
+        <span class="item__estado-detalle">{{ reclamo.descripcionEstadoDetalleReclamo }}</span>
+      } @else {
+        <span class="item__estado" [class]="claseEstado">
+          {{ reclamo.descripcionEstadoReclamo }}
+        </span>
+      }
       <span class="item__fecha">{{ fechaFormateada }}</span>
     </div>
   </div>

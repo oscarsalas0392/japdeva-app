@@ -5,16 +5,27 @@
     }
   </div>
 }
-<div class="campo-wrapper" [class.campo-wrapper--error]="invalido" [class.campo-wrapper--focus]="enfocado">
+<div class="campo-wrapper" [class.campo-wrapper--error]="invalido" [class.campo-wrapper--focus]="enfocado" [class.campo-wrapper--readonly]="soloLectura || valor">
   <ion-item class="campo" lines="none">
-    <ion-input
-      [formControl]="$any(control)"
-      [type]="tipoActual"
-      [placeholder]="placeholder | translate"
-      [autocomplete]="autocomplete"
-      (ionFocus)="enfocado = true"
-      (ionBlur)="enfocado = false"
-    />
+    @if (valor) {
+      <ion-input
+        [value]="valor"
+        [type]="tipoActual"
+        [readonly]="true"
+        (ionFocus)="enfocado = true"
+        (ionBlur)="enfocado = false"
+      />
+    } @else {
+      <ion-input
+        [formControl]="$any(control)"
+        [type]="tipoActual"
+        [placeholder]="placeholder | translate"
+        [autocomplete]="autocomplete"
+        [readonly]="soloLectura"
+        (ionFocus)="enfocado = true"
+        (ionBlur)="enfocado = false"
+      />
+    }
     @if (esContrasena) {
       <ion-button slot="end" fill="clear" class="ojo-boton" (click)="mostrarContrasena = !mostrarContrasena">
         <ion-icon slot="icon-only" [name]="mostrarContrasena ? 'eye-off-outline' : 'eye-outline'" class="ojo-icono" />

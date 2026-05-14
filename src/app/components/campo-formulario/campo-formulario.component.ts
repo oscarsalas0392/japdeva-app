@@ -22,6 +22,8 @@ export class CampoFormularioComponent {
   @Input() enviado = false;
   @Input() requerido = false;
   @Input() hint = '';
+  @Input() valor = '';
+  @Input() soloLectura = false;
 
   enfocado = false;
   mostrarContrasena = false;

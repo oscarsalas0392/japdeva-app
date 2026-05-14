@@ -6,6 +6,15 @@
     font-weight: 700;
     color: var(--color-texto-titulo);
     margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__conteo {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-placeholder);
   }
 
   &__vacio {

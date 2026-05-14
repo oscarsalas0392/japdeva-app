@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonIcon } from '@ionic/angular/standalone';
@@ -24,6 +24,7 @@ import { OpcionSelectModel } from '../../core/models/opcion-select.model';
   templateUrl: './gestion-usuarios.page.html',
   styleUrls: ['./gestion-usuarios.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     TranslateModule,

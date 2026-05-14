@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -18,6 +18,7 @@ import { OpcionSelectModel } from '../../core/models/opcion-select.model';
   templateUrl: './buscar-usuario-cedula.page.html',
   styleUrls: ['./buscar-usuario-cedula.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, TranslateModule, PaginaComponent, CampoFormularioComponent, CampoSelectComponent, BotonCargandoComponent],
 })
 export class BuscarUsuarioCedulaPage implements OnInit {

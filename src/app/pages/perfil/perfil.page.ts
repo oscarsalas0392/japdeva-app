@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
@@ -25,6 +25,7 @@ const ROLES_INTERNOS = [1, 2, 3];
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonIcon, TranslateModule, MascaraCorreoPipe, PaginaComponent, TarjetaComponent, FilaComponent, GrupoCampoComponent],
 })
 export class PerfilPage {

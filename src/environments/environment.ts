@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://34ae-2803-f340-1205-1602-445-5467-3fce-6ac0.ngrok-free.app',
+  apiUrl: 'https://fab8-2803-f340-1205-1602-b574-2aa4-97cb-e4fb.ngrok-free.app',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
@@ -61,15 +61,18 @@ export const environment = {
         obtenerPorFechaEstado: '/Reclamos/api/Reclamo/ObtenerReclamoPorFechaEstado',
       },
       detalleReclamo: {
-        obtener: '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamo',
-        editar: '/Reclamos/api/DetalleReclamo/EditarDetalleReclamo',
-        historico: '/Reclamos/api/DetalleReclamoHistorico/ObtenerDetalleReclamoHistorico',
+        obtener:                    '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamo',
+        obtenerPorId:               '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamoPorIdDetalle',
+        obtenerPorDepartamentoEstado: '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamoPorIdDepartamentoYIdEstadoDetalle',
+        editar:                     '/Reclamos/api/DetalleReclamo/EditarDetalleReclamo',
+        historico:                  '/Reclamos/api/DetalleReclamoHistorico/ObtenerDetalleReclamoHistorico',
       },
       documentoInterno: {
-        agregar: '/Reclamos/api/DocumentoInterno/AgregarDocumentoInterno',
-        obtenerPorReclamo: '/Reclamos/api/DocumentoInterno/ObtenerDocumentoInternoPorReclamo',
-        eliminar: '/Reclamos/api/DocumentoInterno/EliminarDocumentoInterno',
-        historico: '/Reclamos/api/DocumentoInternoHistorico/ObtenerDocumentoInternoPorDetalleReclamo',
+        agregar:              '/Reclamos/api/DocumentoInterno/AgregarDocumentoInterno',
+        obtenerPorReclamo:    '/Reclamos/api/DocumentoInterno/ObtenerDocumentoInternoPorReclamo',
+        obtenerPorIdReclamo:  '/Reclamos/api/DocumentoInterno/ObtenerDocumentoInternoPorIdReclamo',
+        eliminar:             '/Reclamos/api/DocumentoInterno/EliminarDocumentoInterno',
+        historico:            '/Reclamos/api/DocumentoInternoHistorico/ObtenerDocumentoInternoPorDetalleReclamo',
       },
       documentoUsuario: {
         obtener: '/Reclamos/api/DocumentoUsuario',

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { TarjetaContactoComponent } from '../../components/tarjeta-contacto/tarjeta-contacto.component';
 import { TarjetaOficinaComponent } from '../../components/tarjeta-oficina/tarjeta-oficina.component';
@@ -13,6 +13,7 @@ import { ParametroModel } from '../../core/models/parametros/parametro.model';
   templateUrl: './informacion.page.html',
   styleUrls: ['./informacion.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PaginaComponent, TarjetaContactoComponent, TarjetaOficinaComponent, ListaFaqsComponent, GridColumnasComponent, GrupoCampoComponent],
 })
 export class InformacionPage implements OnInit {

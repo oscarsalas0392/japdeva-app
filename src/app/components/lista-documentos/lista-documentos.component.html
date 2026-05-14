@@ -1,5 +1,7 @@
 <section class="lista-docs">
-  <h2 class="lista-docs__titulo">{{ titulo | translate }}</h2>
+  @if (titulo) {
+    <h2 class="lista-docs__titulo">{{ titulo | translate }} @if (documentos.length > 0) { <span class="lista-docs__conteo">({{ documentos.length }})</span> }</h2>
+  }
 
   @if (documentos.length === 0) {
     <p class="lista-docs__vacio">{{ 'detalleReclamo.sinDocumentos' | translate }}</p>
@@ -9,7 +11,9 @@
         <div class="doc-item">
           <div class="doc-item__info">
             <span class="doc-item__nombre">{{ doc.nombreDocumento }}</span>
-            <span class="doc-item__meta">PDF • {{ tamanoArchivo(doc.documento) }}</span>
+            @if (tamanoArchivo(doc.documento)) {
+              <span class="doc-item__meta">PDF • {{ tamanoArchivo(doc.documento) }}</span>
+            }
           </div>
           <button
             class="doc-item__btn"

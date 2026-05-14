@@ -74,6 +74,16 @@
   font-weight: 600;
 }
 
+.item__estado-detalle {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--color-fondo-detalle);
+  color: var(--color-texto-titulo);
+}
+
 .estado--pendiente {
   background: #fff3cd;
   color: #856404;

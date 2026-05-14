@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { IonIcon, MenuController } from '@ionic/angular/standalone';
@@ -14,12 +15,14 @@ const ROLES_INTERNOS = [1, 2, 3];
   templateUrl: './footer-nav.component.html',
   styleUrls: ['./footer-nav.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, RouterLinkActive, IonIcon],
 })
 export class FooterNavComponent implements OnInit {
-  private readonly menuCtrl    = inject(MenuController);
+  private readonly menuCtrl      = inject(MenuController);
   private readonly estadoService = inject(EstadoAppService);
-  private readonly router      = inject(Router);
+  private readonly router        = inject(Router);
+  private readonly destroyRef    = inject(DestroyRef);
 
   readonly rutaInicio = signal('/inicio');
 
@@ -31,7 +34,7 @@ export class FooterNavComponent implements OnInit {
     await this.actualizarRuta();
 
     this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
+      .pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.actualizarRuta());
   }
 

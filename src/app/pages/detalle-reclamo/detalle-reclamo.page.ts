@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonIcon } from '@ionic/angular/standalone';
@@ -19,6 +19,7 @@ import { DocumentoUsuarioRespuestaModel } from '../../core/models/reclamos/docum
   templateUrl: './detalle-reclamo.page.html',
   styleUrls: ['./detalle-reclamo.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslateModule, IonIcon, PaginaComponent, CampoDetalleComponent, ListaDocumentosComponent],
 })
 export class DetalleReclamoPage implements OnInit {

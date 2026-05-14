@@ -1,30 +1,44 @@
-import { Component, Input, inject, signal } from '@angular/core';
+import { Component, Input, inject, signal, computed } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cloudDownloadOutline } from 'ionicons/icons';
+import { buildOutline, cloudDownloadOutline, documentTextOutline, chevronDownOutline, chevronUpOutline } from 'ionicons/icons';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { PopupAvisoService } from '../popup-aviso/popup-aviso.service';
-import { DocumentoUsuarioRespuestaModel } from '../../core/models/reclamos/documento-usuario-respuesta.model';
+import { DocumentoInternoRespuestaModel } from '../../core/models/reclamos/documento-interno.model';
+
+const PAGE_SIZE = 5;
 
 @Component({
-  selector: 'app-lista-documentos',
-  templateUrl: './lista-documentos.component.html',
-  styleUrls: ['./lista-documentos.component.scss'],
+  selector: 'app-expediente-digital',
+  templateUrl: './expediente-digital.component.html',
+  styleUrls: ['./expediente-digital.component.scss'],
   standalone: true,
   imports: [TranslateModule, IonIcon, IonSpinner],
 })
-export class ListaDocumentosComponent {
-  @Input() documentos: DocumentoUsuarioRespuestaModel[] = [];
-  @Input() titulo = '';
+export class ExpedienteDigitalComponent {
+  @Input() documentos: DocumentoInternoRespuestaModel[] = [];
 
   private readonly popup     = inject(PopupAvisoService);
   private readonly translate = inject(TranslateService);
 
-  readonly descargando = signal<number | null>(null);
+  readonly descargando  = signal<number | null>(null);
+  readonly expandido    = signal(false);
+
+  get visibles(): DocumentoInternoRespuestaModel[] {
+    return this.expandido() ? this.documentos : this.documentos.slice(0, PAGE_SIZE);
+  }
+
+  get hayMas(): boolean {
+    return this.documentos.length > PAGE_SIZE;
+  }
+
+  get restantes(): number {
+    return this.documentos.length - PAGE_SIZE;
+  }
 
   constructor() {
-    addIcons({ cloudDownloadOutline });
+    addIcons({ cloudDownloadOutline, documentTextOutline, buildOutline, chevronDownOutline, chevronUpOutline });
   }
 
   tamanoArchivo(base64: string): string {
@@ -33,15 +47,13 @@ export class ListaDocumentosComponent {
     return bytes >= 1024 ? `${(bytes / 1024).toFixed(1)} MB` : `${bytes} KB`;
   }
 
-  async descargar(doc: DocumentoUsuarioRespuestaModel): Promise<void> {
+  async descargar(doc: DocumentoInternoRespuestaModel): Promise<void> {
     this.descargando.set(doc.id);
     try {
-      // Limpiar prefijo data URI si viene incluido
       const base64 = doc.documento.includes(',')
         ? doc.documento.split(',')[1]
         : doc.documento;
 
-      // Guardar en la carpeta Descargas pública del dispositivo
       await Filesystem.writeFile({
         path:      `Download/${doc.nombreDocumento}`,
         data:      base64,
@@ -52,9 +64,7 @@ export class ListaDocumentosComponent {
       this.popup.mostrar({
         tipo:    'exito',
         titulo:  this.translate.instant('exito.titulo'),
-        mensaje: this.translate.instant('detalleReclamo.descargaExito', {
-          nombre: doc.nombreDocumento,
-        }),
+        mensaje: this.translate.instant('detalleReclamo.descargaExito', { nombre: doc.nombreDocumento }),
       });
     } catch (e: any) {
       this.popup.mostrar({
