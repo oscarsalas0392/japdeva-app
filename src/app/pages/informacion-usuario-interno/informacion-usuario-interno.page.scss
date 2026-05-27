@@ -1,0 +1,190 @@
+// Paleta de acento por sección
+$azul:    #0d7fa5;
+$verde:   #2c8b6b;
+$naranja: #c97a17;
+$morado:  #6b56b3;
+
+// ── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  margin: 16px 16px 20px;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, $azul 0%, #095e7c 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(13, 127, 165, 0.25);
+
+  &__icono {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+
+    ion-icon {
+      font-size: 26px;
+      color: #fff;
+    }
+  }
+
+  &__titulo {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 4px 0 0;
+    line-height: 1.25;
+  }
+
+  &__descripcion {
+    font-size: 14px;
+    line-height: 1.45;
+    margin: 0;
+    opacity: 0.92;
+  }
+}
+
+// ── Sección ─────────────────────────────────────────────────────────────────
+.seccion {
+  margin: 0 16px 16px;
+  padding: 18px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+  &__encabezado {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__icono {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 20px;
+    }
+
+    &--azul {
+      background: rgba(13, 127, 165, 0.12);
+      ion-icon { color: $azul; }
+    }
+
+    &--verde {
+      background: rgba(44, 139, 107, 0.12);
+      ion-icon { color: $verde; }
+    }
+
+    &--naranja {
+      background: rgba(201, 122, 23, 0.13);
+      ion-icon { color: $naranja; }
+    }
+  }
+
+  &__titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-texto-titulo);
+    margin: 0;
+    line-height: 1.3;
+  }
+}
+
+// ── Pasos numerados ─────────────────────────────────────────────────────────
+.pasos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.paso {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f7f9fc;
+  border-radius: 10px;
+  border-left: 3px solid var(--color-boton);
+
+  &__numero {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--color-boton);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  &__texto {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--color-texto-titulo);
+    flex: 1;
+  }
+}
+
+// ── Ayuda (callout final) ──────────────────────────────────────────────────
+.ayuda {
+  margin: 4px 16px 100px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(107, 86, 179, 0.08);
+  border: 1px solid rgba(107, 86, 179, 0.18);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  &__icono {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: rgba(107, 86, 179, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 20px;
+      color: $morado;
+    }
+  }
+
+  &__contenido {
+    flex: 1;
+  }
+
+  &__titulo {
+    font-size: 15px;
+    font-weight: 700;
+    color: $morado;
+    margin: 0 0 4px;
+  }
+
+  &__descripcion {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--color-texto-titulo);
+    margin: 0;
+  }
+}

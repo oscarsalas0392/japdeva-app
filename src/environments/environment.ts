@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://fab8-2803-f340-1205-1602-b574-2aa4-97cb-e4fb.ngrok-free.app',
+  apiUrl: 'https://992b-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {
@@ -51,6 +51,9 @@ export const environment = {
         obtenerPorNombre:  '/Parametros/api/Parametro/ObtenerParametroPorNombre',
         obtenerPorNombres: '/Parametros/api/Parametro/ObtenerParametrosPorNombres',
       },
+      opcionPantalla: {
+        obtenerPorPerfil: '/Parametros/api/OpcionPantalla/ObtenerOpcionPantallaPorPerfil',
+      },
     },
     reclamos: {
       reclamo: {
@@ -59,20 +62,22 @@ export const environment = {
         obtenerPorUsuarioOrdenado: '/Reclamos/api/Reclamo/ObtenerReclamoPorUsuarioOrdenado',
         obtenerPorDepartamento: '/Reclamos/api/Reclamo/ObtenerReclamoPorDepartamento',
         obtenerPorFechaEstado: '/Reclamos/api/Reclamo/ObtenerReclamoPorFechaEstado',
+        obtenerPorId: '/Reclamos/api/Reclamo/ObtenerReclamoPorId',
       },
       detalleReclamo: {
-        obtener:                    '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamo',
-        obtenerPorId:               '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamoPorIdDetalle',
+        obtener:                     '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamo',
+        obtenerPorId:                '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamoPorIdDetalle',
         obtenerPorDepartamentoEstado: '/Reclamos/api/DetalleReclamo/ObtenerDetalleReclamoPorIdDepartamentoYIdEstadoDetalle',
-        editar:                     '/Reclamos/api/DetalleReclamo/EditarDetalleReclamo',
-        historico:                  '/Reclamos/api/DetalleReclamoHistorico/ObtenerDetalleReclamoHistorico',
+        obtenerExpediente:           '/Reclamos/api/DetalleReclamo/ObtenerExpedientePorReclamo',
+        asignar:                     '/Reclamos/api/DetalleReclamo/AsignarDetalleReclamo',
+        editar:                      '/Reclamos/api/DetalleReclamo/EditarDetalleReclamo',
+        historico:                   '/Reclamos/api/DetalleReclamoHistorico/ObtenerDetalleReclamoHistorico',
       },
       documentoInterno: {
-        agregar:              '/Reclamos/api/DocumentoInterno/AgregarDocumentoInterno',
-        obtenerPorReclamo:    '/Reclamos/api/DocumentoInterno/ObtenerDocumentoInternoPorReclamo',
-        obtenerPorIdReclamo:  '/Reclamos/api/DocumentoInterno/ObtenerDocumentoInternoPorIdReclamo',
-        eliminar:             '/Reclamos/api/DocumentoInterno/EliminarDocumentoInterno',
-        historico:            '/Reclamos/api/DocumentoInternoHistorico/ObtenerDocumentoInternoPorDetalleReclamo',
+        agregar:           '/Reclamos/api/DocumentoInterno/AgregarDocumentoInterno',
+        obtenerPorReclamo: '/Reclamos/api/DocumentoInterno/ObtenerDocumentoInternoPorReclamo',
+        eliminar:          '/Reclamos/api/DocumentoInterno/EliminarDocumentoInterno',
+        historico:         '/Reclamos/api/DocumentoInternoHistorico/ObtenerDocumentoInternoPorDetalleReclamo',
       },
       documentoUsuario: {
         obtener: '/Reclamos/api/DocumentoUsuario',

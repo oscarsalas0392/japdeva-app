@@ -1,116 +1,62 @@
 <app-pagina titulo="{{ 'atenderReclamo.titulo' | translate }}" [atras]="true" [cargando]="cargando()">
 
-  @if (reclamo()) {
-
-    <app-tabs [tabs]="tabs" [activo]="tabActivo()" (tabCambiado)="tabActivo.set($event)" />
-
-    @if (tabActivo() === 'informacion') {
-      <app-grupo-campo [top]="true">
-
-        @if (cliente()) {
-          <app-tarjeta titulo="atenderReclamo.infoCliente" icono="person-outline">
-            <app-fila
-              etiqueta="{{ 'atenderReclamo.nombre' | translate }}"
-              [valor]="cliente()!.nombre + ' ' + cliente()!.apellidos" />
-            <app-fila
-              etiqueta="{{ 'atenderReclamo.email' | translate }}"
-              [valor]="cliente()!.correo" />
-            @if (cliente()!.telefono) {
-              <app-fila
-                etiqueta="{{ 'atenderReclamo.telefono' | translate }}"
-                [valor]="cliente()!.telefono!" />
-            }
-          </app-tarjeta>
-        }
-
-        <app-tarjeta titulo="atenderReclamo.detallesReclamo" icono="document-text-outline">
-          <app-fila
-            etiqueta="{{ 'atenderReclamo.codigo' | translate }}"
-            [valor]="generales.codigoReclamo(reclamo()!.id, reclamo()!.fechaRegistro)" />
-          <app-fila
-            etiqueta="{{ 'atenderReclamo.titulo_campo' | translate }}"
-            [valor]="reclamo()!.titulo" />
-          <app-fila
-            etiqueta="{{ 'atenderReclamo.fechaCreacion' | translate }}"
-            [valor]="generales.formatearFecha(reclamo()!.fechaRegistro)" />
-
-          <app-fila
-            tipo="vertical"
-            etiqueta="{{ 'atenderReclamo.descripcion_campo' | translate }}"
-            [valor]="reclamo()!.descripcion" />
-
-          <app-fila
-            etiqueta="{{ 'atenderReclamo.archivoCliente' | translate }}"
-          />
-          <app-lista-documentos [documentos]="documentosExternos()" />
-        </app-tarjeta>
-
-        <app-tarjeta titulo="atenderReclamo.expediente" icono="attach-outline">
-          <app-expediente-digital [documentos]="documentosInternos()" />
-        </app-tarjeta>
-
-      </app-grupo-campo>
-    }
-
-    @if (tabActivo() === 'gestion') {
-      <app-grupo-campo [top]="true">
-        <form [formGroup]="form" (ngSubmit)="guardar()">
-          <app-campo-select
-            label="atenderReclamo.estado"
-            placeholder="atenderReclamo.seleccioneEstado"
-            formControlName="idEstado"
-            [control]="form.get('idEstado')!"
-            mensajeError="atenderReclamo.estadoRequerido"
-            [enviado]="enviado"
-            [opciones]="estados()"
-          />
-          @if ((continuaProceso() || devolucionProceso()) && nivelesOrden().length > 0) {
-            @if (nivelesOrden().length === 1) {
-              <app-campo-formulario
-                label="atenderReclamo.siguienteNivel"
-                [valor]="nivelesOrden()[0].etiqueta.toString()"
-                [soloLectura]="true"
-              />
-            } @else {
-              <app-campo-select
-                label="atenderReclamo.siguienteNivel"
-                placeholder="atenderReclamo.seleccioneNivel"
-                formControlName="idNivelSiguiente"
-                [opciones]="nivelesOrden()"
-              />
-            }
-          }
-          <app-campo-textarea
-            label="atenderReclamo.descripcion"
-            placeholder="atenderReclamo.descripcionPlaceholder"
-            formControlName="descripcion"
-            [control]="form.get('descripcion')!"
-            mensajeError="atenderReclamo.descripcionRequerida"
-            [enviado]="enviado"
-          />
-          @if (finalizaProceso()) {
-            <app-campo-textarea
-              label="atenderReclamo.resolucion"
-              placeholder="atenderReclamo.resolucionPlaceholder"
-              formControlName="descripcionResolucion"
-              [control]="form.get('descripcionResolucion')!"
-              mensajeError="atenderReclamo.resolucionRequerida"
-              [enviado]="enviado"
+  @if (reclamo() && paginaLista()) {
+    <app-grupo-campo [top]="true">
+      <form [formGroup]="form" (ngSubmit)="guardar()">
+        <app-campo-select
+          label="atenderReclamo.estado"
+          placeholder="atenderReclamo.seleccioneEstado"
+          formControlName="idEstado"
+          [control]="form.get('idEstado')!"
+          mensajeError="atenderReclamo.estadoRequerido"
+          [enviado]="enviado"
+          [opciones]="estados()"
+        />
+        @if ((continuaProceso() || devolucionProceso()) && nivelesOrden().length > 0) {
+          @if (nivelesOrden().length === 1) {
+            <app-campo-formulario
+              label="atenderReclamo.siguienteNivel"
+              [valor]="nivelesOrden()[0].etiqueta.toString()"
+              [soloLectura]="true"
+            />
+          } @else {
+            <app-campo-select
+              label="atenderReclamo.siguienteNivel"
+              placeholder="atenderReclamo.seleccioneNivel"
+              formControlName="idNivelSiguiente"
+              [opciones]="nivelesOrden()"
             />
           }
-          <app-adjuntar-archivo
-            [archivo]="archivo"
-            (archivoChange)="archivo = $event"
+        }
+        <app-campo-textarea
+          label="atenderReclamo.descripcion"
+          placeholder="atenderReclamo.descripcionPlaceholder"
+          formControlName="descripcion"
+          [control]="form.get('descripcion')!"
+          mensajeError="atenderReclamo.descripcionRequerida"
+          [enviado]="enviado"
+        />
+        @if (finalizaProceso()) {
+          <app-campo-textarea
+            label="atenderReclamo.resolucion"
+            placeholder="atenderReclamo.resolucionPlaceholder"
+            formControlName="descripcionResolucion"
+            [control]="form.get('descripcionResolucion')!"
+            mensajeError="atenderReclamo.resolucionRequerida"
+            [enviado]="enviado"
           />
-          <app-boton-cargando
-            etiqueta="atenderReclamo.guardar"
-            tipo="submit"
-            [cargando]="guardando()"
-          />
-        </form>
-      </app-grupo-campo>
-    }
-
+        }
+        <app-adjuntar-archivo
+          [archivo]="archivo"
+          (archivoChange)="archivo = $event"
+        />
+        <app-boton-cargando
+          etiqueta="atenderReclamo.guardar"
+          tipo="submit"
+          [cargando]="guardando()"
+        />
+      </form>
+    </app-grupo-campo>
   }
 
 </app-pagina>

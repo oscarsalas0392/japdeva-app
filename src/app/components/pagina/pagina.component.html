@@ -2,6 +2,8 @@
 
 <app-header-app [titulo]="titulo" [saludo]="saludo" [atras]="atras" [buscar]="buscar" (terminoBusqueda)="terminoBusqueda.emit($event)" />
 
+<ng-content select="[sticky]" />
+
 <ion-content class="contenido" [scrollY]="scrollY">
   <ng-content />
 </ion-content>

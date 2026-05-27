@@ -1,0 +1,31 @@
+<app-tarjeta titulo="detalleReclamo.tabAtencion" icono="person-outline">
+  <app-fila
+    tipo="vertical"
+    etiqueta="{{ 'detalleReclamo.atendidoPor' | translate }}"
+    [valor]="atencion.nombreUsuarioInterno ?? ''"
+    [borde]="true"
+  />
+  <app-fila
+    tipo="vertical"
+    etiqueta="{{ 'detalleReclamo.departamento' | translate }}"
+    [valor]="atencion.nombreDepartamento ?? ''"
+    [borde]="true"
+  />
+  <app-fila
+    tipo="vertical"
+    etiqueta="{{ 'detalleReclamo.descripcionAtencion' | translate }}"
+    [valor]="atencion.descripcionDetalleReclamo ?? ''"
+    [borde]="true"
+  />
+  <app-fila
+    icono="calendar-outline"
+    etiqueta="{{ 'detalleReclamo.fechaInicio' | translate }}"
+    [valor]="fechaInicioFormateada"
+    [borde]="true"
+  />
+  <app-fila
+    icono="calendar-outline"
+    etiqueta="{{ 'detalleReclamo.fechaUltimaAtencion' | translate }}"
+    [valor]="fechaFinFormateada"
+  />
+</app-tarjeta>

@@ -24,12 +24,27 @@ export class CampoFormularioComponent {
   @Input() hint = '';
   @Input() valor = '';
   @Input() soloLectura = false;
+  @Input() formato = '';
 
   enfocado = false;
   mostrarContrasena = false;
 
   constructor() {
     addIcons({ eyeOutline, eyeOffOutline });
+  }
+
+  get maxlength(): number | null {
+    if (!this.formato) return null;
+    const coincidencias = this.formato.match(/\{(\d+)(?:,(\d+))?\}/g);
+    if (!coincidencias) return null;
+    const ultimo = coincidencias[coincidencias.length - 1];
+    const numeros = ultimo.match(/\d+/g)!;
+    return parseInt(numeros[numeros.length - 1]);
+  }
+
+  get inputmode(): string {
+    if (!this.formato) return 'text';
+    return /[a-zA-Z]/.test(this.formato.replace(/\\d/g, '')) ? 'text' : 'numeric';
   }
 
   get esContrasena(): boolean {

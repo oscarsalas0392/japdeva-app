@@ -9,8 +9,7 @@ import { MenuUsuarioExternoComponent } from './components/menu-usuario-externo/m
 import { MenuUsuarioInternoComponent } from './components/menu-usuario-interno/menu-usuario-interno.component';
 import { EstadoAppService } from './core/state/app.service';
 import { ClavesEstado } from './core/state/claves-estado';
-
-const ROLES_INTERNOS = [1, 2, 3];
+import { esRolInterno } from './core/constants/roles.constants';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +35,7 @@ export class AppComponent implements OnInit {
 
   private async verificarRol(): Promise<void> {
     const idRol = await this.estadoService.obtener<number>(ClavesEstado.idRol);
-    this.esInterno.set(ROLES_INTERNOS.includes(idRol ?? 0));
+    this.esInterno.set(esRolInterno(idRol));
   }
 
   private async solicitarPermisos(): Promise<void> {

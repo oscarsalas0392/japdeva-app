@@ -44,11 +44,18 @@ export class ReclamoService {
   /**
    * Obtiene reclamos filtrados por rango de fechas y estado.
    * @param fechaInicio Fecha de inicio del filtro (ISO 8601).
-   * @param fechaFin Fecha de fin del filtro (ISO 8601).
+   * @param fechaFin Fecha de fin del filtro (ISO 8601). Opcional.
    * @param idEstado Identificador del estado del reclamo.
+   * @param pagina Número de página (default 1).
    */
-  obtenerPorFechaEstado(fechaInicio: string, fechaFin: string, idEstado: number): Promise<RespuestaModel<RespuestaListaModel<ReclamoRespuestaModel>>> {
-    return this.api.get(this.ep.obtenerPorFechaEstado, { fechaInicio, fechaFin, idEstado });
+  obtenerPorFechaEstado(fechaInicio: string, fechaFin: string | null, idEstado: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<ReclamoRespuestaModel>>> {
+    const params: Record<string, string | number> = {
+      'fecha-inicio':      fechaInicio,
+      'id-estado-reclamo': idEstado,
+      pagina,
+    };
+    if (fechaFin) params['fecha-fin'] = fechaFin;
+    return this.api.get(this.ep.obtenerPorFechaEstado, params);
   }
 
   /**
@@ -57,6 +64,14 @@ export class ReclamoService {
    */
   obtenerDocumentosUsuario(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoUsuarioRespuestaModel>>> {
     return this.api.get(this.epDocUsuario.obtener, { 'id-reclamo': idReclamo, pagina });
+  }
+
+  /**
+   * Obtiene un reclamo por su identificador único.
+   * @param idReclamo Identificador del reclamo.
+   */
+  obtenerPorId(idReclamo: number): Promise<RespuestaModel<ReclamoRespuestaModel>> {
+    return this.api.get(this.ep.obtenerPorId, { 'id-reclamo': idReclamo });
   }
 
   /**

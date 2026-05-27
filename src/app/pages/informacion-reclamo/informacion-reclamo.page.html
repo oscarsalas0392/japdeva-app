@@ -1,0 +1,84 @@
+<app-pagina titulo="{{ 'informacionReclamo.titulo' | translate }}" [atras]="true" [cargando]="cargando()">
+
+  <app-tabs sticky [tabs]="tabs()" [activo]="tabActivo()" (tabCambiado)="tabActivo.set($event)" />
+
+  @if (reclamo()) {
+
+    @if (tabActivo() === 'general') {
+      <app-grupo-campo [top]="true">
+
+        @if (cliente()) {
+          <app-tarjeta titulo="informacionReclamo.infoCliente" icono="person-outline">
+            <app-fila
+              etiqueta="{{ 'informacionReclamo.nombre' | translate }}"
+              [valor]="cliente()!.nombre + ' ' + cliente()!.apellidos" />
+            <app-fila
+              etiqueta="{{ 'informacionReclamo.email' | translate }}"
+              [valor]="cliente()!.correo" />
+            @if (cliente()!.telefono) {
+              <app-fila
+                etiqueta="{{ 'informacionReclamo.telefono' | translate }}"
+                [valor]="cliente()!.telefono!" />
+            }
+          </app-tarjeta>
+        }
+
+        <app-tarjeta titulo="informacionReclamo.detallesReclamo" icono="document-text-outline">
+          <app-fila
+            etiqueta="{{ 'informacionReclamo.codigo' | translate }}"
+            [valor]="generales.codigoReclamo(reclamo()!.id, reclamo()!.fechaRegistro)" />
+          <app-fila
+            etiqueta="{{ 'informacionReclamo.titulo_campo' | translate }}"
+            [valor]="reclamo()!.titulo" />
+          <app-fila
+            etiqueta="{{ 'informacionReclamo.fechaCreacion' | translate }}"
+            [valor]="generales.formatearFecha(reclamo()!.fechaRegistro)" />
+          <app-fila
+            tipo="vertical"
+            etiqueta="{{ 'informacionReclamo.descripcion_campo' | translate }}"
+            [valor]="reclamo()!.descripcion" />
+          <app-fila etiqueta="{{ 'informacionReclamo.archivoCliente' | translate }}" />
+          <app-lista-documentos [documentos]="documentosExternos()" />
+        </app-tarjeta>
+
+      </app-grupo-campo>
+    }
+
+    @if (tabActivo() === 'expediente') {
+      <app-grupo-campo [top]="true">
+        @if (documentosInternos().length > 0) {
+          <app-tarjeta titulo="informacionReclamo.expediente" icono="attach-outline">
+            <app-expediente-digital [documentos]="documentosInternos()" />
+          </app-tarjeta>
+        } @else {
+          <p class="sin-expediente">{{ 'expediente.sinDocumentos' | translate }}</p>
+        }
+      </app-grupo-campo>
+    }
+
+    @if (tabActivo() === 'atencion') {
+      <app-grupo-campo [top]="true">
+        <app-tarjeta titulo="informacionReclamo.departamentoActual" icono="business-outline">
+          <app-fila
+            tipo="vertical"
+            etiqueta="{{ 'informacionReclamo.departamento' | translate }}"
+            [valor]="nombreDepartamentoActual()"
+          />
+          <app-fila
+            etiqueta="{{ 'informacionReclamo.estado' | translate }}"
+            [valor]="reclamo()!.descripcionEstadoDetalleReclamo"
+          />
+        </app-tarjeta>
+        @if (atenciones().length > 0) {
+          @for (atencion of atenciones(); track atencion.id) {
+            <app-tarjeta-atencion [atencion]="atencion" />
+          }
+        } @else if (reclamoSinAtender()) {
+          <p class="sin-expediente">{{ 'detalleReclamo.sinAtencion' | translate }}</p>
+        }
+      </app-grupo-campo>
+    }
+
+  }
+
+</app-pagina>

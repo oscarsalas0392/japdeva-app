@@ -7,10 +7,12 @@
   "errores": {
     "conexion": "Ocurrió un error, por favor intentelo más tarde.",
     "timeout": "La solicitud tardó demasiado. Intente nuevamente.",
-    "servidor": "Error interno del servidor. Contacte al administrador.",
+    "servidor": "Ocurrió un problema con el sistema, por favor inténtelo más tarde.",
     "noAutorizado": "Su sesión ha expirado. Inicie sesión nuevamente.",
     "credencialesInvalidas": "Correo o contraseña incorrectos.",
-    "titulo": "Error"
+    "titulo": "Error",
+    "sesionVencidaTitulo": "Sesión vencida",
+    "sinUsuarioSeleccionado": "Debe buscar un usuario antes de continuar."
   },
   "exito": {
     "operacion": "Operación realizada con éxito.",
@@ -67,16 +69,23 @@
     "exito": "Su contraseña ha sido actualizada correctamente.",
     "error": "No fue posible actualizar la contraseña. Verifique que la contraseña actual sea correcta.",
     "validacion": {
-      "minimaActual": "La contraseña debe tener al menos 8 caracteres.",
-      "minimaNueva": "Debe tener mínimo 8 caracteres, una mayúscula y un número.",
+      "minimaActual": "La contraseña debe tener al menos {{minimo}} caracteres.",
+      "minimaNueva": "Debe tener mínimo {{minimo}} caracteres, una mayúscula y un número.",
       "noCoinciden": "Las contraseñas no coinciden."
     }
+  },
+  "informacionUsuarioInterno": {
+    "titulo": "Ayuda"
   },
   "inicioUsuarioInterno": {
     "titulo": "Reclamos del Departamento",
     "casosPendientes": "Casos Pendientes",
     "sinCasos": "Sin casos asignados",
-    "sinCasosDesc": "No hay reclamos pendientes en el departamento."
+    "sinCasosDesc": "No hay reclamos pendientes en el departamento.",
+    "acciones": {
+      "asignar": "Tomar caso",
+      "errorAsignar": "No fue posible asignar el caso. Intente nuevamente."
+    }
   },
   "inicio": {
     "casosRecientes": "Casos Recientes",
@@ -135,7 +144,7 @@
       "correoInvalido": "Ingrese un correo electrónico válido.",
       "telefonoRequerido": "Ingrese un número de teléfono válido.",
       "fechaNacimientoRequerida": "La fecha de nacimiento es requerida.",
-      "contrasenaMinima": "La contraseña debe tener al menos 6 caracteres.",
+      "contrasenaMinima": "La contraseña debe tener al menos {{minimo}} caracteres.",
       "contrasenaNoCoincide": "Las contraseñas no coinciden."
     }
   },
@@ -157,7 +166,18 @@
     "sinDocumentos": "No hay documentos adjuntos.",
     "sinHistorial": "No hay historial disponible.",
     "errorDescarga": "No fue posible descargar el documento.",
-    "descargaExito": "{{ nombre }} guardado en la carpeta Descargas."
+    "descargaExito": "{{ nombre }} guardado en la carpeta Descargas.",
+    "tabGeneral": "General",
+    "tabDocumentos": "Documentos",
+    "tabAtencion": "Atención",
+    "estado": "Estado",
+    "fechaRegistro": "Fecha de registro",
+    "atendidoPor": "Atendido por",
+    "departamento": "Departamento",
+    "descripcionAtencion": "Descripción de la atención",
+    "fechaInicio": "Fecha de inicio",
+    "fechaUltimaAtencion": "Fecha de finalización",
+    "sinAtencion": "Este reclamo aún no ha sido atendido."
   },
   "nuevoReclamo": {
     "titulo": "Nuevo Reclamo",
@@ -178,6 +198,26 @@
       "tituloRequerido": "El título es requerido.",
       "descripcionRequerida": "La descripción es requerida."
     }
+  },
+  "informacionReclamo": {
+    "titulo": "Información del Reclamo",
+    "infoCliente": "Información del Cliente",
+    "detallesReclamo": "Detalles del Reclamo",
+    "archivoCliente": "Archivo adjunto por el cliente",
+    "nombre": "Nombre",
+    "email": "Email",
+    "telefono": "Teléfono",
+    "codigo": "Código",
+    "titulo_campo": "Título",
+    "fechaCreacion": "Fecha de creación",
+    "descripcion_campo": "Descripción:",
+    "expediente": "Expediente Digital",
+    "tabGeneral": "General",
+    "tabExpediente": "Expediente",
+    "tabAtencion": "Atención",
+    "departamentoActual": "Departamento actual",
+    "departamento": "Departamento",
+    "estado": "Estado actual"
   },
   "atenderReclamo": {
     "titulo": "Atender Reclamo",
@@ -213,6 +253,33 @@
   "buscar": {
     "sinResultados": "Sin resultados",
     "sinResultadosDesc": "No se encontraron reclamos con los criterios de búsqueda."
+  },
+  "buscarReclamosFechaEstado": {
+    "titulo": "Buscar Reclamos",
+    "headerTitulo": "Filtrar reclamos",
+    "headerSubtitulo": "Seleccione un rango de fechas y un estado para consultar los reclamos.",
+    "fechaInicio": "Fecha de inicio",
+    "fechaFin": "Fecha de fin",
+    "seleccioneFecha": "Seleccione una fecha",
+    "estado": "Estado",
+    "seleccioneEstado": "Seleccione un estado",
+    "fechaInicioRequerida": "La fecha de inicio es requerida.",
+    "estadoRequerido": "Seleccione un estado.",
+    "fechasInvalidas": "La fecha de inicio no puede ser mayor que la fecha de fin.",
+    "buscar": "Buscar"
+  },
+  "buscarReclamosId": {
+    "titulo": "Buscar Reclamo",
+    "headerTitulo": "Buscar por ID",
+    "headerSubtitulo": "Ingrese el número de ID del reclamo que desea consultar.",
+    "idReclamo": "ID del Reclamo",
+    "idReclamoPlaceholder": "Ingrese el ID del reclamo",
+    "idReclamoRequerido": "Ingrese un ID de reclamo válido.",
+    "sinResultados": "No se encontró un reclamo con ese ID.",
+    "buscar": "Buscar"
+  },
+  "resultadosReclamos": {
+    "titulo": "Resultados de la Búsqueda"
   },
   "gestionUsuarios": {
     "titulo": "Gestión Usuarios",

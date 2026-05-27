@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonIcon } from '@ionic/angular/standalone';
@@ -9,6 +10,7 @@ import { TarjetaComponent } from '../../components/tarjeta/tarjeta.component';
 import { FilaComponent } from '../../components/fila/fila.component';
 import { CampoSelectComponent } from '../../components/campo-select/campo-select.component';
 import { BotonCargandoComponent } from '../../components/boton-cargando/boton-cargando.component';
+import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { UsuariosService } from '../../core/services/usuarios.service';
 import { EstadoAppService } from '../../core/state/app.service';
@@ -34,6 +36,7 @@ import { OpcionSelectModel } from '../../core/models/opcion-select.model';
     FilaComponent,
     CampoSelectComponent,
     BotonCargandoComponent,
+    GrupoCampoComponent,
   ],
 })
 export class GestionUsuariosPage implements OnInit {
@@ -41,6 +44,7 @@ export class GestionUsuariosPage implements OnInit {
   private readonly estadoService   = inject(EstadoAppService);
   private readonly popup           = inject(PopupAvisoService);
   private readonly translate       = inject(TranslateService);
+  private readonly router          = inject(Router);
   private readonly fb              = inject(FormBuilder);
 
   readonly guardando     = signal(false);
@@ -77,6 +81,13 @@ export class GestionUsuariosPage implements OnInit {
     const nav = history.state;
     if (nav?.usuario) {
       await this.cargarDatosUsuario(nav.usuario);
+    } else {
+      this.popup.mostrar({
+        tipo: 'error',
+        titulo: this.translate.instant('errores.titulo'),
+        mensaje: this.translate.instant('errores.sinUsuarioSeleccionado'),
+      });
+      await this.router.navigate(['/inicio-usuario-interno'], { replaceUrl: true });
     }
   }
 
@@ -85,38 +96,38 @@ export class GestionUsuariosPage implements OnInit {
     this.usuarioRol    = null;
     this.deptoAsignado = null;
 
-    const adminResp = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    this.adminId    = adminResp?.id ?? 0;
+    const adminRespuesta = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    this.adminId    = adminRespuesta?.id ?? 0;
 
-    const [rolesResp, deptosResp, usuarioRolResp, deptoResp] = await Promise.all([
+    const [rolesRespuesta, departamentosRespuesta, usuarioRolRespuesta, departamentoRespuesta] = await Promise.all([
       this.usuariosService.obtenerRoles(),
       this.usuariosService.obtenerDepartamentos(),
       this.usuariosService.obtenerRolPorUsuario(encontrado.id),
       this.usuariosService.obtenerDepartamentoPorUsuario(encontrado.id),
     ]);
 
-    if (rolesResp.Exito && Array.isArray(rolesResp.Datos)) {
-      this.roles.set(rolesResp.Datos
+    if (rolesRespuesta.Exito && Array.isArray(rolesRespuesta.Datos)) {
+      this.roles.set(rolesRespuesta.Datos
         .filter(r => r.activo)
         .map(r => ({ valor: r.id, etiqueta: r.descripcion }))
       );
     }
 
-    if (deptosResp.Exito && Array.isArray(deptosResp.Datos)) {
-      this.departamentos.set(deptosResp.Datos
+    if (departamentosRespuesta.Exito && Array.isArray(departamentosRespuesta.Datos)) {
+      this.departamentos.set(departamentosRespuesta.Datos
         .filter(d => d.activo)
         .map(d => ({ valor: d.id, etiqueta: d.descripcion }))
       );
     }
 
-    if (usuarioRolResp.Exito && usuarioRolResp.Datos) {
-      this.usuarioRol = usuarioRolResp.Datos;
-      this.formAsignacion.patchValue({ idRol: this.usuarioRol.idRol });
+    if (usuarioRolRespuesta.Exito && usuarioRolRespuesta.Datos) {
+      this.usuarioRol = usuarioRolRespuesta.Datos;
+      this.formAsignacion.patchValue({ idRol: usuarioRolRespuesta.Datos.idRol });
     }
 
-    if (deptoResp.Exito && deptoResp.Datos) {
-      this.deptoAsignado = deptoResp.Datos;
-      this.formAsignacion.patchValue({ idDepartamento: this.deptoAsignado.idDepartamento });
+    if (departamentoRespuesta.Exito && departamentoRespuesta.Datos) {
+      this.deptoAsignado = departamentoRespuesta.Datos;
+      this.formAsignacion.patchValue({ idDepartamento: departamentoRespuesta.Datos.idDepartamento });
     }
 
     this.usuario.set(encontrado);
@@ -129,7 +140,7 @@ export class GestionUsuariosPage implements OnInit {
     this.guardando.set(true);
     const { idRol, idDepartamento } = this.formAsignacion.getRawValue();
 
-    const [rolResp, deptoOk] = await Promise.all([
+    const [rolRespuesta, departamentoActualizado] = await Promise.all([
       this.usuariosService.actualizarRolUsuario({
         Id:        this.usuarioRol.id,
         IdRol:     idRol!,
@@ -140,8 +151,9 @@ export class GestionUsuariosPage implements OnInit {
 
     this.guardando.set(false);
 
-    if (!rolResp.Exito || !deptoOk) {
-      this.popup.mostrar({ tipo: 'error', titulo: this.translate.instant('errores.titulo'), mensaje: rolResp.Mensaje });
+    if (rolRespuesta.Manejado) return;
+    if (!rolRespuesta.Exito || !departamentoActualizado) {
+      this.popup.mostrar({ tipo: 'error', titulo: this.translate.instant('errores.titulo'), mensaje: rolRespuesta.Mensaje });
       return;
     }
 
@@ -153,12 +165,12 @@ export class GestionUsuariosPage implements OnInit {
       if (this.deptoAsignado) {
         await this.usuariosService.eliminarDepartamentoUsuario(this.deptoAsignado.id);
       }
-      const r = await this.usuariosService.agregarDepartamentoUsuario({
+      const agregarDeptoRespuesta = await this.usuariosService.agregarDepartamentoUsuario({
         IdUsuario:              this.usuario()!.id,
         IdDepartamento:         idDepartamento,
         IdUsuarioAdministrador: this.adminId,
       });
-      return r.Exito;
+      return agregarDeptoRespuesta.Exito;
     } catch {
       return false;
     }

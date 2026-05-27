@@ -25,16 +25,26 @@ export class ExpedienteDigitalComponent {
   readonly descargando  = signal<number | null>(null);
   readonly expandido    = signal(false);
 
+  /** Solo se muestran documentos que tengan una descripción asociada. */
+  private get documentosConDescripcion(): DocumentoInternoRespuestaModel[] {
+    return this.documentos.filter(d => !!d.descripcionDetalleReclamo?.trim());
+  }
+
   get visibles(): DocumentoInternoRespuestaModel[] {
-    return this.expandido() ? this.documentos : this.documentos.slice(0, PAGE_SIZE);
+    const lista = this.documentosConDescripcion;
+    return this.expandido() ? lista : lista.slice(0, PAGE_SIZE);
   }
 
   get hayMas(): boolean {
-    return this.documentos.length > PAGE_SIZE;
+    return this.documentosConDescripcion.length > PAGE_SIZE;
   }
 
   get restantes(): number {
-    return this.documentos.length - PAGE_SIZE;
+    return this.documentosConDescripcion.length - PAGE_SIZE;
+  }
+
+  get vacio(): boolean {
+    return this.documentosConDescripcion.length === 0;
   }
 
   constructor() {

@@ -15,6 +15,7 @@ import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
 export class ListaReclamosComponent {
   @Input() reclamos: ReclamoRespuestaModel[] = [];
   @Input() opciones: OpcionAccionModel[] = [];
+  @Input() opcionesPorReclamo?: (reclamo: ReclamoRespuestaModel) => OpcionAccionModel[];
   @Input() cargando = false;
   @Input() mostrarConteo = false;
   @Input() tituloVacio = 'buscar.sinResultados';

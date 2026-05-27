@@ -1,0 +1,15 @@
+<app-pagina titulo="{{ 'resultadosReclamos.titulo' | translate }}" [atras]="true">
+
+  @if (paginaLista()) {
+    <app-lista-reclamos
+      [reclamos]="reclamos()"
+      [opciones]="opcionesReclamo"
+      [mostrarConteo]="true"
+      [mostrarEstadoDetalle]="true"
+      tituloVacio="buscar.sinResultados"
+      subtituloVacio="buscar.sinResultadosDesc"
+      (accion)="manejarAccion($event.accionId, $event.reclamo)"
+    />
+  }
+
+</app-pagina>

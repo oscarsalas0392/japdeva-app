@@ -6,14 +6,17 @@
     </div>
     <span class="item__titulo">{{ reclamo.titulo }}</span>
     <p class="item__descripcion">{{ reclamo.descripcion }}</p>
+    @if (mostrarEstadoDetalle && reclamo.nombreUsuarioInterno) {
+      <span class="item__asignado">{{ reclamo.nombreUsuarioInterno }}</span>
+    }
     <div class="item__fila-bottom">
-      @if (mostrarEstadoDetalle && reclamo.descripcionEstadoDetalleReclamo) {
-        <span class="item__estado-detalle">{{ reclamo.descripcionEstadoDetalleReclamo }}</span>
-      } @else {
-        <span class="item__estado" [class]="claseEstado">
+      <span class="item__estado" [class]="claseEstado">
+        @if (mostrarEstadoDetalle && reclamo.descripcionEstadoDetalleReclamo) {
+          {{ reclamo.descripcionEstadoDetalleReclamo }}
+        } @else {
           {{ reclamo.descripcionEstadoReclamo }}
-        </span>
-      }
+        }
+      </span>
       <span class="item__fecha">{{ fechaFormateada }}</span>
     </div>
   </div>

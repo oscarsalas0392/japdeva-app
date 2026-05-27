@@ -1,5 +1,5 @@
 <section class="expediente">
-  @if (documentos.length === 0) {
+  @if (vacio) {
     <p class="expediente__vacio">{{ 'expediente.sinDocumentos' | translate }}</p>
   } @else {
     <div class="expediente__lista">

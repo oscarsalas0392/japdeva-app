@@ -1,12 +1,10 @@
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { IonIcon } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { documentOutline } from 'ionicons/icons';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { CampoDetalleComponent } from '../../components/campo-detalle/campo-detalle.component';
 import { ListaDocumentosComponent } from '../../components/lista-documentos/lista-documentos.component';
+import { TabsComponent, TabItem } from '../../components/tabs/tabs.component';
 import { ReclamoService } from '../../core/services/reclamo.service';
 import { DetalleReclamoService } from '../../core/services/detalle-reclamo.service';
 import { GeneralesService } from '../../core/services/generales.service';
@@ -20,7 +18,7 @@ import { DocumentoUsuarioRespuestaModel } from '../../core/models/reclamos/docum
   styleUrls: ['./detalle-reclamo.page.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, IonIcon, PaginaComponent, CampoDetalleComponent, ListaDocumentosComponent],
+  imports: [TranslateModule, PaginaComponent, CampoDetalleComponent, ListaDocumentosComponent, TabsComponent],
 })
 export class DetalleReclamoPage implements OnInit {
   private readonly reclamoService  = inject(ReclamoService);
@@ -32,12 +30,14 @@ export class DetalleReclamoPage implements OnInit {
   readonly historial  = signal<DetalleReclamoRespuestaModel[]>([]);
   readonly documentos = signal<DocumentoUsuarioRespuestaModel[]>([]);
   readonly cargando   = signal(true);
+  readonly tabActivo  = signal('general');
+
+  readonly tabs: TabItem[] = [
+    { id: 'general',    etiqueta: 'detalleReclamo.tabGeneral'    },
+    { id: 'documentos', etiqueta: 'detalleReclamo.tabDocumentos' },
+  ];
 
   private idReclamo = 0;
-
-  constructor() {
-    addIcons({ documentOutline });
-  }
 
   async ngOnInit(): Promise<void> {
     this.idReclamo = Number(this.route.snapshot.paramMap.get('id'));
@@ -48,26 +48,23 @@ export class DetalleReclamoPage implements OnInit {
   }
 
   private async cargarDocumentos(): Promise<void> {
-    const r = await this.reclamoService.obtenerDocumentosUsuario(this.idReclamo);
-    if (r.Exito && r.Datos?.lista) this.documentos.set(r.Datos.lista);
+    const documentosRespuesta = await this.reclamoService.obtenerDocumentosUsuario(this.idReclamo);
+    if (documentosRespuesta.Exito && documentosRespuesta.Datos?.lista) this.documentos.set(documentosRespuesta.Datos.lista);
   }
 
   private async cargarHistorial(): Promise<void> {
-    const r = await this.detalleService.obtenerHistorico(this.idReclamo);
-    if (r.Exito && r.Datos?.lista) this.historial.set(r.Datos.lista);
+    const historialRespuesta = await this.detalleService.obtenerHistorico(this.idReclamo);
+    if (historialRespuesta.Exito && historialRespuesta.Datos?.lista) this.historial.set(historialRespuesta.Datos.lista);
   }
 
   get codigo(): string {
-    const r = this.reclamo();
-    return r ? this.generales.codigoReclamo(r.id, r.fechaRegistro) : '';
+    const reclamoActual = this.reclamo();
+    return reclamoActual ? this.generales.codigoReclamo(reclamoActual.id, reclamoActual.fechaRegistro) : '';
   }
 
   get estadoActual() {
-    const h = this.historial();
-    return h.length ? h[h.length - 1] : null;
+    const historialActual = this.historial();
+    return historialActual.length ? historialActual[historialActual.length - 1] : null;
   }
 
-  get claseEstado(): string {
-    return this.generales.claseEstadoReclamo(this.reclamo()?.idEstadoReclamo ?? 0);
-  }
 }

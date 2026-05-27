@@ -1,16 +1,22 @@
-import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { SeccionHeaderComponent } from '../../components/seccion-header/seccion-header.component';
 import { ListaReclamosComponent } from '../../components/lista-reclamos/lista-reclamos.component';
 import { ReclamoService } from '../../core/services/reclamo.service';
+import { DetalleReclamoService } from '../../core/services/detalle-reclamo.service';
 import { UsuariosService } from '../../core/services/usuarios.service';
 import { EstadoAppService } from '../../core/state/app.service';
+import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { DepartamentoUsuarioRespuestaModel } from '../../core/models/usuarios/departamento-usuario.model';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
 import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
+
+const ESTADO_PENDIENTE  = 1;
+const ESTADO_EN_PROCESO = 2;
 
 @Component({
   selector: 'app-inicio-usuario-interno',
@@ -21,25 +27,45 @@ import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
   imports: [TranslateModule, PaginaComponent, SeccionHeaderComponent, ListaReclamosComponent],
 })
 export class InicioUsuarioInternoPage implements OnInit {
-  private readonly reclamoService  = inject(ReclamoService);
-  private readonly usuariosService = inject(UsuariosService);
-  private readonly estadoService   = inject(EstadoAppService);
-  private readonly router          = inject(Router);
+  private readonly reclamoService        = inject(ReclamoService);
+  private readonly detalleReclamoService = inject(DetalleReclamoService);
+  private readonly usuariosService       = inject(UsuariosService);
+  private readonly estadoService         = inject(EstadoAppService);
+  private readonly router                = inject(Router);
+  private readonly popup                 = inject(PopupAvisoService);
+  private readonly translate             = inject(TranslateService);
+  private readonly cdr                   = inject(ChangeDetectorRef);
 
   readonly cargando = signal(true);
   readonly saludo   = signal('');
   readonly reclamos = signal<ReclamoRespuestaModel[]>([]);
 
   private idDepartamento = 0;
+  private idUsuarioActual = 0;
 
-  readonly opcionesReclamo: OpcionAccionModel[] = [
-    { id: 'atender', etiqueta: 'atenderReclamo.atender' },
-  ];
+  readonly opcionesReclamo = (reclamo: ReclamoRespuestaModel): OpcionAccionModel[] => {
+    const opciones: OpcionAccionModel[] = [
+      { id: 'ver', etiqueta: 'inicio.acciones.ver' },
+    ];
+
+    if (reclamo.idEstadoDetalleReclamo === ESTADO_PENDIENTE) {
+      opciones.push({ id: 'asignar', etiqueta: 'inicioUsuarioInterno.acciones.asignar' });
+    }
+
+    if (reclamo.idEstadoDetalleReclamo === ESTADO_EN_PROCESO && reclamo.idUsuarioInterno === this.idUsuarioActual) {
+      opciones.push({ id: 'atender', etiqueta: 'atenderReclamo.atender' });
+    }
+
+    return opciones;
+  };
 
   async ngOnInit(): Promise<void> {
-    const u = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (u) this.saludo.set(`Hola, ${u.nombre}`);
-    await this.cargarDatos(u?.id ?? 0);
+    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    if (usuarioSesion) {
+      this.saludo.set(`Hola, ${usuarioSesion.nombre}`);
+      this.idUsuarioActual = usuarioSesion.id;
+    }
+    await this.cargarDatos(usuarioSesion?.id ?? 0);
   }
 
   async ionViewWillEnter(): Promise<void> {
@@ -47,9 +73,16 @@ export class InicioUsuarioInternoPage implements OnInit {
   }
 
   private async cargarDatos(idUsuario: number): Promise<void> {
-    const depResp = await this.usuariosService.obtenerDepartamentoPorUsuario(idUsuario);
-    if (depResp.Exito && depResp.Datos) {
-      this.idDepartamento = depResp.Datos.idDepartamento;
+    // Primero intentamos leer del cache (guardado al hacer login).
+    const cacheado = await this.estadoService.obtener<DepartamentoUsuarioRespuestaModel>(ClavesEstado.departamentoUsuario);
+    if (cacheado?.idDepartamento) {
+      this.idDepartamento = cacheado.idDepartamento;
+    } else {
+      const departamentoRespuesta = await this.usuariosService.obtenerDepartamentoPorUsuario(idUsuario);
+      if (departamentoRespuesta.Exito && departamentoRespuesta.Datos) {
+        this.idDepartamento = departamentoRespuesta.Datos.idDepartamento;
+        await this.estadoService.guardar(ClavesEstado.departamentoUsuario, departamentoRespuesta.Datos);
+      }
     }
     await this.cargarReclamos();
   }
@@ -57,15 +90,56 @@ export class InicioUsuarioInternoPage implements OnInit {
   private async cargarReclamos(): Promise<void> {
     this.cargando.set(true);
     if (this.idDepartamento) {
-      const r = await this.reclamoService.obtenerPorDepartamento(this.idDepartamento);
-      if (r.Exito && r.Datos?.lista) this.reclamos.set(r.Datos.lista);
+      const reclamosRespuesta = await this.reclamoService.obtenerPorDepartamento(this.idDepartamento);
+      if (reclamosRespuesta.Exito && reclamosRespuesta.Datos?.lista) this.reclamos.set(reclamosRespuesta.Datos.lista);
     }
     this.cargando.set(false);
   }
 
-  manejarAccion(accionId: string, reclamo: ReclamoRespuestaModel): void {
-    if (accionId === 'atender') {
+  async manejarAccion(accionId: string, reclamo: ReclamoRespuestaModel): Promise<void> {
+    if (accionId === 'asignar') {
+      await this.asignarReclamo(reclamo);
+    } else if (accionId === 'atender') {
       this.router.navigate(['/atender-reclamo', reclamo.id], { state: { reclamo } });
+    } else if (accionId === 'ver') {
+      await this.estadoService.guardar(ClavesEstado.departamentoReclamo, reclamo.descripcionDepartamento);
+      this.router.navigate(['/informacion-reclamo', reclamo.id], { state: { reclamo } });
     }
+  }
+
+  private async asignarReclamo(reclamo: ReclamoRespuestaModel): Promise<void> {
+    const detalleRespuesta = await this.detalleReclamoService.obtenerPorDepartamentoYEstado(
+      reclamo.idDepartamentoActual, ESTADO_PENDIENTE, reclamo.id,
+    );
+
+    if (detalleRespuesta.Manejado) return;
+    if (!detalleRespuesta.Exito || !detalleRespuesta.Datos) {
+      this.popup.mostrar({
+        tipo: 'error',
+        titulo: this.translate.instant('errores.titulo'),
+        mensaje: this.translate.instant('inicioUsuarioInterno.acciones.errorAsignar'),
+      });
+      return;
+    }
+
+    const respuesta = await this.detalleReclamoService.asignar({
+      IdDetalleReclamo: detalleRespuesta.Datos.id,
+      IdUsuarioInterno: this.idUsuarioActual,
+    });
+
+    if (respuesta.Manejado) return;
+    if (!respuesta.Exito) {
+      this.popup.mostrar({
+        tipo: 'error',
+        titulo: this.translate.instant('errores.titulo'),
+        mensaje: respuesta.Mensaje || this.translate.instant('inicioUsuarioInterno.acciones.errorAsignar'),
+      });
+      return;
+    }
+
+    await this.cargarReclamos();
+    this.cdr.markForCheck();
+
+    this.router.navigate(['/atender-reclamo', reclamo.id], { state: { reclamo } });
   }
 }

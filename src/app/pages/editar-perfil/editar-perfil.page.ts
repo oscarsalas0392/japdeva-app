@@ -51,14 +51,14 @@ export class EditarPerfilPage implements OnInit {
   enviado = false;
 
   async ngOnInit(): Promise<void> {
-    const u = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (u) {
-      this.usuarioId = u.id;
+    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    if (usuarioSesion) {
+      this.usuarioId = usuarioSesion.id;
       this.form.patchValue({
-        nombre: u.nombre,
-        apellidos: u.apellidos,
-        telefono: u.telefono,
-        fechaNacimiento: u.fechaNacimiento,
+        nombre: usuarioSesion.nombre,
+        apellidos: usuarioSesion.apellidos,
+        telefono: usuarioSesion.telefono,
+        fechaNacimiento: usuarioSesion.fechaNacimiento,
       });
     }
   }
@@ -83,6 +83,7 @@ export class EditarPerfilPage implements OnInit {
     this.cargando = false;
     this.form.enable();
 
+    if (respuesta.Manejado) return;
     if (!respuesta.Exito) {
       this.popup.mostrar({
         tipo: 'error',
@@ -92,10 +93,10 @@ export class EditarPerfilPage implements OnInit {
       return;
     }
 
-    const u = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (u) {
+    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    if (usuarioSesion) {
       await this.estadoService.guardar(ClavesEstado.usuario, {
-        ...u,
+        ...usuarioSesion,
         nombre: nombre!,
         apellidos: apellidos!,
         telefono: telefono!,

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { CampoFormularioComponent } from '../../components/campo-formulario/camp
 import { BotonCargandoComponent } from '../../components/boton-cargando/boton-cargando.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
+import { ParametrosService } from '../../core/services/parametros.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
@@ -44,17 +45,26 @@ function contrasenasCoincidenValidator(control: AbstractControl): ValidationErro
     BotonCargandoComponent,
   ],
 })
-export class CambiarContrasenaPage {
-  private readonly authService = inject(AuthService);
-  private readonly estadoService = inject(EstadoAppService);
-  private readonly popup = inject(PopupAvisoService);
-  private readonly translate = inject(TranslateService);
-  private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
+export class CambiarContrasenaPage implements OnInit {
+  private readonly authService       = inject(AuthService);
+  private readonly estadoService     = inject(EstadoAppService);
+  private readonly popup             = inject(PopupAvisoService);
+  private readonly translate         = inject(TranslateService);
+  private readonly router            = inject(Router);
+  private readonly fb                = inject(FormBuilder);
+  private readonly parametrosService = inject(ParametrosService);
+
+  readonly minimoContrasena = signal(6);
+  readonly mensajeActual    = computed(() =>
+    this.translate.instant('cambiarContrasena.validacion.minimaActual', { minimo: this.minimoContrasena() })
+  );
+  readonly mensajeNueva     = computed(() =>
+    this.translate.instant('cambiarContrasena.validacion.minimaNueva', { minimo: this.minimoContrasena() })
+  );
 
   readonly form = this.fb.group({
-    actual:    ['', [Validators.required, Validators.minLength(8)]],
-    nueva:     ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
+    actual:    ['', [Validators.required, Validators.minLength(6)]],
+    nueva:     ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
     confirmar: ['', [Validators.required]],
   }, { validators: contrasenasCoincidenValidator });
 
@@ -66,6 +76,24 @@ export class CambiarContrasenaPage {
 
   cargando = false;
   enviado = false;
+
+  async ngOnInit(): Promise<void> {
+    await this.cargarMinimoContrasena();
+  }
+
+  private async cargarMinimoContrasena(): Promise<void> {
+    const respuesta = await this.parametrosService.obtenerParametroPorNombre('MinimoCaracteresContrasena').catch(() => null);
+    if (!respuesta?.Exito || !respuesta.Datos?.valor1) return;
+    const minimo = parseInt(respuesta.Datos.valor1, 10);
+    if (isNaN(minimo) || minimo < 1) return;
+    this.minimoContrasena.set(minimo);
+    const actualControl = this.form.get('actual')!;
+    actualControl.setValidators([Validators.required, Validators.minLength(minimo)]);
+    actualControl.updateValueAndValidity();
+    const nuevaControl = this.form.get('nueva')!;
+    nuevaControl.setValidators([Validators.required, Validators.minLength(minimo), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]);
+    nuevaControl.updateValueAndValidity();
+  }
 
   get confirmarInvalido(): boolean {
     return this.enviado && this.form.get('confirmar')!.invalid;
@@ -90,6 +118,7 @@ export class CambiarContrasenaPage {
     this.cargando = false;
     this.form.enable();
 
+    if (respuesta.Manejado) return;
     if (!respuesta.Exito) {
       this.popup.mostrar({
         tipo: 'error',

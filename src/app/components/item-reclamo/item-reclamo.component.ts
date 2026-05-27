@@ -32,6 +32,9 @@ export class ItemReclamoComponent {
   }
 
   get claseEstado(): string {
-    return this.generales.claseEstadoReclamo(this.reclamo.idEstadoReclamo);
+    const id = this.mostrarEstadoDetalle && this.reclamo.idEstadoDetalleReclamo
+      ? this.reclamo.idEstadoDetalleReclamo
+      : this.reclamo.idEstadoReclamo;
+    return this.generales.claseEstadoReclamo(id);
   }
 }

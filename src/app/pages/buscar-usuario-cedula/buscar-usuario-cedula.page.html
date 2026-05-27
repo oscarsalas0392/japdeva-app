@@ -1,7 +1,7 @@
 <app-pagina titulo="{{ 'buscarUsuarioCedula.titulo' | translate }}" [atras]="true" [cargando]="cargando()">
   @if (paginaLista()) {
-    <div class="pagina">
-      <form [formGroup]="form" (ngSubmit)="buscar()">
+    <form [formGroup]="form" (ngSubmit)="buscar()">
+      <app-grupo-campo [top]="true">
         <app-campo-select
           label="buscarUsuarioCedula.tipoCedula"
           placeholder="buscarUsuarioCedula.seleccioneTipo"
@@ -11,6 +11,8 @@
           [enviado]="enviado"
           [opciones]="tiposCedula()"
         />
+      </app-grupo-campo>
+      <app-grupo-campo [top]="true">
         <app-campo-formulario
           label="buscarUsuarioCedula.cedula"
           placeholder="buscarUsuarioCedula.cedulaPlaceholder"
@@ -18,14 +20,15 @@
           [control]="form.get('cedula')!"
           mensajeError="buscarUsuarioCedula.cedulaRequerida"
           [enviado]="enviado"
+          [formato]="tipoSeleccionado()?.formato ?? ''"
           autocomplete="off"
         />
-        <app-boton-cargando
-          etiqueta="buscarUsuarioCedula.buscar"
-          tipo="submit"
-          [cargando]="buscando()"
-        />
-      </form>
-    </div>
+      </app-grupo-campo>
+      <app-boton-cargando
+        etiqueta="buscarUsuarioCedula.buscar"
+        tipo="submit"
+        [cargando]="buscando()"
+      />
+    </form>
   }
 </app-pagina>

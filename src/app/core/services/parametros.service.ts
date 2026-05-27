@@ -6,21 +6,23 @@ import { RespuestaListaModel } from '../models/respuesta-lista.model';
 import { Mensaje } from '../models/parametros/mensaje.model';
 
 import { Menu } from '../models/parametros/menu.model';
+import { OpcionPantalla } from '../models/parametros/opcion-pantalla.model';
 import { ParametroModel } from '../models/parametros/parametro.model';
 
 @Injectable({ providedIn: 'root' })
 export class ParametrosService {
-  private readonly api        = inject(ApiService);
-  private readonly epMensaje  = environment.endpoints.parametros.mensaje;
-  private readonly epMenu     = environment.endpoints.parametros.menu;
-  private readonly epParametro = environment.endpoints.parametros.parametro;
+  private readonly api              = inject(ApiService);
+  private readonly epMensaje        = environment.endpoints.parametros.mensaje;
+  private readonly epMenu           = environment.endpoints.parametros.menu;
+  private readonly epParametro      = environment.endpoints.parametros.parametro;
+  private readonly epOpcionPantalla = environment.endpoints.parametros.opcionPantalla;
 
   obtenerMensajesPorPantalla(pantalla: number): Promise<RespuestaModel<RespuestaListaModel<Mensaje>>> {
     return this.api.get(this.epMensaje.obtenerPorPantalla, { pantalla });
   }
 
-  obtenerMenusPorPerfil(idPerfil: number): Promise<RespuestaModel<RespuestaListaModel<Menu>>> {
-    return this.api.get(this.epMenu.obtenerPorPerfil, { idPerfil });
+  obtenerMenusPorPerfil(idPerfil: number): Promise<RespuestaModel<Menu[]>> {
+    return this.api.get(this.epMenu.obtenerPorPerfil, { 'id-perfil': idPerfil });
   }
 
   obtenerParametroPorNombre(nombre: string): Promise<RespuestaModel<ParametroModel>> {
@@ -29,5 +31,9 @@ export class ParametrosService {
 
   obtenerParametrosPorNombres(nombres: string[]): Promise<RespuestaModel<ParametroModel[]>> {
     return this.api.get(this.epParametro.obtenerPorNombres, { nombres });
+  }
+
+  obtenerOpcionPantallaPorPerfil(idPerfil: number): Promise<RespuestaModel<OpcionPantalla[]>> {
+    return this.api.get(this.epOpcionPantalla.obtenerPorPerfil, { 'id-perfil': idPerfil });
   }
 }

@@ -62,10 +62,10 @@ export class BuscarPage implements OnInit {
   private usuarioId = 0;
 
   async ngOnInit(): Promise<void> {
-    const u = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (u) this.usuarioId = u.id;
-    const r = await this.reclamoService.obtenerPorUsuarioOrdenado(this.usuarioId);
-    if (r.Exito && r.Datos?.lista) this.todosReclamos.set(r.Datos.lista);
+    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    if (usuarioSesion) this.usuarioId = usuarioSesion.id;
+    const reclamosRespuesta = await this.reclamoService.obtenerPorUsuarioOrdenado(this.usuarioId);
+    if (reclamosRespuesta.Exito && reclamosRespuesta.Datos?.lista) this.todosReclamos.set(reclamosRespuesta.Datos.lista);
     this.cargando.set(false);
   }
 

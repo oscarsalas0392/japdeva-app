@@ -24,7 +24,9 @@ export class FooterNavComponent implements OnInit {
   private readonly router        = inject(Router);
   private readonly destroyRef    = inject(DestroyRef);
 
-  readonly rutaInicio = signal('/inicio');
+  readonly rutaInicio       = signal('/inicio');
+  readonly rutaInformacion  = signal('/informacion');
+  readonly rutaBuscar       = signal('/buscar');
 
   constructor() {
     addIcons({ homeOutline, personOutline, menuOutline, documentTextOutline, searchOutline });
@@ -40,10 +42,10 @@ export class FooterNavComponent implements OnInit {
 
   private async actualizarRuta(): Promise<void> {
     const idRol = await this.estadoService.obtener<number>(ClavesEstado.idRol);
-    this.rutaInicio.set(ROLES_INTERNOS.includes(idRol ?? 0)
-      ? '/inicio-usuario-interno'
-      : '/inicio'
-    );
+    const esInterno = ROLES_INTERNOS.includes(idRol ?? 0);
+    this.rutaInicio.set(esInterno ? '/inicio-usuario-interno' : '/inicio');
+    this.rutaInformacion.set(esInterno ? '/informacion-usuario-interno' : '/informacion');
+    this.rutaBuscar.set(esInterno ? '/buscar-reclamos-id' : '/buscar');
   }
 
   async abrirMenu(): Promise<void> {

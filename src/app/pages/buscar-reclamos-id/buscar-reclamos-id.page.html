@@ -1,0 +1,38 @@
+<app-pagina titulo="{{ 'buscarReclamosId.titulo' | translate }}" [atras]="true">
+
+  @if (paginaLista()) {
+
+    <app-seccion-header
+      icono="document-text-outline"
+      titulo="buscarReclamosId.headerTitulo"
+      subtitulo="buscarReclamosId.headerSubtitulo"
+    />
+
+    <app-tarjeta>
+      <form [formGroup]="form" (ngSubmit)="buscar()">
+
+        <app-grupo-campo>
+          <app-campo-formulario
+            [control]="form.get('idReclamo')!"
+            tipo="number"
+            label="buscarReclamosId.idReclamo"
+            placeholder="buscarReclamosId.idReclamoPlaceholder"
+            mensajeError="buscarReclamosId.idReclamoRequerido"
+            [enviado]="enviado"
+          />
+        </app-grupo-campo>
+
+        <app-grupo-campo [top]="true" [bottom]="false">
+          <app-boton-cargando
+            etiqueta="buscarReclamosId.buscar"
+            tipo="submit"
+            [cargando]="buscando()"
+          />
+        </app-grupo-campo>
+
+      </form>
+    </app-tarjeta>
+
+  }
+
+</app-pagina>

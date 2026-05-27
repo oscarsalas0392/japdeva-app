@@ -5,6 +5,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { provideTranslateService, provideTranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader, provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideStore } from '@ngxs/store';
+import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
@@ -17,7 +18,10 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular({ scrollAssist: false, scrollPadding: false }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
-    provideStore([EstadoApp]),
+    provideStore(
+      [EstadoApp],
+      withNgxsStoragePlugin({ keys: ['app'] }),
+    ),
     ...provideTranslateHttpLoader({ prefix: './assets/i18n/', suffix: '.json' }),
     provideTranslateService({
       lang: 'es',

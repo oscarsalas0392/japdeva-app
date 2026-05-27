@@ -52,6 +52,12 @@
     overflow: hidden;
   }
 
+  &__asignado {
+    font-size: 12px;
+    color: var(--color-primario, #0057a8);
+    font-weight: 600;
+  }
+
   &__fila-bottom {
     display: flex;
     align-items: center;
@@ -74,16 +80,6 @@
   font-weight: 600;
 }
 
-.item__estado-detalle {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  background: var(--color-fondo-detalle);
-  color: var(--color-texto-titulo);
-}
-
 .estado--pendiente {
   background: #fff3cd;
   color: #856404;
@@ -102,4 +98,9 @@
 .estado--rechazado {
   background: #f8d7da;
   color: #721c24;
+}
+
+.estado--devuelto {
+  background: #ffe5cc;
+  color: #8a4a00;
 }

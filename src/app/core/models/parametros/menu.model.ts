@@ -4,4 +4,5 @@ export interface Menu {
   ruta?: string;
   icono?: string;
   orden?: number;
+  idPadre?: number;
 }

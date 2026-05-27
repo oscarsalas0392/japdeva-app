@@ -6,7 +6,7 @@
   }
   <div class="lista">
     @for (reclamo of reclamos; track reclamo.id) {
-      <app-item-seleccionable [opciones]="opciones" (accion)="accion.emit({ accionId: $event, reclamo })">
+      <app-item-seleccionable [opciones]="opcionesPorReclamo ? opcionesPorReclamo(reclamo) : opciones" (accion)="accion.emit({ accionId: $event, reclamo })">
         <app-item-reclamo [reclamo]="reclamo" [mostrarEstadoDetalle]="mostrarEstadoDetalle" />
       </app-item-seleccionable>
     }

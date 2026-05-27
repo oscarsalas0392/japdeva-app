@@ -1,0 +1,58 @@
+<app-pagina titulo="{{ 'buscarReclamosFechaEstado.titulo' | translate }}" [atras]="true">
+
+  @if (paginaLista()) {
+
+    <app-seccion-header
+      icono="search-outline"
+      titulo="buscarReclamosFechaEstado.headerTitulo"
+      subtitulo="buscarReclamosFechaEstado.headerSubtitulo"
+    />
+
+    <app-tarjeta>
+      <form [formGroup]="form" (ngSubmit)="buscar()">
+
+        <app-grupo-campo>
+          <app-campo-fecha
+            [control]="form.get('fechaInicio')!"
+            label="buscarReclamosFechaEstado.fechaInicio"
+            placeholder="buscarReclamosFechaEstado.seleccioneFecha"
+            mensajeError="buscarReclamosFechaEstado.fechaInicioRequerida"
+            [enviado]="enviado"
+          />
+        </app-grupo-campo>
+
+        <app-grupo-campo>
+          <app-campo-fecha
+            [control]="form.get('fechaFin')!"
+            label="buscarReclamosFechaEstado.fechaFin"
+            placeholder="buscarReclamosFechaEstado.seleccioneFecha"
+            [enviado]="enviado"
+          />
+        </app-grupo-campo>
+
+        <app-grupo-campo>
+          <app-campo-select
+            label="buscarReclamosFechaEstado.estado"
+            placeholder="buscarReclamosFechaEstado.seleccioneEstado"
+            formControlName="idEstado"
+            [control]="form.get('idEstado')!"
+            mensajeError="buscarReclamosFechaEstado.estadoRequerido"
+            [enviado]="enviado"
+            [opciones]="estados"
+          />
+        </app-grupo-campo>
+
+        <app-grupo-campo [top]="true" [bottom]="false">
+          <app-boton-cargando
+            etiqueta="buscarReclamosFechaEstado.buscar"
+            tipo="submit"
+            [cargando]="buscando()"
+          />
+        </app-grupo-campo>
+
+      </form>
+    </app-tarjeta>
+
+  }
+
+</app-pagina>

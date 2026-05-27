@@ -1,30 +1,32 @@
 <app-pagina titulo="{{ 'gestionUsuarios.titulo' | translate }}" [atras]="true">
 
-    @if (usuario()) {
+  @if (usuario()) {
 
-      <app-tarjeta>
-        <app-fila icono="person-outline"
-          etiqueta="{{ 'gestionUsuarios.nombre' | translate }}"
-          valor="{{ usuario()!.nombre }} {{ usuario()!.apellidos }}" />
+    <app-tarjeta>
+      <app-fila icono="person-outline"
+        etiqueta="{{ 'gestionUsuarios.nombre' | translate }}"
+        valor="{{ usuario()!.nombre }} {{ usuario()!.apellidos }}" />
 
-        <app-fila icono="card-outline"
-          etiqueta="{{ 'gestionUsuarios.cedula' | translate }}"
-          [valor]="usuario()!.identificacion" />
+      <app-fila icono="card-outline"
+        etiqueta="{{ 'gestionUsuarios.cedula' | translate }}"
+        [valor]="usuario()!.identificacion" />
 
-        <app-fila icono="mail-outline"
-          etiqueta="{{ 'gestionUsuarios.correo' | translate }}"
-          [valor]="usuario()!.correo" />
+      <app-fila icono="mail-outline"
+        etiqueta="{{ 'gestionUsuarios.correo' | translate }}"
+        [valor]="usuario()!.correo" />
 
-        <app-fila icono="shield-outline"
-          etiqueta="{{ 'gestionUsuarios.rolActual' | translate }}"
-          [valor]="rolActual" />
+      <app-fila icono="shield-outline"
+        etiqueta="{{ 'gestionUsuarios.rolActual' | translate }}"
+        [valor]="rolActual" />
 
-        <app-fila icono="briefcase-outline"
-          etiqueta="{{ 'gestionUsuarios.deptoActual' | translate }}"
-          [valor]="deptoActual" />
-      </app-tarjeta>
+      <app-fila icono="briefcase-outline"
+        etiqueta="{{ 'gestionUsuarios.deptoActual' | translate }}"
+        [valor]="deptoActual" />
+    </app-tarjeta>
 
-      <form [formGroup]="formAsignacion" (ngSubmit)="guardar()">
+    <form [formGroup]="formAsignacion" (ngSubmit)="guardar()">
+
+      <app-grupo-campo [top]="true">
         <app-campo-select
           label="gestionUsuarios.rol"
           placeholder="gestionUsuarios.seleccioneRol"
@@ -34,6 +36,9 @@
           [enviado]="enviado"
           [opciones]="roles()"
         />
+      </app-grupo-campo>
+
+      <app-grupo-campo [top]="true">
         <app-campo-select
           label="gestionUsuarios.departamento"
           placeholder="gestionUsuarios.seleccioneDepartamento"
@@ -43,13 +48,16 @@
           [enviado]="enviado"
           [opciones]="departamentos()"
         />
-        <app-boton-cargando
-          etiqueta="gestionUsuarios.guardar"
-          tipo="submit"
-          [cargando]="guardando()"
-        />
-      </form>
+      </app-grupo-campo>
 
-    }
+      <app-boton-cargando
+        etiqueta="gestionUsuarios.guardar"
+        tipo="submit"
+        [cargando]="guardando()"
+      />
+
+    </form>
+
+  }
 
 </app-pagina>

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonContent, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { LogoJapdevaComponent } from '../../components/logo-japdeva/logo-japdeva.component';
 import { DecoracionLoginComponent } from '../../components/decoracion-login/decoracion-login.component';
@@ -9,7 +9,6 @@ import { CampoFormularioComponent } from '../../components/campo-formulario/camp
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { AvisoComponent } from '../../components/aviso/aviso.component';
 import { BotonCargandoComponent } from '../../components/boton-cargando/boton-cargando.component';
-import { TranslateService } from '@ngx-translate/core';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
 

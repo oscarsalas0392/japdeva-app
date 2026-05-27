@@ -14,7 +14,7 @@
           tipo="password"
           label="cambiarContrasena.actual"
           autocomplete="current-password"
-          mensajeError="cambiarContrasena.validacion.minimaActual"
+          [mensajeError]="mensajeActual()"
           [enviado]="enviado"
         />
       </app-grupo-campo>
@@ -25,7 +25,7 @@
           tipo="password"
           label="cambiarContrasena.nueva"
           autocomplete="new-password"
-          mensajeError="cambiarContrasena.validacion.minimaNueva"
+          [mensajeError]="mensajeNueva()"
           [enviado]="enviado"
         />
         <app-campo-formulario

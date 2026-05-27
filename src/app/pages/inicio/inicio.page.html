@@ -2,7 +2,9 @@
 
   <app-seccion-header titulo="inicio.casosRecientes" />
 
-  <app-boton-nuevo-reclamo (accion)="irANuevoReclamo()" />
+  @if (!cargando() && reclamos().length > 0) {
+    <app-boton-nuevo-reclamo (accion)="irANuevoReclamo()" />
+  }
 
   <app-lista-reclamos
     [reclamos]="reclamos()"

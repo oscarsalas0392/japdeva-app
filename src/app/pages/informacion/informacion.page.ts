@@ -7,6 +7,17 @@ import { GridColumnasComponent } from '../../components/grid-columnas/grid-colum
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { ParametrosService } from '../../core/services/parametros.service';
 import { ParametroModel } from '../../core/models/parametros/parametro.model';
+import { EstadoAppService } from '../../core/state/app.service';
+import { ClavesEstado } from '../../core/state/claves-estado';
+
+interface InformacionContactoCache {
+  telefono: string;
+  email: string;
+  nombreOficina: string;
+  direccion: string;
+  horario: string;
+  faqs: FaqItem[];
+}
 
 @Component({
   selector: 'app-informacion',
@@ -18,6 +29,7 @@ import { ParametroModel } from '../../core/models/parametros/parametro.model';
 })
 export class InformacionPage implements OnInit {
   private readonly parametrosService = inject(ParametrosService);
+  private readonly estadoService     = inject(EstadoAppService);
 
   readonly cargando      = signal(true);
   readonly telefono      = signal('');
@@ -28,6 +40,14 @@ export class InformacionPage implements OnInit {
   readonly faqs          = signal<FaqItem[]>([]);
 
   async ngOnInit(): Promise<void> {
+    // Si hay versión cacheada, la mostramos de inmediato.
+    const cacheado = await this.estadoService.obtener<InformacionContactoCache>(ClavesEstado.informacionContacto);
+    if (cacheado) {
+      this.aplicar(cacheado);
+      this.cargando.set(false);
+    }
+
+    // Refrescamos en background. Si cambia, actualiza la vista y el cache.
     const [contacto, faqsResp] = await Promise.all([
       this.parametrosService.obtenerParametrosPorNombres([
         'TelefonoContacto', 'EmailContacto', 'NombreOficina', 'DireccionOficina', 'HorarioOficina',
@@ -37,22 +57,45 @@ export class InformacionPage implements OnInit {
       ]),
     ]);
 
+    const datos: InformacionContactoCache = {
+      telefono:      '',
+      email:         '',
+      nombreOficina: '',
+      direccion:     '',
+      horario:       '',
+      faqs:          [],
+    };
+
     if (contacto.Exito && Array.isArray(contacto.Datos)) {
-      this.telefono.set(this.encontrar(contacto.Datos, 'TelefonoContacto'));
-      this.email.set(this.encontrar(contacto.Datos, 'EmailContacto'));
-      this.nombreOficina.set(this.encontrar(contacto.Datos, 'NombreOficina'));
-      this.direccion.set(this.encontrar(contacto.Datos, 'DireccionOficina'));
-      this.horario.set(this.encontrar(contacto.Datos, 'HorarioOficina'));
+      datos.telefono      = this.encontrar(contacto.Datos, 'TelefonoContacto');
+      datos.email         = this.encontrar(contacto.Datos, 'EmailContacto');
+      datos.nombreOficina = this.encontrar(contacto.Datos, 'NombreOficina');
+      datos.direccion     = this.encontrar(contacto.Datos, 'DireccionOficina');
+      datos.horario       = this.encontrar(contacto.Datos, 'HorarioOficina');
     }
 
     if (faqsResp.Exito && Array.isArray(faqsResp.Datos)) {
-      this.faqs.set(faqsResp.Datos.map(p => ({
-        pregunta: p.valor1,
+      datos.faqs = faqsResp.Datos.map(p => ({
+        pregunta:  p.valor1,
         respuesta: p.valor2 ?? '',
-      })));
+      }));
+    }
+
+    if (JSON.stringify(datos) !== JSON.stringify(cacheado)) {
+      this.aplicar(datos);
+      await this.estadoService.guardar(ClavesEstado.informacionContacto, datos);
     }
 
     this.cargando.set(false);
+  }
+
+  private aplicar(datos: InformacionContactoCache): void {
+    this.telefono.set(datos.telefono);
+    this.email.set(datos.email);
+    this.nombreOficina.set(datos.nombreOficina);
+    this.direccion.set(datos.direccion);
+    this.horario.set(datos.horario);
+    this.faqs.set(datos.faqs);
   }
 
   private encontrar(lista: ParametroModel[], nombre: string): string {

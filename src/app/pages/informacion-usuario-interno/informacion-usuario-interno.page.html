@@ -1,0 +1,84 @@
+<app-pagina titulo="{{ 'informacionUsuarioInterno.titulo' | translate }}" [cargando]="cargando()">
+
+  <section class="hero">
+    <div class="hero__icono">
+      <ion-icon name="briefcase-outline" />
+    </div>
+    <h1 class="hero__titulo">{{ bienvenidaTitulo() }}</h1>
+    @if (bienvenidaDescripcion()) {
+      <p class="hero__descripcion">{{ bienvenidaDescripcion() }}</p>
+    }
+  </section>
+
+  @if (comoFuncionaPasos().length) {
+    <section class="seccion">
+      <header class="seccion__encabezado">
+        <div class="seccion__icono seccion__icono--azul">
+          <ion-icon name="sparkles-outline" />
+        </div>
+        <h2 class="seccion__titulo">{{ comoFuncionaTitulo() }}</h2>
+      </header>
+      <ol class="pasos">
+        @for (paso of comoFuncionaPasos(); track paso; let i = $index) {
+          <li class="paso">
+            <span class="paso__numero">{{ i + 1 }}</span>
+            <span class="paso__texto">{{ paso }}</span>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+
+  @if (revisionPasos().length) {
+    <section class="seccion">
+      <header class="seccion__encabezado">
+        <div class="seccion__icono seccion__icono--verde">
+          <ion-icon name="search-outline" />
+        </div>
+        <h2 class="seccion__titulo">{{ revisionTitulo() }}</h2>
+      </header>
+      <ol class="pasos">
+        @for (paso of revisionPasos(); track paso; let i = $index) {
+          <li class="paso">
+            <span class="paso__numero">{{ i + 1 }}</span>
+            <span class="paso__texto">{{ paso }}</span>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+
+  @if (atencionPasos().length) {
+    <section class="seccion">
+      <header class="seccion__encabezado">
+        <div class="seccion__icono seccion__icono--naranja">
+          <ion-icon name="construct-outline" />
+        </div>
+        <h2 class="seccion__titulo">{{ atencionTitulo() }}</h2>
+      </header>
+      <ol class="pasos">
+        @for (paso of atencionPasos(); track paso; let i = $index) {
+          <li class="paso">
+            <span class="paso__numero">{{ i + 1 }}</span>
+            <span class="paso__texto">{{ paso }}</span>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+
+  @if (ayudaDescripcion()) {
+    <aside class="ayuda">
+      <div class="ayuda__icono">
+        <ion-icon name="help-buoy-outline" />
+      </div>
+      <div class="ayuda__contenido">
+        @if (ayudaTitulo()) {
+          <h2 class="ayuda__titulo">{{ ayudaTitulo() }}</h2>
+        }
+        <p class="ayuda__descripcion">{{ ayudaDescripcion() }}</p>
+      </div>
+    </aside>
+  }
+
+</app-pagina>

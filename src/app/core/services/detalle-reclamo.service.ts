@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { RespuestaModel } from '../models/respuesta.model';
 import { RespuestaListaModel } from '../models/respuesta-lista.model';
 import { DetalleReclamoRespuestaModel } from '../models/reclamos/detalle-reclamo.model';
+import { AsignarDetalleReclamoSolicitudModel } from '../models/reclamos/asignar-detalle-reclamo-request.model';
 import { EditarDetalleReclamoSolicitudModel } from '../models/reclamos/editar-detalle-reclamo-request.model';
 import { DocumentoInternoRespuestaModel } from '../models/reclamos/documento-interno.model';
 import { AgregarDocumentoInternoSolicitudModel } from '../models/reclamos/agregar-documento-interno-request.model';
@@ -40,6 +41,10 @@ export class DetalleReclamoService {
     });
   }
 
+  asignar(solicitud: AsignarDetalleReclamoSolicitudModel): Promise<RespuestaModel<void>> {
+    return this.api.put(this.ep.asignar, solicitud);
+  }
+
   /**
    * Edita el detalle de un reclamo (estado, asignación, descripción).
    * @param solicitud Datos actualizados del detalle.
@@ -74,8 +79,8 @@ export class DetalleReclamoService {
     return this.api.get(this.epDocInterno.obtenerPorReclamo, { 'id-reclamo-detalle': idDetalleReclamo, pagina });
   }
 
-  obtenerDocumentosPorIdReclamo(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoInternoRespuestaModel>>> {
-    return this.api.get(this.epDocInterno.obtenerPorIdReclamo, { 'id-reclamo': idReclamo, pagina });
+  obtenerExpediente(idReclamo: number, pagina = 1): Promise<RespuestaModel<RespuestaListaModel<DocumentoInternoRespuestaModel>>> {
+    return this.api.get(this.ep.obtenerExpediente, { 'id-reclamo': idReclamo, pagina });
   }
 
   /**

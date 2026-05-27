@@ -6,15 +6,33 @@
 
   <nav class="menu__nav">
 
-    <button class="menu__item" (click)="navegar('/perfil')">
-      <ion-icon name="person-outline" />
-      <span>Mi Perfil</span>
-    </button>
+    @for (item of itemsTopNivel(); track item.id) {
 
-    <button class="menu__item" (click)="navegar('/buscar-usuario-cedula')">
-      <ion-icon name="people-outline" />
-      <span>Gestión de Usuarios</span>
-    </button>
+      @if (!tieneHijos(item.id!)) {
+        <button class="menu__item" (click)="navegar(item.ruta!)">
+          <ion-icon [name]="item.icono" />
+          <span>{{ item.nombre }}</span>
+        </button>
+      } @else {
+        <button class="menu__item menu__item--padre" (click)="toggleParent(item.id!)">
+          <ion-icon [name]="item.icono" />
+          <span>{{ item.nombre }}</span>
+          <ion-icon class="menu__chevron" [name]="estaAbierto(item.id!) ? 'chevron-up-outline' : 'chevron-down-outline'" />
+        </button>
+
+        @if (estaAbierto(item.id!)) {
+          <div class="menu__submenu">
+            @for (hijo of hijos(item.id!); track hijo.id) {
+              <button class="menu__item menu__item--hijo" (click)="navegar(hijo.ruta!)">
+                <ion-icon [name]="hijo.icono" />
+                <span>{{ hijo.nombre }}</span>
+              </button>
+            }
+          </div>
+        }
+      }
+
+    }
 
   </nav>
 

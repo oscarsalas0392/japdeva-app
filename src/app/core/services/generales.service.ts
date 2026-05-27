@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EstadoReclamoEnum } from '../models/reclamos/estado-reclamo.enum';
+import { EstadoDetalleReclamoEnum } from '../models/reclamos/estado-detalle-reclamo.enum';
 
 @Injectable({ providedIn: 'root' })
 export class GeneralesService {
@@ -8,14 +9,14 @@ export class GeneralesService {
 
   formatearFecha(iso: string | null | undefined, formato: 'largo' | 'corto' = 'largo'): string {
     if (!iso) return '';
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return '';
+    const fecha = new Date(iso);
+    if (isNaN(fecha.getTime())) return '';
     if (formato === 'corto') {
-      const dia = String(d.getDate()).padStart(2, '0');
-      const mes = String(d.getMonth() + 1).padStart(2, '0');
-      return `${dia}/${mes}/${d.getFullYear()}`;
+      const dia = String(fecha.getDate()).padStart(2, '0');
+      const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+      return `${dia}/${mes}/${fecha.getFullYear()}`;
     }
-    return `${d.getDate()} ${this.MESES[d.getMonth()]} ${d.getFullYear()}`;
+    return `${fecha.getDate()} ${this.MESES[fecha.getMonth()]} ${fecha.getFullYear()}`;
   }
 
   codigoReclamo(id: number, fechaRegistro: string): string {
@@ -29,6 +30,7 @@ export class GeneralesService {
       case EstadoReclamoEnum.EnProceso:  return 'estado--en-proceso';
       case EstadoReclamoEnum.Completado: return 'estado--completado';
       case EstadoReclamoEnum.Rechazado:  return 'estado--rechazado';
+      case EstadoDetalleReclamoEnum.Devuelto: return 'estado--devuelto';
       default:                           return 'estado--pendiente';
     }
   }

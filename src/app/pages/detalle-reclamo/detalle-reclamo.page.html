@@ -1,32 +1,38 @@
 <app-pagina titulo="{{ 'detalleReclamo.titulo' | translate }}" [atras]="true" [cargando]="cargando()">
+
+  <app-tabs sticky [tabs]="tabs" [activo]="tabActivo()" (tabCambiado)="tabActivo.set($event)" />
+
   @if (reclamo()) {
-    <div class="pagina">
 
-      <p class="consecutivo">{{ 'detalleReclamo.consecutivo' | translate }}: {{ codigo }}</p>
+    <p class="consecutivo">{{ 'detalleReclamo.consecutivo' | translate }}: {{ codigo }}</p>
 
-      <app-campo-detalle
-        titulo="detalleReclamo.tituloReclamo"
-        [valor]="reclamo()!.titulo"
-      />
+    @if (tabActivo() === 'general') {
+      <div class="pagina">
+        <app-campo-detalle
+          titulo="detalleReclamo.tituloReclamo"
+          [valor]="reclamo()!.titulo"
+        />
+        <app-campo-detalle
+          titulo="detalleReclamo.descripcion"
+          [valor]="reclamo()!.descripcion"
+        />
+        <app-campo-detalle
+          titulo="detalleReclamo.estado"
+          [valor]="reclamo()!.descripcionEstadoReclamo"
+        />
+        <app-campo-detalle
+          titulo="detalleReclamo.fechaRegistro"
+          [valor]="generales.formatearFecha(reclamo()!.fechaRegistro)"
+        />
+      </div>
+    }
 
-      <app-campo-detalle
-        titulo="detalleReclamo.descripcion"
-        [valor]="reclamo()!.descripcion"
-      />
+    @if (tabActivo() === 'documentos') {
+      <div class="pagina">
+        <app-lista-documentos [documentos]="documentos()" />
+      </div>
+    }
 
-      <app-lista-documentos [documentos]="documentos()" />
 
-      <!-- Estado actual -->
-      <section class="seccion">
-        <h2 class="seccion__titulo">{{ 'detalleReclamo.seguimiento' | translate }}</h2>
-        <div class="estado-actual">
-          <span class="estado-actual__badge" [class]="claseEstado">{{ reclamo()!.descripcionEstadoReclamo }}</span>
-          @if (estadoActual?.fechaRegistro) {
-            <span class="estado-actual__fecha">{{ generales.formatearFecha(estadoActual!.fechaRegistro) }}</span>
-          }
-        </div>
-      </section>
-
-    </div>
   }
 </app-pagina>

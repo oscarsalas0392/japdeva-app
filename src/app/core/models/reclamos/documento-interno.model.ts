@@ -5,4 +5,7 @@ export interface DocumentoInternoRespuestaModel {
   documento: string;
   descripcionDetalleReclamo?: string;
   nombreDepartamento?: string;
+  fechaInicio?: string;
+  fechaFin?: string;
+  nombreUsuarioInterno?: string;
 }

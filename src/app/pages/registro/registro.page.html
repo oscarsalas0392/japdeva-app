@@ -31,6 +31,7 @@
               label="registro.identificacion"
               [mensajeError]="mensajeErrorIdentificacion()"
               [enviado]="enviado"
+              [formato]="tipoSeleccionado()?.formato ?? ''"
             />
           </app-grupo-campo>
 
@@ -98,7 +99,7 @@
               tipo="password"
               label="registro.contrasena"
               autocomplete="new-password"
-              mensajeError="registro.validacion.contrasenaMinima"
+              [mensajeError]="mensajeContrasena()"
               [enviado]="enviado"
             />
           </app-grupo-campo>

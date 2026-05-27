@@ -57,11 +57,11 @@ export class PerfilPage {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    const u = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (!u) return;
+    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    if (!usuarioSesion) return;
 
-    this.usuario.set(u);
-    this.iniciales.set(`${u.nombre?.[0] ?? ''}${u.apellidos?.[0] ?? ''}`.toUpperCase());
+    this.usuario.set(usuarioSesion);
+    this.iniciales.set(`${usuarioSesion.nombre?.[0] ?? ''}${usuarioSesion.apellidos?.[0] ?? ''}`.toUpperCase());
 
     const idRol = await this.estadoService.obtener<number>(ClavesEstado.idRol);
     const interno = ROLES_INTERNOS.includes(idRol ?? 0);
@@ -70,21 +70,25 @@ export class PerfilPage {
     if (interno) {
       await Promise.all([
         this.cargarRol(idRol!),
-        this.cargarDepartamento(u.id),
+        this.cargarDepartamento(usuarioSesion.id),
       ]);
     }
   }
 
   private async cargarRol(idRol: number): Promise<void> {
-    const r = await this.usuariosService.obtenerRolPorId(idRol);
-    if (r.Exito && r.Datos) this.descRol.set(r.Datos.descripcion);
+    const descCache = await this.estadoService.obtener<string>(ClavesEstado.rolDescripcion);
+    if (descCache) { this.descRol.set(descCache); return; }
+    const rolRespuesta = await this.usuariosService.obtenerRolPorId(idRol);
+    if (rolRespuesta.Exito && rolRespuesta.Datos) this.descRol.set(rolRespuesta.Datos.descripcion);
   }
 
   private async cargarDepartamento(idUsuario: number): Promise<void> {
-    const depResp = await this.usuariosService.obtenerDepartamentoPorUsuario(idUsuario);
-    if (depResp.Exito && depResp.Datos) {
-      const detalle = await this.usuariosService.obtenerDepartamentoPorId(depResp.Datos.idDepartamento);
-      if (detalle.Exito && detalle.Datos) this.descDepto.set(detalle.Datos.descripcion);
+    const descCache = await this.estadoService.obtener<string>(ClavesEstado.departamentoDescripcion);
+    if (descCache) { this.descDepto.set(descCache); return; }
+    const departamentoRespuesta = await this.usuariosService.obtenerDepartamentoPorUsuario(idUsuario);
+    if (departamentoRespuesta.Exito && departamentoRespuesta.Datos) {
+      const detalleRespuesta = await this.usuariosService.obtenerDepartamentoPorId(departamentoRespuesta.Datos.idDepartamento);
+      if (detalleRespuesta.Exito && detalleRespuesta.Datos) this.descDepto.set(detalleRespuesta.Datos.descripcion);
     }
   }
 }

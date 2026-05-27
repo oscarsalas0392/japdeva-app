@@ -10,8 +10,9 @@ export interface ReclamoRespuestaModel {
   fechaRegistro: string;
   idDepartamentoActual: number;
   descripcionDepartamento: string;
-  descripcionEstadoDetalleReclamo:string,
-  idEstadoDetalleReclamo:number
+  descripcionEstadoDetalleReclamo: string;
+  idEstadoDetalleReclamo: number;
   estaEnHistorico: boolean;
-
+  idUsuarioInterno?: number;
+  nombreUsuarioInterno?: string;
 }

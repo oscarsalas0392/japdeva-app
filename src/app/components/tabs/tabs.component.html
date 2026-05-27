@@ -5,7 +5,7 @@
       [class.tab--activo]="activo === tab.id"
       (click)="tabCambiado.emit(tab.id)"
     >
-      {{ tab.etiqueta }}
+      {{ tab.etiqueta | translate }}
     </button>
   }
 </div>

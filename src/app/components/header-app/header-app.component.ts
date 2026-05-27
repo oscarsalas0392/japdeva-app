@@ -47,8 +47,10 @@ export class HeaderAppComponent {
 
     if (!confirmado) return;
 
-    await this.estadoService.limpiar();
-    this.apiService.limpiarToken();
+    await Promise.all([
+      this.estadoService.limpiar(),
+      this.apiService.limpiarToken(),
+    ]);
     await this.router.navigate(['/inicio-sesion'], { replaceUrl: true });
   }
 }
