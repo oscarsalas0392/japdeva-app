@@ -11,9 +11,7 @@ import { BotonCargandoComponent } from '../../components/boton-cargando/boton-ca
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { DetalleReclamoService } from '../../core/services/detalle-reclamo.service';
-import { EstadoAppService } from '../../core/state/app.service';
-import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { SesionService } from '../../core/services/sesion.service';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
 import { ArchivoSolicitudModel } from '../../core/models/reclamos/documento.model';
 import { EstadoDetalleReclamoRespuestaModel } from '../../core/models/reclamos/estado-detalle.model';
@@ -39,7 +37,7 @@ import { OpcionSelectModel } from '../../core/models/opcion-select.model';
 })
 export class AtenderReclamoPage implements OnInit {
   private readonly detalleService = inject(DetalleReclamoService);
-  private readonly estadoService  = inject(EstadoAppService);
+  private readonly sesionService  = inject(SesionService);
   private readonly popup          = inject(PopupAvisoService);
   private readonly translate      = inject(TranslateService);
   private readonly fb             = inject(FormBuilder);
@@ -76,8 +74,7 @@ export class AtenderReclamoPage implements OnInit {
     const nav = history.state;
     if (nav?.reclamo) this.reclamo.set(nav.reclamo);
 
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    this.idUsuarioInterno = usuarioSesion?.id ?? 0;
+    this.idUsuarioInterno = await this.sesionService.obtenerIdUsuario();
 
     try {
       if (this.reclamo()) {

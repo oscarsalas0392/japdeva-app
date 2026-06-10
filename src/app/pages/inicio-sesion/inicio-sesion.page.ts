@@ -5,7 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonContent, IonCard, IonCardContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { fingerPrintOutline } from 'ionicons/icons';
-import { NativeBiometric } from 'capacitor-native-biometric';
 import { LogoJapdevaComponent } from '../../components/logo-japdeva/logo-japdeva.component';
 import { DecoracionLoginComponent } from '../../components/decoracion-login/decoracion-login.component';
 import { CampoFormularioComponent } from '../../components/campo-formulario/campo-formulario.component';
@@ -15,17 +14,14 @@ import { BotonCargandoComponent } from '../../components/boton-cargando/boton-ca
 import { CheckComponent } from '../../components/check/check.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
-import { UsuariosService } from '../../core/services/usuarios.service';
-import { ParametrosService } from '../../core/services/parametros.service';
-import { MenusService } from '../../core/services/menus.service';
+import { SesionService } from '../../core/services/sesion.service';
+import { BiometriaService } from '../../core/services/biometria.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { esRolInterno } from '../../core/constants/roles.constants';
 import { AlmacenamientoService } from '../../core/services/almacenamiento.service';
 import { ClavesAlmacenamiento } from '../../core/constants/claves-almacenamiento';
 import { MascaraCorreoPipe } from '../../core/pipes/mascara-correo.pipe';
-
-const SERVER_ID = 'japdeva_app';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -47,18 +43,17 @@ const SERVER_ID = 'japdeva_app';
   ],
 })
 export class InicioSesionPage implements OnInit {
-  private readonly authService      = inject(AuthService);
-  private readonly usuariosService  = inject(UsuariosService);
-  private readonly parametrosService = inject(ParametrosService);
-  private readonly menusService     = inject(MenusService);
-  private readonly estadoService    = inject(EstadoAppService);
-  private readonly router           = inject(Router);
-  private readonly fb               = inject(FormBuilder);
-  private readonly popup            = inject(PopupAvisoService);
-  private readonly translate        = inject(TranslateService);
-  private readonly ngZone           = inject(NgZone);
-  private readonly cdr              = inject(ChangeDetectorRef);
-  private readonly almacenamiento   = inject(AlmacenamientoService);
+  private readonly authService    = inject(AuthService);
+  private readonly sesionService  = inject(SesionService);
+  private readonly biometria      = inject(BiometriaService);
+  private readonly estadoService  = inject(EstadoAppService);
+  private readonly router         = inject(Router);
+  private readonly fb             = inject(FormBuilder);
+  private readonly popup          = inject(PopupAvisoService);
+  private readonly translate      = inject(TranslateService);
+  private readonly ngZone         = inject(NgZone);
+  private readonly cdr            = inject(ChangeDetectorRef);
+  private readonly almacenamiento = inject(AlmacenamientoService);
 
   readonly form = this.fb.group({
     usuario:    ['', [Validators.required, Validators.email]],
@@ -91,51 +86,39 @@ export class InicioSesionPage implements OnInit {
     this.correoGuardado = guardado ?? null;
     this.recordar = !!guardado;
     this.biometriaDisponible = false;
-    await this.verificarBiometria();
-    this.cdr.detectChanges();
-  }
-
-  private async verificarBiometria(): Promise<void> {
-    if (!this.correoGuardado) return;
-    const biometria = await this.almacenamiento.obtener(ClavesAlmacenamiento.biometriaHabilitada);
-    if (biometria !== 'true') return;
-
-    try {
-      const result = await NativeBiometric.isAvailable();
+    if (this.correoGuardado) {
+      const { disponible, esFaceId } = await this.biometria.puedeUsarBiometria();
       this.ngZone.run(() => {
-        this.biometriaDisponible = result.isAvailable;
-        this.esFaceId = result.biometryType === 2;
+        this.biometriaDisponible = disponible;
+        this.esFaceId = esFaceId;
       });
-    } catch {
-      this.ngZone.run(() => { this.biometriaDisponible = false; });
     }
+    this.cdr.detectChanges();
   }
 
   async autenticarConBiometria(): Promise<void> {
     this.cargandoBiometria = true;
     this.cdr.detectChanges();
 
-    // 1. Verificar identidad — si el usuario cancela, salir silenciosamente
+    let credenciales;
     try {
-      await NativeBiometric.verifyIdentity({
-        reason: this.translate.instant('inicioSesion.biometriaRazon'),
-        title:  this.translate.instant('inicioSesion.biometriaTitulo'),
-      });
+      credenciales = await this.biometria.autenticar(
+        this.translate.instant('inicioSesion.biometriaRazon'),
+        this.translate.instant('inicioSesion.biometriaTitulo'),
+      );
     } catch {
+      // Usuario canceló o las credenciales no se encontraron.
       this.terminarCargandoBiometria();
       return;
     }
 
-    // 2. Recuperar credenciales y autenticar — todo el bloque debe correr en NgZone
-    // porque los callbacks de NativeBiometric resuelven fuera de la zona de Angular,
-    // lo que dejaría el spinner activo y los popups invisibles.
+    // Los callbacks de NativeBiometric resuelven fuera de NgZone. Envolvemos el
+    // resto del flujo para que los popups y la navegación disparen change detection.
     await this.ngZone.run(async () => {
       try {
-        const credenciales = await NativeBiometric.getCredentials({ server: SERVER_ID });
-
         const respuesta = await this.authService.autenticar({
-          Correo:     credenciales.username,
-          Contrasena: credenciales.password,
+          Correo:     credenciales.correo,
+          Contrasena: credenciales.contrasena,
         });
 
         if (!respuesta.Exito) {
@@ -148,19 +131,8 @@ export class InicioSesionPage implements OnInit {
         }
 
         await this.estadoService.guardar(ClavesEstado.usuario, respuesta.Datos);
-        await this.guardarRol(respuesta.Datos!.id);
+        await this.sesionService.inicializarSesion(respuesta.Datos!.id);
         await this.navegarSegunRol();
-
-      } catch {
-        // Las credenciales no se encontraron — limpiar biometría y pedir contraseña
-        await this.almacenamiento.eliminar(ClavesAlmacenamiento.biometriaHabilitada);
-        NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
-        this.biometriaDisponible = false;
-        this.popup.mostrar({
-          tipo: 'error',
-          titulo: this.translate.instant('errores.titulo'),
-          mensaje: 'No se pudieron recuperar las credenciales. Ingrese su contraseña.',
-        });
       } finally {
         this.terminarCargandoBiometria();
       }
@@ -177,10 +149,9 @@ export class InicioSesionPage implements OnInit {
 
   private async ofrecerBiometria(correo: string, contrasena: string): Promise<void> {
     try {
-      const result = await NativeBiometric.isAvailable();
-      if (!result.isAvailable) return;
-      const biometria = await this.almacenamiento.obtener(ClavesAlmacenamiento.biometriaHabilitada);
-      if (biometria === 'true') return;
+      const { disponible } = await this.biometria.disponibilidadDispositivo();
+      if (!disponible) return;
+      if (await this.biometria.estaHabilitada()) return;
 
       const tipo = this.esFaceId
         ? this.translate.instant('inicioSesion.faceId')
@@ -193,13 +164,7 @@ export class InicioSesionPage implements OnInit {
       });
 
       if (confirmado) {
-        // Guardar credenciales en keychain nativo del dispositivo
-        await NativeBiometric.setCredentials({
-          username: correo,
-          password: contrasena,
-          server:   SERVER_ID,
-        });
-        await this.almacenamiento.guardar(ClavesAlmacenamiento.biometriaHabilitada, 'true');
+        await this.biometria.guardarCredenciales(correo, contrasena);
       }
     } catch {
       // Ignorar errores al configurar biometría
@@ -207,7 +172,7 @@ export class InicioSesionPage implements OnInit {
   }
 
   async editarCorreo(): Promise<void> {
-    this.correoEditando    = true;
+    this.correoEditando      = true;
     this.biometriaDisponible = false;
     this.form.patchValue({ usuario: '' });
 
@@ -215,9 +180,8 @@ export class InicioSesionPage implements OnInit {
     // para que otro usuario no pueda ingresar con la huella del anterior
     await Promise.all([
       this.almacenamiento.eliminar(ClavesAlmacenamiento.correoRecordado),
-      this.almacenamiento.eliminar(ClavesAlmacenamiento.biometriaHabilitada),
+      this.biometria.limpiar(),
     ]);
-    NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
   }
 
   async enviar(): Promise<void> {
@@ -240,9 +204,8 @@ export class InicioSesionPage implements OnInit {
     } else {
       await Promise.all([
         this.almacenamiento.eliminar(ClavesAlmacenamiento.correoRecordado),
-        this.almacenamiento.eliminar(ClavesAlmacenamiento.biometriaHabilitada),
+        this.biometria.limpiar(),
       ]);
-      await NativeBiometric.deleteCredentials({ server: SERVER_ID }).catch(() => {});
     }
 
     const respuesta = await this.authService.autenticar({
@@ -263,7 +226,7 @@ export class InicioSesionPage implements OnInit {
     }
 
     await this.estadoService.guardar(ClavesEstado.usuario, respuesta.Datos);
-    await this.guardarRol(respuesta.Datos!.id);
+    await this.sesionService.inicializarSesion(respuesta.Datos!.id);
 
     if (this.recordar) {
       await this.ofrecerBiometria(correo, contrasena);
@@ -276,66 +239,5 @@ export class InicioSesionPage implements OnInit {
     const idRol = await this.estadoService.obtener<number>(ClavesEstado.idRol);
     const ruta = esRolInterno(idRol) ? '/inicio-usuario-interno' : '/inicio';
     await this.router.navigate([ruta], { replaceUrl: true });
-  }
-
-  private async guardarRol(idUsuario: number): Promise<void> {
-    try {
-      const [rolRespuesta, departamentoRespuesta] = await Promise.all([
-        this.usuariosService.obtenerRolPorUsuario(idUsuario),
-        this.usuariosService.obtenerDepartamentoPorUsuario(idUsuario),
-      ]);
-
-      const usuarioRol = rolRespuesta.Exito && rolRespuesta.Datos ? rolRespuesta.Datos : null;
-      const idRol = usuarioRol?.idRol ?? null;
-      const deptUsuario = departamentoRespuesta.Exito && departamentoRespuesta.Datos
-        ? departamentoRespuesta.Datos : null;
-
-      await Promise.all([
-        this.estadoService.guardar(ClavesEstado.usuarioRol, usuarioRol),
-        this.estadoService.guardar(ClavesEstado.idRol, idRol),
-        deptUsuario ? this.estadoService.guardar(ClavesEstado.departamentoUsuario, deptUsuario) : Promise.resolve(),
-      ]);
-
-      const tareas: Promise<void>[] = [];
-      if (idRol) {
-        tareas.push(this.cachearDescripcionRol(idRol));
-        tareas.push(this.cargarMenus(idRol));
-      }
-      if (deptUsuario?.idDepartamento) {
-        tareas.push(this.cachearDescripcionDepartamento(deptUsuario.idDepartamento));
-      }
-      await Promise.all(tareas);
-    } catch {
-      // Si falla, no bloquear el login
-    }
-  }
-
-  private async cachearDescripcionRol(idRol: number): Promise<void> {
-    try {
-      const respuesta = await this.usuariosService.obtenerRolPorId(idRol);
-      if (respuesta.Exito && respuesta.Datos) {
-        await this.estadoService.guardar(ClavesEstado.rolDescripcion, respuesta.Datos.descripcion);
-      }
-    } catch { /* no bloquear */ }
-  }
-
-  private async cachearDescripcionDepartamento(idDepartamento: number): Promise<void> {
-    try {
-      const respuesta = await this.usuariosService.obtenerDepartamentoPorId(idDepartamento);
-      if (respuesta.Exito && respuesta.Datos) {
-        await this.estadoService.guardar(ClavesEstado.departamentoDescripcion, respuesta.Datos.descripcion);
-      }
-    } catch { /* no bloquear */ }
-  }
-
-  private async cargarMenus(idRol: number): Promise<void> {
-    try {
-      const respuesta = await this.parametrosService.obtenerMenusPorPerfil(idRol);
-      if (respuesta.Exito && respuesta.Datos) {
-        this.menusService.establecer(respuesta.Datos);
-      }
-    } catch {
-      // Si falla, el menú queda vacío pero no bloquea el login
-    }
   }
 }

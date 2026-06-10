@@ -12,11 +12,10 @@ import { ExpedienteDigitalComponent } from '../../components/expediente-digital/
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { TabsComponent, TabItem } from '../../components/tabs/tabs.component';
 import { TarjetaAtencionComponent } from '../../components/tarjeta-atencion/tarjeta-atencion.component';
-import { DetalleReclamoService } from '../../core/services/detalle-reclamo.service';
-import { ReclamoService } from '../../core/services/reclamo.service';
 import { UsuariosService } from '../../core/services/usuarios.service';
 import { GeneralesService } from '../../core/services/generales.service';
 import { ParametrosService } from '../../core/services/parametros.service';
+import { DocumentosReclamoService } from '../../core/services/documentos-reclamo.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
@@ -46,8 +45,7 @@ import { EstadoDetalleReclamoEnum } from '../../core/models/reclamos/estado-deta
   ],
 })
 export class InformacionReclamoPage implements OnInit {
-  private readonly detalleService    = inject(DetalleReclamoService);
-  private readonly reclamoService    = inject(ReclamoService);
+  private readonly documentosReclamo = inject(DocumentosReclamoService);
   private readonly usuariosService   = inject(UsuariosService);
   private readonly parametrosService = inject(ParametrosService);
   private readonly estadoService     = inject(EstadoAppService);
@@ -116,20 +114,14 @@ export class InformacionReclamoPage implements OnInit {
   }
 
   private async cargarDocumentos(): Promise<void> {
-    const idReclamo = this.reclamo()!.id;
-    const [documentosExternosRespuesta, documentosInternosRespuesta] = await Promise.all([
-      this.reclamoService.obtenerDocumentosUsuario(idReclamo),
-      this.detalleService.obtenerExpediente(idReclamo),
-    ]);
-    this.documentosExternos.set(
-      (documentosExternosRespuesta.Exito && documentosExternosRespuesta.Datos?.lista) ? documentosExternosRespuesta.Datos.lista : []
+    const reclamoActual = this.reclamo()!;
+    const { externos, internosCerrados, departamentoActual } =
+      await this.documentosReclamo.cargarTodos(reclamoActual.id);
+
+    this.documentosExternos.set(externos);
+    this.documentosInternos.set(internosCerrados);
+    this.nombreDepartamentoActual.set(
+      departamentoActual ?? reclamoActual.descripcionDepartamento ?? '',
     );
-
-    const todosInternos = documentosInternosRespuesta.Datos?.lista ?? [];
-    const cerrados      = todosInternos.filter(x => x.fechaFin != null);
-    const ultimo = todosInternos.pop();
-
-    this.documentosInternos.set(documentosInternosRespuesta.Exito ? cerrados : []);
-    this.nombreDepartamentoActual.set(ultimo?.nombreDepartamento ?? this.reclamo()!.descripcionDepartamento ?? '');
   }
 }

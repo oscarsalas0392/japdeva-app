@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAPDEVA App — Documentación</title>
+  <style>
+    :root {
+      --azul: #0d7fa5;
+      --azul-oscuro: #095e7c;
+      --verde: #2c8b6b;
+      --naranja: #c97a17;
+      --morado: #6b56b3;
+      --rojo: #c0392b;
+      --gris-bg: #f7f9fc;
+      --gris-borde: #e3e8ef;
+      --gris-texto: #5a6478;
+      --texto: #1f2937;
+      --code-bg: #1e293b;
+      --code-text: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--texto);
+      background: #fff;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar / TOC ───────────────────────────────────────────────────── */
+    aside.toc {
+      background: linear-gradient(180deg, var(--azul) 0%, var(--azul-oscuro) 100%);
+      color: #fff;
+      padding: 24px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    aside.toc h2 {
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin: 0 0 14px;
+      font-weight: 600;
+    }
+
+    aside.toc .titulo-app {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    aside.toc .titulo-app::before {
+      content: "📄";
+      font-size: 22px;
+    }
+
+    aside.toc .subtitulo {
+      font-size: 12.5px;
+      opacity: 0.78;
+      margin-bottom: 26px;
+      line-height: 1.45;
+    }
+
+    aside.toc ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: toc;
+    }
+
+    aside.toc ol li {
+      counter-increment: toc;
+      margin-bottom: 2px;
+    }
+
+    aside.toc ol li a {
+      display: block;
+      padding: 8px 10px 8px 38px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13.5px;
+      border-radius: 6px;
+      position: relative;
+      transition: background 0.15s;
+    }
+
+    aside.toc ol li a::before {
+      content: counter(toc);
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    aside.toc ol li a:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* ── Contenido principal ─────────────────────────────────────────────── */
+    main.contenido {
+      padding: 48px 56px 96px;
+      max-width: 920px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 0 0 8px;
+      color: var(--texto);
+      letter-spacing: -0.5px;
+    }
+
+    h1 + p.lead {
+      font-size: 16px;
+      color: var(--gris-texto);
+      margin: 0 0 40px;
+      line-height: 1.55;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 56px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gris-borde);
+      color: var(--azul-oscuro);
+      letter-spacing: -0.3px;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin: 28px 0 10px;
+      color: var(--texto);
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    a {
+      color: var(--azul);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      font-family: "JetBrains Mono", "Fira Code", Consolas, Monaco, monospace;
+      background: rgba(13, 127, 165, 0.1);
+      color: var(--azul-oscuro);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 16px 18px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.55;
+      margin: 0 0 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* Tablas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 24px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      font-size: 13.5px;
+    }
+
+    table th {
+      background: var(--gris-bg);
+      color: var(--texto);
+      font-weight: 700;
+      text-align: left;
+      padding: 11px 14px;
+      border-bottom: 2px solid var(--gris-borde);
+      font-size: 13px;
+    }
+
+    table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--gris-borde);
+      vertical-align: top;
+    }
+
+    table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table tr:hover td {
+      background: rgba(13, 127, 165, 0.03);
+    }
+
+    /* Listas */
+    ul, ol {
+      padding-left: 22px;
+      margin: 0 0 18px;
+    }
+
+    ul li, ol li {
+      margin-bottom: 6px;
+    }
+
+    /* Callouts */
+    .callout {
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin: 0 0 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .callout::before {
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .callout--warning {
+      background: #fffbea;
+      border: 1px solid #f5e0a0;
+      color: #92620a;
+    }
+
+    .callout--warning::before { content: "⚠️"; }
+
+    .callout--info {
+      background: #edf4ff;
+      border: 1px solid #b0ccf5;
+      color: #1a4fa0;
+    }
+
+    .callout--info::before { content: "💡"; }
+
+    .callout--tip {
+      background: #edfaf3;
+      border: 1px solid #a3e6c3;
+      color: #1a7a4a;
+    }
+
+    .callout--tip::before { content: "✅"; }
+
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* Footer */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--gris-borde);
+      font-size: 13px;
+      color: var(--gris-texto);
+      text-align: center;
+    }
+
+    footer a { color: var(--azul); }
+
+    /* Hero header del contenido */
+    .hero-header {
+      background: linear-gradient(135deg, var(--azul) 0%, var(--azul-oscuro) 100%);
+      color: #fff;
+      margin: -48px -56px 40px;
+      padding: 40px 56px 36px;
+    }
+
+    .hero-header h1 {
+      color: #fff;
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .hero-header .lead {
+      color: rgba(255, 255, 255, 0.92);
+      margin: 0;
+      font-size: 15.5px;
+    }
+
+    .hero-header .badges {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-header .badge {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      aside.toc {
+        position: relative;
+        height: auto;
+      }
+      main.contenido {
+        padding: 32px 24px 80px;
+      }
+      .hero-header {
+        margin: -32px -24px 30px;
+        padding: 28px 24px;
+      }
+    }
+
+    /* Anclas: compensar barras flotantes si las hubiera */
+    section {
+      scroll-margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ─────────────────── Sidebar / TOC ─────────────────── -->
+  <aside class="toc">
+    <div class="titulo-app">JAPDEVA App</div>
+    <div class="subtitulo">Documentación técnica del proyecto Ionic + Angular.</div>
+    <h2>Contenido</h2>
+    <ol>
+      <li><a href="#requisitos">Requisitos previos</a></li>
+      <li><a href="#configuracion">Configuración inicial</a></li>
+      <li><a href="#entorno">Variables de entorno</a></li>
+      <li><a href="#estructura">Estructura del proyecto</a></li>
+      <li><a href="#state">Estado global (NGXS)</a></li>
+      <li><a href="#almacenamiento">Almacenamiento local</a></li>
+      <li><a href="#auth">Autenticación y guards</a></li>
+      <li><a href="#http">Capa HTTP y errores</a></li>
+      <li><a href="#cache">Caché de datos</a></li>
+      <li><a href="#i18n">Internacionalización</a></li>
+      <li><a href="#patrones">Patrones del código</a></li>
+      <li><a href="#nuevo-page">Crear un page nuevo</a></li>
+      <li><a href="#android">Build para Android</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ol>
+  </aside>
+
+  <!-- ─────────────────── Contenido ─────────────────── -->
+  <main class="contenido">
+
+    <div class="hero-header">
+      <h1>JAPDEVA App — Documentación</h1>
+      <p class="lead">App móvil Ionic + Angular standalone para la gestión de reclamos de JAPDEVA. Soporta usuarios externos (clientes) y usuarios internos (empleados).</p>
+      <div class="badges">
+        <span class="badge">Ionic 8</span>
+        <span class="badge">Angular 20</span>
+        <span class="badge">Capacitor 8</span>
+        <span class="badge">NGXS 20</span>
+        <span class="badge">TypeScript</span>
+      </div>
+    </div>
+
+    <!-- ────────── 1. Requisitos previos ────────── -->
+    <section id="requisitos">
+      <h2>1. Requisitos previos</h2>
+      <table>
+        <thead><tr><th>Herramienta</th><th>Versión</th></tr></thead>
+        <tbody>
+          <tr><td>Node.js</td><td>20 LTS o superior</td></tr>
+          <tr><td>npm</td><td>10+</td></tr>
+          <tr><td>Angular CLI</td><td>^20.0.0</td></tr>
+          <tr><td>Ionic CLI</td><td>última</td></tr>
+          <tr><td>Capacitor CLI</td><td>^8.3.1</td></tr>
+          <tr><td>Android Studio</td><td>última estable (builds nativos)</td></tr>
+          <tr><td>JDK</td><td>17</td></tr>
+        </tbody>
+      </table>
+      <pre><code>npm install -g @ionic/cli @angular/cli @capacitor/cli</code></pre>
+    </section>
+
+    <!-- ────────── 2. Configuración inicial ────────── -->
+    <section id="configuracion">
+      <h2>2. Configuración inicial</h2>
+      <pre><code># Clonar e instalar dependencias
+git clone &lt;repo&gt;
+cd japdeva-app
+npm install
+
+# Levantar dev server
+npm start
+# → http://localhost:4200</code></pre>
+
+      <p>Para correr en Android conectado por USB:</p>
+      <pre><code>npm run build:android
+npx cap open android
+# Run dentro de Android Studio</code></pre>
+    </section>
+
+    <!-- ────────── 3. Variables de entorno ────────── -->
+    <section id="entorno">
+      <h2>3. Variables de entorno</h2>
+      <p>Hay dos archivos: <code>src/environments/environment.ts</code> (desarrollo) y <code>src/environments/environment.prod.ts</code> (producción).</p>
+      <p>Angular sustituye dev → prod automáticamente con <code>ng build --configuration=production</code> via <code>fileReplacements</code> en <code>angular.json</code>.</p>
+
+      <h3>Estructura</h3>
+      <pre><code>export const environment = {
+  production: false,
+  apiUrl:    'https://...',     // URL base del API Gateway
+  timeoutMs: 30000,             // Timeout de cada request
+  endpoints: {
+    usuarios:    { ... },
+    parametros:  { ... },
+    reclamos:    { ... },
+    envioCorreos:{ ... },
+  },
+};</code></pre>
+
+      <div class="callout callout--warning">
+        <div>
+          <p><strong>Los dos archivos deben tener la misma estructura.</strong> Si se agrega un endpoint en <code>environment.ts</code>, hay que replicarlo en <code>environment.prod.ts</code> o el build de producción falla con <code>TS2339: Property 'X' does not exist</code>.</p>
+          <p>La URL hoy apunta a un túnel <strong>ngrok</strong> (temporal). Para producción, sustituir por un dominio fijo del API Gateway.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────── 4. Estructura del proyecto ────────── -->
+    <section id="estructura">
+      <h2>4. Estructura del proyecto</h2>
+      <pre><code>src/app/
+├── app.component.ts          # Shell raíz: menú lateral, popup global, router-outlet
+├── app.routes.ts             # Definición de rutas (públicas, autenticadas, por rol)
+│
+├── components/               # Componentes UI reutilizables
+│   ├── pagina/               # Layout base: header + content + footer-nav
+│   ├── tarjeta/              # Card con encabezado opcional
+│   ├── campo-formulario/     # Input con label, validación, hint
+│   ├── campo-fecha/          # Picker de fecha con modal
+│   ├── campo-select/         # Select Ionic
+│   ├── campo-textarea/       # Textarea con contador
+│   ├── boton-cargando/       # Botón con spinner cuando está cargando
+│   ├── popup-aviso/          # Modal global de avisos/confirmaciones
+│   ├── lista-reclamos/       # Lista paginada con item-reclamo
+│   ├── item-reclamo/         # Card individual de un reclamo
+│   ├── chips-filtro/         # Chips horizontales de filtro
+│   ├── expediente-digital/   # Lista de documentos internos
+│   ├── tarjeta-atencion/     # Card de una atención del histórico
+│   └── ...
+│
+├── core/
+│   ├── constants/            # Constantes tipadas
+│   │   ├── claves-almacenamiento.ts  # Claves para Preferences
+│   │   ├── mensajes.constants.ts     # Claves i18n de errores comunes
+│   │   └── roles.constants.ts        # IDs de roles internos + helper
+│   │
+│   ├── guards/
+│   │   ├── auth.guard.ts             # Requiere token + usuario en state
+│   │   ├── rol-interno.guard.ts      # Empleado JAPDEVA
+│   │   └── rol-externo.guard.ts      # Cliente
+│   │
+│   ├── interceptors/
+│   │   └── auth.interceptor.ts       # Inyecta Bearer JWT en cada request
+│   │
+│   ├── models/               # Interfaces tipadas del API
+│   │   ├── respuesta.model.ts        # RespuestaModel&lt;T&gt; genérico del API
+│   │   ├── respuesta-lista.model.ts  # RespuestaListaModel&lt;T&gt;
+│   │   ├── usuarios/...
+│   │   ├── reclamos/...
+│   │   └── parametros/...
+│   │
+│   ├── pipes/
+│   │   └── mascara-correo.pipe.ts    # os***@hotmail.com
+│   │
+│   ├── services/
+│   │   ├── api.service.ts            # GET/POST/PUT/DELETE + manejo de errores
+│   │   ├── almacenamiento.service.ts # Wrapper de Capacitor Preferences
+│   │   ├── auth.service.ts
+│   │   ├── usuarios.service.ts
+│   │   ├── reclamo.service.ts
+│   │   ├── detalle-reclamo.service.ts
+│   │   ├── parametros.service.ts
+│   │   ├── menus.service.ts
+│   │   └── generales.service.ts      # Helpers (fechas, códigos, clases CSS)
+│   │
+│   └── state/
+│       ├── app.state.ts              # NGXS state único (diccionario clave/valor)
+│       ├── app.service.ts            # API tipada para obtener/guardar/eliminar
+│       └── claves-estado.ts          # Enum de claves del state
+│
+└── pages/                    # Una carpeta por página, cada una con .ts/.html/.scss</code></pre>
+    </section>
+
+    <!-- ────────── 5. Estado global ────────── -->
+    <section id="state">
+      <h2>5. Estado global (NGXS) y persistencia</h2>
+      <p>El state vive en un solo <code>@State</code> genérico que actúa como diccionario clave/valor:</p>
+      <pre><code>// app.state.ts
+@State&lt;Record&lt;ClaveEstado, unknown&gt;&gt;({ name: 'app', defaults: {} })</code></pre>
+      <p>Se manipula desde <code>EstadoAppService</code>:</p>
+      <pre><code>await estadoService.guardar(ClavesEstado.usuario, datosUsuario);
+const usuario = await estadoService.obtener&lt;UsuarioModel&gt;(ClavesEstado.usuario);
+await estadoService.eliminar(ClavesEstado.menus);
+await estadoService.limpiar();           // Wipe completo (al cerrar sesión)</code></pre>
+
+      <h3>Persistencia automática</h3>
+      <p><code>main.ts</code> configura <code>@ngxs/storage-plugin</code> para que la slice <code>app</code> se sincronice a <strong>localStorage</strong> en cada cambio:</p>
+      <pre><code>provideStore(
+  [EstadoApp],
+  withNgxsStoragePlugin({ keys: ['app'] }),
+),</code></pre>
+      <div class="callout callout--info">
+        <div>
+          El state sobrevive recargas (F5 web) y reapertura de la app móvil. Cuando se hace <code>limpiar()</code>, también se borra de localStorage. <strong>No</strong> guardar credenciales o tokens aquí — eso va en Preferences (ver siguiente sección).
+        </div>
+      </div>
+
+      <h3>Claves del state</h3>
+      <table>
+        <thead><tr><th>Clave</th><th>Contenido</th><th>Cuándo se carga</th></tr></thead>
+        <tbody>
+          <tr><td><code>usuario</code></td><td>Datos del usuario logueado</td><td>Login exitoso</td></tr>
+          <tr><td><code>idRol</code></td><td>ID del rol (number)</td><td>Después del login</td></tr>
+          <tr><td><code>usuarioRol</code></td><td>Objeto completo <code>UsuarioRolRespuestaModel</code></td><td>Después del login</td></tr>
+          <tr><td><code>departamentoUsuario</code></td><td><code>DepartamentoUsuarioRespuestaModel</code> (solo internos)</td><td>Después del login</td></tr>
+          <tr><td><code>menus</code></td><td>Lista de menús dinámicos</td><td>Después del login</td></tr>
+          <tr><td><code>departamentoReclamo</code></td><td>Nombre del depto del reclamo actual</td><td>Al navegar a info reclamo</td></tr>
+          <tr><td><code>terminosCondiciones</code></td><td>Texto de términos (cache)</td><td>1ra visita a la pantalla</td></tr>
+          <tr><td><code>informacionContacto</code></td><td>Bundle teléfono/email/FAQs (cache)</td><td>1ra visita Info (externo)</td></tr>
+          <tr><td><code>ayudaUsuarioInterno</code></td><td>Bundle de ayuda (cache)</td><td>1ra visita Info (interno)</td></tr>
+          <tr><td><code>rolDescripcion</code>, <code>departamentoDescripcion</code></td><td>Descripciones para mostrar en perfil</td><td>Después del login</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ────────── 6. Almacenamiento local ────────── -->
+    <section id="almacenamiento">
+      <h2>6. Almacenamiento local seguro</h2>
+      <p>Para datos sensibles usamos <strong>Capacitor Preferences</strong> vía <code>AlmacenamientoService</code>:</p>
+      <ul>
+        <li>En <strong>Android</strong> usa SharedPreferences (privado a la app).</li>
+        <li>En <strong>iOS</strong> usa UserDefaults (privado a la app).</li>
+        <li>En <strong>web</strong> cae a localStorage.</li>
+      </ul>
+
+      <h3>Claves</h3>
+      <table>
+        <thead><tr><th>Clave</th><th>Contenido</th></tr></thead>
+        <tbody>
+          <tr><td><code>token</code></td><td>JWT Bearer del usuario</td></tr>
+          <tr><td><code>correo_recordado</code></td><td>Correo para "Recordar correo"</td></tr>
+          <tr><td><code>biometria_habilitada</code></td><td>Flag <code>'true'</code> si activó huella/Face ID</td></tr>
+        </tbody>
+      </table>
+
+      <h3>API</h3>
+      <pre><code>await almacenamiento.guardar(ClavesAlmacenamiento.token, jwt);
+const token = await almacenamiento.obtener(ClavesAlmacenamiento.token);
+await almacenamiento.eliminar(ClavesAlmacenamiento.token);
+await almacenamiento.limpiar();</code></pre>
+
+      <p>Las credenciales <strong>biométricas</strong> (usuario + contraseña para la huella) se guardan en el Keychain nativo vía <code>capacitor-native-biometric</code>, no en Preferences.</p>
+    </section>
+
+    <!-- ────────── 7. Autenticación y guards ────────── -->
+    <section id="auth">
+      <h2>7. Autenticación y guards</h2>
+
+      <h3>Flujo de login</h3>
+      <ol>
+        <li>Usuario ingresa correo + contraseña (o usa huella).</li>
+        <li><code>AuthService.autenticar()</code> → POST <code>/Usuarios/api/Auth/Autenticar</code>.</li>
+        <li>La respuesta trae el JWT en <code>Token</code>. <code>ApiService</code> lo guarda automáticamente en Preferences vía <code>guardarToken()</code>.</li>
+        <li>Se persiste <code>usuario</code>, <code>idRol</code>, <code>usuarioRol</code>, <code>departamentoUsuario</code>, <code>menus</code> en el state NGXS.</li>
+        <li><code>navegarSegunRol()</code> redirige a <code>/inicio-usuario-interno</code> o <code>/inicio</code> según el rol.</li>
+      </ol>
+
+      <h3>Roles internos</h3>
+      <p>Definidos en <code>roles.constants.ts</code>:</p>
+      <pre><code>export const ROLES_INTERNOS: readonly number[] = [1, 2, 3];</code></pre>
+      <p>Si querés agregar otro rol interno, solo modificar esa lista — el guard y el componente raíz se actualizan automáticamente.</p>
+
+      <h3>Guards</h3>
+      <table>
+        <thead><tr><th>Guard</th><th>Qué chequea</th><th>Si falla</th></tr></thead>
+        <tbody>
+          <tr><td><code>authGuard</code></td><td>Existe <code>token</code> en Preferences <strong>y</strong> <code>usuario</code> en state</td><td>Redirige a <code>/inicio-sesion</code></td></tr>
+          <tr><td><code>rolInternoGuard</code></td><td><code>idRol</code> ∈ <code>ROLES_INTERNOS</code></td><td>Redirige a <code>/inicio</code></td></tr>
+          <tr><td><code>rolExternoGuard</code></td><td><code>idRol</code> ∉ <code>ROLES_INTERNOS</code></td><td>Redirige a <code>/inicio-usuario-interno</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Aplicación en rutas</h3>
+      <pre><code>{
+  path: 'gestion-usuarios',
+  canActivate: [authGuard, rolInternoGuard],
+  loadComponent: () =&gt; import('./pages/gestion-usuarios/gestion-usuarios.page')
+    .then(m =&gt; m.GestionUsuariosPage),
+},</code></pre>
+
+      <h3>Interceptor HTTP</h3>
+      <p><code>auth.interceptor.ts</code> inyecta el header <code>Authorization: Bearer &lt;token&gt;</code> en cada request automáticamente. Lee el token desde Preferences vía Observable (<code>from(...).pipe(switchMap(...))</code>).</p>
+    </section>
+
+    <!-- ────────── 8. Capa HTTP ────────── -->
+    <section id="http">
+      <h2>8. Capa HTTP y manejo de errores</h2>
+      <p>Todo el tráfico HTTP pasa por <code>ApiService</code>. Los services específicos solo arman los parámetros.</p>
+
+      <h3>Métodos disponibles</h3>
+      <pre><code>api.get&lt;T&gt;(endpoint, params?):  Promise&lt;RespuestaModel&lt;T&gt;&gt;
+api.post&lt;T&gt;(endpoint, body):    Promise&lt;RespuestaModel&lt;T&gt;&gt;
+api.put&lt;T&gt;(endpoint, body):     Promise&lt;RespuestaModel&lt;T&gt;&gt;
+api.delete&lt;T&gt;(endpoint, params?): Promise&lt;RespuestaModel&lt;T&gt;&gt;</code></pre>
+
+      <h3>Modelo de respuesta uniforme</h3>
+      <pre><code>interface RespuestaModel&lt;T&gt; {
+  Exito: boolean;
+  Identificador: string;
+  Mensaje: string;
+  Datos?: T;
+  Token?: string;        // Solo en respuestas de auth
+  Manejado?: boolean;    // Ver siguiente sección
+}</code></pre>
+      <p>El <code>normalizar()</code> interno acepta tanto <code>Exito</code>/<code>Datos</code> como <code>exito</code>/<code>datos</code> (el backend a veces devuelve PascalCase y a veces camelCase).</p>
+
+      <h3>Matriz de errores</h3>
+      <table>
+        <thead><tr><th>Tipo de error</th><th>Detección</th><th>Acción del ApiService</th></tr></thead>
+        <tbody>
+          <tr><td>Timeout (tardó más que <code>timeoutMs</code>)</td><td><code>TimeoutError</code></td><td>Popup "Error" + <strong>expulsa al login</strong></td></tr>
+          <tr><td>API inalcanzable (red, CORS, DNS)</td><td><code>status === 0</code></td><td>Popup "Error" + <strong>expulsa al login</strong></td></tr>
+          <tr><td>Sesión expirada</td><td><code>status === 401</code></td><td>Popup "Sesión vencida" + <strong>expulsa al login</strong></td></tr>
+          <tr><td>Error del servidor</td><td><code>status</code> ∈ [500, 599]</td><td>Popup "Error" + <strong>expulsa al login</strong></td></tr>
+          <tr><td>Otros (4xx)</td><td>Cualquier otro</td><td>Solo devuelve <code>Mensaje</code> en la respuesta</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Expulsión segura</h3>
+      <p><code>ApiService</code> tiene dos protecciones:</p>
+      <ol>
+        <li><strong>Flag <code>expulsando</code></strong> — si varias requests fallan en paralelo, solo la primera dispara el popup y la navegación. Las demás se marcan como <code>Manejado: true</code> y devuelven silenciosamente.</li>
+        <li><strong><code>estaEnAplicacion()</code></strong> — si la request salió desde una pantalla pública (login/registro/olvido-contraseña), NO se expulsa. Esto evita loops y permite que el caller maneje el error normalmente.</li>
+      </ol>
+
+      <h3>El flag <code>Manejado</code></h3>
+      <p>Cuando el ApiService dispara su propio popup (401/500/timeout/network), retorna <code>Manejado: true</code>. Los pages deben respetarlo para no mostrar un segundo popup:</p>
+      <pre><code>const respuesta = await this.miService.algo();
+
+if (respuesta.Manejado) return;          // ApiService ya avisó al usuario
+if (!respuesta.Exito) {
+  this.popup.mostrar({ ... });            // Solo errores que no expulsan
+  return;
+}
+// éxito</code></pre>
+    </section>
+
+    <!-- ────────── 9. Caché de datos ────────── -->
+    <section id="cache">
+      <h2>9. Caché de datos</h2>
+      <p>Para datos relativamente estáticos del backend (parámetros de contacto, términos, ayuda), aplicamos el patrón <strong>stale-while-revalidate</strong>:</p>
+      <pre><code>async ngOnInit(): Promise&lt;void&gt; {
+  // 1. Mostrar cache inmediato si existe
+  const cacheado = await this.estadoService.obtener&lt;MiTipo&gt;(ClavesEstado.miClave);
+  if (cacheado) {
+    this.aplicar(cacheado);
+    this.cargando.set(false);
+  }
+
+  // 2. Refrescar en background
+  const respuesta = await this.servicio.obtener();
+  if (respuesta.Exito) {
+    const nuevo = this.transformar(respuesta.Datos);
+    if (JSON.stringify(nuevo) !== JSON.stringify(cacheado)) {
+      this.aplicar(nuevo);
+      await this.estadoService.guardar(ClavesEstado.miClave, nuevo);
+    }
+  }
+  this.cargando.set(false);
+}</code></pre>
+      <div class="callout callout--tip">
+        <div>
+          <strong>Beneficio:</strong> la segunda visita es instantánea, sin spinner. Si el contenido cambió en el servidor, se actualiza solo cuando llega la respuesta.
+        </div>
+      </div>
+      <p>Aplicado en:</p>
+      <ul>
+        <li><code>terminos-condiciones.page.ts</code></li>
+        <li><code>informacion.page.ts</code> (externo)</li>
+        <li><code>informacion-usuario-interno.page.ts</code></li>
+      </ul>
+      <p>El <strong>departamento del usuario interno</strong> también se cachea: se lee del state primero, solo si falta se consulta al API.</p>
+    </section>
+
+    <!-- ────────── 10. i18n ────────── -->
+    <section id="i18n">
+      <h2>10. Internacionalización (i18n)</h2>
+      <p><code>@ngx-translate/core</code> con un solo archivo: <code>src/assets/i18n/es.json</code>.</p>
+
+      <h3>Configuración (main.ts)</h3>
+      <pre><code>provideTranslateService({
+  lang: 'es',
+  loader: provideTranslateLoader(TranslateHttpLoader),
+}),</code></pre>
+
+      <h3>Uso</h3>
+      <p>En templates:</p>
+      <pre><code>&lt;span&gt;{{ 'inicioSesion.titulo' | translate }}&lt;/span&gt;
+&lt;span&gt;{{ 'errores.timeout' | translate }}&lt;/span&gt;</code></pre>
+      <p>En código:</p>
+      <pre><code>this.translate.instant('inicioSesion.titulo');
+this.translate.instant('algo.conParametros', { nombre: 'Oscar' });</code></pre>
+
+      <h3>Convención de claves</h3>
+      <p>Anidadas por pantalla/módulo:</p>
+      <pre><code>inicioSesion.titulo
+inicioSesion.validacion.correoInvalido
+errores.titulo
+errores.conexion</code></pre>
+      <p>Si vas a agregar texto a una pantalla nueva, agregalo bajo su propia clave en <code>es.json</code>. Las claves de errores comunes ya existen en <code>errores.*</code> y mensajes de éxito en <code>exito.*</code>.</p>
+    </section>
+
+    <!-- ────────── 11. Patrones ────────── -->
+    <section id="patrones">
+      <h2>11. Patrones del código</h2>
+
+      <h3>1. Standalone components + signals</h3>
+      <p>Todos los componentes son <code>standalone: true</code>. Estado local con signals + <code>ChangeDetectionStrategy.OnPush</code> cuando es posible:</p>
+      <pre><code>@Component({
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [...],
+})
+export class MiPage {
+  readonly cargando = signal(true);
+  readonly items    = signal&lt;Item[]&gt;([]);
+}</code></pre>
+
+      <h3>2. Inyección con <code>inject()</code></h3>
+      <pre><code>private readonly authService = inject(AuthService);
+private readonly router      = inject(Router);</code></pre>
+      <p>Más legible que el constructor con muchos parámetros.</p>
+
+      <h3>3. <code>paginaLista</code> para Ionic transitions</h3>
+      <p>Ionic a veces no termina la transición antes de renderizar el contenido. Para evitarlo:</p>
+      <pre><code>readonly paginaLista = signal(false);
+
+ionViewDidEnter(): void {
+  this.paginaLista.set(true);
+  this.cdr.markForCheck();
+}
+
+ionViewWillLeave(): void {
+  this.paginaLista.set(false);
+  this.form.reset();
+}</code></pre>
+      <p>En el template, envolver el contenido con <code>@if (paginaLista()) { ... }</code>.</p>
+
+      <h3>4. <code>NgZone</code> para callbacks de plugins nativos</h3>
+      <p>Los plugins de Capacitor (<code>NativeBiometric</code>, <code>Filesystem</code>, etc.) resuelven sus promesas <strong>fuera</strong> de la zona de Angular. Si modificás estado dentro del callback, la UI no se actualiza.</p>
+      <p>Patrón:</p>
+      <pre><code>await NativeBiometric.verifyIdentity(...);  // ← sale de zona aquí
+
+await this.ngZone.run(async () =&gt; {
+  // Todo lo que actualice UI/state va acá adentro
+  this.cargando = false;
+  this.cdr.detectChanges();
+  await this.router.navigate(['/inicio']);
+});</code></pre>
+
+      <h3>5. Pasar datos entre pages</h3>
+      <p>Hoy se usa <code>history.state</code>:</p>
+      <pre><code>this.router.navigate(['/detalle', id], { state: { reclamo } });
+
+// En el destino
+ngOnInit() {
+  const nav = history.state;
+  if (nav?.reclamo) this.reclamo.set(nav.reclamo);
+}</code></pre>
+      <div class="callout callout--warning">
+        <div>
+          Esto <strong>se pierde al recargar la página</strong>. Si querés que sea robusto, pasá el ID por URL y hacé refetch en el destino. Para listas de resultados (como <code>resultados-reclamos</code>), conviene guardar los criterios en NGXS y reconstruir.
+        </div>
+      </div>
+
+      <h3>6. Manejo de respuestas del API</h3>
+      <pre><code>const respuesta = await this.servicio.algo();
+
+if (respuesta.Manejado) return;            // ApiService ya manejó (401/500/red)
+if (!respuesta.Exito) {                    // Error de negocio
+  this.popup.mostrar({ tipo: 'error', titulo: ..., mensaje: respuesta.Mensaje });
+  return;
+}
+
+// Usar respuesta.Datos</code></pre>
+    </section>
+
+    <!-- ────────── 12. Crear un page nuevo ────────── -->
+    <section id="nuevo-page">
+      <h2>12. Cómo crear un page nuevo</h2>
+
+      <ol>
+        <li>
+          <strong>Crear carpeta y archivos</strong> bajo <code>src/app/pages/mi-page/</code>:
+          <ul>
+            <li><code>mi-page.page.ts</code></li>
+            <li><code>mi-page.page.html</code></li>
+            <li><code>mi-page.page.scss</code></li>
+          </ul>
+        </li>
+        <li>
+          <strong>Esqueleto TS:</strong>
+          <pre><code>import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { PaginaComponent } from '../../components/pagina/pagina.component';
+
+@Component({
+  selector: 'app-mi-page',
+  templateUrl: './mi-page.page.html',
+  styleUrls: ['./mi-page.page.scss'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslateModule, PaginaComponent],
+})
+export class MiPage {
+  readonly cargando = signal(true);
+}</code></pre>
+        </li>
+        <li>
+          <strong>HTML</strong> envuelto en <code>&lt;app-pagina&gt;</code>:
+          <pre><code>&lt;app-pagina titulo="Mi título" [atras]="true" [cargando]="cargando()"&gt;
+  &lt;!-- contenido --&gt;
+&lt;/app-pagina&gt;</code></pre>
+        </li>
+        <li>
+          <strong>Registrar ruta</strong> en <code>app.routes.ts</code>:
+          <pre><code>{
+  path: 'mi-page',
+  canActivate: [authGuard, rolInternoGuard], // o rolExternoGuard, o solo authGuard
+  loadComponent: () =&gt; import('./pages/mi-page/mi-page.page')
+    .then(m =&gt; m.MiPage),
+},</code></pre>
+        </li>
+        <li>
+          <strong>Agregar traducciones</strong> en <code>src/assets/i18n/es.json</code>:
+          <pre><code>"miPage": {
+  "titulo": "Mi título"
+}</code></pre>
+        </li>
+        <li><strong>(Opcional)</strong> Si el page tiene un botón en algún menú, agregarlo en el componente correspondiente (<code>menu-usuario-interno</code> o <code>menu-usuario-externo</code>).</li>
+      </ol>
+    </section>
+
+    <!-- ────────── 13. Build para Android ────────── -->
+    <section id="android">
+      <h2>13. Build para Android</h2>
+      <pre><code># 1. Build de Angular + copia de assets a Android
+npm run build:android
+
+# 2. Sincronizar plugins nativos con Gradle
+npx cap sync android
+
+# 3. Abrir en Android Studio
+npx cap open android</code></pre>
+
+      <h3>Cuándo correr <code>npx cap sync</code></h3>
+      <ul>
+        <li>Después de instalar un plugin nuevo de Capacitor (ej. <code>@capacitor/preferences</code>).</li>
+        <li>Después de actualizar versiones de plugins.</li>
+        <li>Si Android no encuentra una clase nativa que existe en el plugin npm.</li>
+      </ul>
+
+      <h3>Permisos declarados</h3>
+      <p>Capacitor maneja el <code>AndroidManifest.xml</code> parcialmente. Para permisos que se piden en runtime (almacenamiento al descargar archivos, biometría, etc.) ya están integrados en <code>app.component.ts:solicitarPermisos()</code> para <code>Filesystem</code>.</p>
+    </section>
+
+    <!-- ────────── 14. Troubleshooting ────────── -->
+    <section id="troubleshooting">
+      <h2>14. Troubleshooting</h2>
+
+      <h3>"NG04002: no route matched"</h3>
+      <p>Probablemente agregaste un page nuevo pero olvidaste registrar la ruta en <code>app.routes.ts</code>. El error trae la ruta que se intentó usar.</p>
+
+      <h3>"TS2339: Property 'X' does not exist on type" en environment</h3>
+      <p><code>environment.ts</code> y <code>environment.prod.ts</code> están desincronizados. Agregá la propiedad faltante al archivo prod.</p>
+
+      <h3>Usuario logueado pero al recargar lo manda a login</h3>
+      <p>El plugin de storage de NGXS no está hidratando el state. Verificar que <code>main.ts</code> tenga:</p>
+      <pre><code>provideStore([EstadoApp], withNgxsStoragePlugin({ keys: ['app'] })),</code></pre>
+
+      <h3>Spinner se queda activo después de operación biométrica</h3>
+      <p>El callback de <code>NativeBiometric</code> corre fuera de NgZone. Asegurate de envolver actualizaciones de estado y <code>cdr.detectChanges()</code> en <code>this.ngZone.run(...)</code>.</p>
+
+      <h3>El usuario ve dos popups en errores 401/500</h3>
+      <p>Algún caller no está chequeando <code>respuesta.Manejado</code>. Agregar:</p>
+      <pre><code>if (respuesta.Manejado) return;</code></pre>
+      <p>antes del bloque que muestra el popup local.</p>
+
+      <h3>"Provisional headers are shown" / la app no carga datos</h3>
+      <p>El API no responde (<code>status === 0</code>). El <code>ApiService</code> ya detecta esto y expulsa a login automáticamente. Si querés debugear, mirá la URL en <code>environment.ts</code> — probablemente el túnel ngrok expiró.</p>
+
+      <h3>Cambios de configuración de Android no se aplican</h3>
+      <p>Después de tocar <code>capacitor.config.ts</code>, <code>package.json</code> o instalar plugins:</p>
+      <pre><code>npm run build:android
+npx cap sync android</code></pre>
+      <p>Y reiniciar Android Studio si es necesario.</p>
+    </section>
+
+    <footer>
+      JAPDEVA App — Documentación técnica · Generada para uso interno
+    </footer>
+
+  </main>
+
+</div>
+
+</body>
+</html>

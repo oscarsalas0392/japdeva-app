@@ -5,6 +5,7 @@ import { RespuestaModel } from '../models/respuesta.model';
 import { RespuestaListaModel } from '../models/respuesta-lista.model';
 import { DetalleReclamoRespuestaModel } from '../models/reclamos/detalle-reclamo.model';
 import { AsignarDetalleReclamoSolicitudModel } from '../models/reclamos/asignar-detalle-reclamo-request.model';
+import { EstadoDetalleReclamoEnum } from '../models/reclamos/estado-detalle-reclamo.enum';
 import { EditarDetalleReclamoSolicitudModel } from '../models/reclamos/editar-detalle-reclamo-request.model';
 import { DocumentoInternoRespuestaModel } from '../models/reclamos/documento-interno.model';
 import { AgregarDocumentoInternoSolicitudModel } from '../models/reclamos/agregar-documento-interno-request.model';
@@ -43,6 +44,38 @@ export class DetalleReclamoService {
 
   asignar(solicitud: AsignarDetalleReclamoSolicitudModel): Promise<RespuestaModel<void>> {
     return this.api.put(this.ep.asignar, solicitud);
+  }
+
+  /**
+   * Asigna el detalle de un reclamo al usuario interno indicado.
+   * Encapsula los dos pasos: descubrir el `idDetalle` pendiente del reclamo
+   * en el departamento dado, y ejecutar la asignación.
+   *
+   * Devuelve la respuesta de la asignación. Si el primer paso falla,
+   * devuelve la respuesta de ese paso para que el caller pueda manejarlo.
+   */
+  async asignarPorReclamo(
+    idReclamo: number,
+    idDepartamento: number,
+    idUsuarioInterno: number,
+  ): Promise<RespuestaModel<void>> {
+    const detalleRespuesta = await this.obtenerPorDepartamentoYEstado(
+      idDepartamento, EstadoDetalleReclamoEnum.Pendiente, idReclamo,
+    );
+
+    if (!detalleRespuesta.Exito || !detalleRespuesta.Datos) {
+      return {
+        Exito:         false,
+        Identificador: detalleRespuesta.Identificador,
+        Mensaje:       detalleRespuesta.Mensaje,
+        Manejado:      detalleRespuesta.Manejado,
+      };
+    }
+
+    return this.asignar({
+      IdDetalleReclamo: detalleRespuesta.Datos.id,
+      IdUsuarioInterno: idUsuarioInterno,
+    });
   }
 
   /**

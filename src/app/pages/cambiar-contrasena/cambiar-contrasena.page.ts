@@ -11,9 +11,7 @@ import { BotonCargandoComponent } from '../../components/boton-cargando/boton-ca
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ParametrosService } from '../../core/services/parametros.service';
-import { EstadoAppService } from '../../core/state/app.service';
-import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { SesionService } from '../../core/services/sesion.service';
 
 function contrasenasCoincidenValidator(control: AbstractControl): ValidationErrors | null {
   const nueva = control.get('nueva');
@@ -47,7 +45,7 @@ function contrasenasCoincidenValidator(control: AbstractControl): ValidationErro
 })
 export class CambiarContrasenaPage implements OnInit {
   private readonly authService       = inject(AuthService);
-  private readonly estadoService     = inject(EstadoAppService);
+  private readonly sesionService     = inject(SesionService);
   private readonly popup             = inject(PopupAvisoService);
   private readonly translate         = inject(TranslateService);
   private readonly router            = inject(Router);
@@ -106,7 +104,7 @@ export class CambiarContrasenaPage implements OnInit {
     this.cargando = true;
     this.form.disable();
 
-    const usuario = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    const usuario = await this.sesionService.obtenerUsuario();
     const { actual, nueva } = this.form.getRawValue();
 
     const respuesta = await this.authService.cambiarContrasena({

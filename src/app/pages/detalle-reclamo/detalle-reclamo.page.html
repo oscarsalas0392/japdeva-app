@@ -24,6 +24,12 @@
           titulo="detalleReclamo.fechaRegistro"
           [valor]="generales.formatearFecha(reclamo()!.fechaRegistro)"
         />
+        @if (reclamoResuelto() && reclamo()!.descripcionResolucion) {
+          <app-campo-detalle
+            titulo="detalleReclamo.resolucion"
+            [valor]="reclamo()!.descripcionResolucion!"
+          />
+        }
       </div>
     }
 

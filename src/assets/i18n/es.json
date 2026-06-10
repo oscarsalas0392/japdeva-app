@@ -177,7 +177,8 @@
     "descripcionAtencion": "Descripción de la atención",
     "fechaInicio": "Fecha de inicio",
     "fechaUltimaAtencion": "Fecha de finalización",
-    "sinAtencion": "Este reclamo aún no ha sido atendido."
+    "sinAtencion": "Este reclamo aún no ha sido atendido.",
+    "resolucion": "Resolución"
   },
   "nuevoReclamo": {
     "titulo": "Nuevo Reclamo",

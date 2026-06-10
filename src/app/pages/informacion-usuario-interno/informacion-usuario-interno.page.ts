@@ -11,8 +11,8 @@ import {
 } from 'ionicons/icons';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { ParametrosService } from '../../core/services/parametros.service';
+import { ParametrosCacheService } from '../../core/services/parametros-cache.service';
 import { ParametroModel } from '../../core/models/parametros/parametro.model';
-import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 
 interface AyudaUsuarioInternoCache {
@@ -38,7 +38,7 @@ interface AyudaUsuarioInternoCache {
 })
 export class InformacionUsuarioInternoPage implements OnInit {
   private readonly parametrosService = inject(ParametrosService);
-  private readonly estadoService     = inject(EstadoAppService);
+  private readonly cache             = inject(ParametrosCacheService);
 
   constructor() {
     addIcons({ briefcaseOutline, sparklesOutline, searchOutline, constructOutline, helpBuoyOutline });
@@ -57,12 +57,18 @@ export class InformacionUsuarioInternoPage implements OnInit {
   readonly ayudaDescripcion    = signal('');
 
   async ngOnInit(): Promise<void> {
-    const cacheado = await this.estadoService.obtener<AyudaUsuarioInternoCache>(ClavesEstado.ayudaUsuarioInterno);
-    if (cacheado) {
-      this.aplicar(cacheado);
-      this.cargando.set(false);
-    }
+    await this.cache.cargarConCache<AyudaUsuarioInternoCache>(
+      ClavesEstado.ayudaUsuarioInterno,
+      () => this.obtenerDelApi(),
+      (datos) => {
+        this.aplicar(datos);
+        this.cargando.set(false);
+      },
+    );
+    this.cargando.set(false);
+  }
 
+  private async obtenerDelApi(): Promise<AyudaUsuarioInternoCache | null> {
     const respuesta = await this.parametrosService.obtenerParametrosPorNombres([
       'AyudaInternaBienvenida',
       'AyudaInternaComoFuncionaTitulo',
@@ -75,39 +81,21 @@ export class InformacionUsuarioInternoPage implements OnInit {
       'AyudaInternaAyuda',
     ]);
 
-    const datos: AyudaUsuarioInternoCache = {
-      bienvenidaTitulo:     '',
-      bienvenidaDescripcion:'',
-      comoFuncionaTitulo:   '',
-      comoFuncionaPasos:    [],
-      revisionTitulo:       '',
-      revisionPasos:        [],
-      atencionTitulo:       '',
-      atencionPasos:        [],
-      ayudaTitulo:          '',
-      ayudaDescripcion:     '',
+    if (!respuesta.Exito || !Array.isArray(respuesta.Datos)) return null;
+
+    const p = respuesta.Datos;
+    return {
+      bienvenidaTitulo:      this.encontrar(p, 'AyudaInternaBienvenida', 'valor1'),
+      bienvenidaDescripcion: this.encontrar(p, 'AyudaInternaBienvenida', 'valor2'),
+      comoFuncionaTitulo:    this.encontrar(p, 'AyudaInternaComoFuncionaTitulo', 'valor1'),
+      comoFuncionaPasos:     this.extraerPasos(p, 'AyudaInternaComoFunciona', 5),
+      revisionTitulo:        this.encontrar(p, 'AyudaInternaRevisionTitulo', 'valor1'),
+      revisionPasos:         this.extraerPasos(p, 'AyudaInternaRevision', 3),
+      atencionTitulo:        this.encontrar(p, 'AyudaInternaAtencionTitulo', 'valor1'),
+      atencionPasos:         this.extraerPasos(p, 'AyudaInternaAtencion', 4),
+      ayudaTitulo:           this.encontrar(p, 'AyudaInternaAyuda', 'valor1'),
+      ayudaDescripcion:      this.encontrar(p, 'AyudaInternaAyuda', 'valor2'),
     };
-
-    if (respuesta.Exito && Array.isArray(respuesta.Datos)) {
-      const p = respuesta.Datos;
-      datos.bienvenidaTitulo     = this.encontrar(p, 'AyudaInternaBienvenida', 'valor1');
-      datos.bienvenidaDescripcion= this.encontrar(p, 'AyudaInternaBienvenida', 'valor2');
-      datos.comoFuncionaTitulo   = this.encontrar(p, 'AyudaInternaComoFuncionaTitulo', 'valor1');
-      datos.comoFuncionaPasos    = this.extraerPasos(p, 'AyudaInternaComoFunciona', 5);
-      datos.revisionTitulo       = this.encontrar(p, 'AyudaInternaRevisionTitulo', 'valor1');
-      datos.revisionPasos        = this.extraerPasos(p, 'AyudaInternaRevision', 3);
-      datos.atencionTitulo       = this.encontrar(p, 'AyudaInternaAtencionTitulo', 'valor1');
-      datos.atencionPasos        = this.extraerPasos(p, 'AyudaInternaAtencion', 4);
-      datos.ayudaTitulo          = this.encontrar(p, 'AyudaInternaAyuda', 'valor1');
-      datos.ayudaDescripcion     = this.encontrar(p, 'AyudaInternaAyuda', 'valor2');
-    }
-
-    if (JSON.stringify(datos) !== JSON.stringify(cacheado)) {
-      this.aplicar(datos);
-      await this.estadoService.guardar(ClavesEstado.ayudaUsuarioInterno, datos);
-    }
-
-    this.cargando.set(false);
   }
 
   private aplicar(datos: AyudaUsuarioInternoCache): void {

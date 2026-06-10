@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaginaComponent } from '../../components/pagina/pagina.component';
@@ -11,6 +11,7 @@ import { GeneralesService } from '../../core/services/generales.service';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
 import { DetalleReclamoRespuestaModel } from '../../core/models/reclamos/detalle-reclamo.model';
 import { DocumentoUsuarioRespuestaModel } from '../../core/models/reclamos/documento-usuario-respuesta.model';
+import { EstadoReclamoEnum } from '../../core/models/reclamos/estado-reclamo.enum';
 
 @Component({
   selector: 'app-detalle-reclamo',
@@ -66,5 +67,11 @@ export class DetalleReclamoPage implements OnInit {
     const historialActual = this.historial();
     return historialActual.length ? historialActual[historialActual.length - 1] : null;
   }
+
+  /** True cuando el reclamo ya tiene una resolución final (Completado o Rechazado). */
+  readonly reclamoResuelto = computed(() => {
+    const estado = this.reclamo()?.idEstadoReclamo;
+    return estado === EstadoReclamoEnum.Completado || estado === EstadoReclamoEnum.Rechazado;
+  });
 
 }

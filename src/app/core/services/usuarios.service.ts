@@ -15,6 +15,7 @@ import { AgregarUsuarioRolRequest } from '../models/usuarios/agregar-usuario-rol
 import { ActualizarUsuarioRolSolicitudModel } from '../models/usuarios/actualizar-usuario-rol-solicitud.model';
 import { DepartamentoUsuarioRespuestaModel } from '../models/usuarios/departamento-usuario.model';
 import { AgregarDepartamentoUsuarioSolicitudModel } from '../models/usuarios/agregar-departamento-usuario-solicitud.model';
+import { OpcionSelectModel } from '../models/opcion-select.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
@@ -88,6 +89,15 @@ export class UsuariosService {
     return this.api.get(this.epRol.obtenerTodos);
   }
 
+  /** Obtiene los roles activos transformados al modelo de OpcionSelect, listos para un dropdown. */
+  async obtenerRolesActivosComoOpciones(): Promise<OpcionSelectModel[]> {
+    const respuesta = await this.obtenerRoles();
+    if (!respuesta.Exito || !Array.isArray(respuesta.Datos)) return [];
+    return respuesta.Datos
+      .filter(r => r.activo)
+      .map(r => ({ valor: r.id, etiqueta: r.descripcion }));
+  }
+
   /**
    * Obtiene un rol por su identificador.
    * @param id Identificador del rol.
@@ -120,6 +130,15 @@ export class UsuariosService {
    */
   obtenerDepartamentos(): Promise<RespuestaModel<DepartamentoRespuestaModel[]>> {
     return this.api.get(this.epDepartamento.obtenerTodos);
+  }
+
+  /** Obtiene los departamentos activos transformados al modelo de OpcionSelect, listos para un dropdown. */
+  async obtenerDepartamentosActivosComoOpciones(): Promise<OpcionSelectModel[]> {
+    const respuesta = await this.obtenerDepartamentos();
+    if (!respuesta.Exito || !Array.isArray(respuesta.Datos)) return [];
+    return respuesta.Datos
+      .filter(d => d.activo)
+      .map(d => ({ valor: d.id, etiqueta: d.descripcion }));
   }
 
   /**
@@ -188,5 +207,34 @@ export class UsuariosService {
    */
   eliminarDepartamentoUsuario(id: number): Promise<RespuestaModel<void>> {
     return this.api.delete(this.epDepartamentoUsuario.eliminar, { id });
+  }
+
+  /**
+   * Reemplaza el departamento asignado a un usuario: si tenía uno previo lo elimina,
+   * y luego agrega la nueva asignación. Devuelve `true` si la asignación final tuvo éxito.
+   * @param idUsuario Usuario a actualizar.
+   * @param idDepartamento Nuevo departamento.
+   * @param idUsuarioAdministrador Usuario interno que está realizando el cambio.
+   * @param idAsignacionActual Id del registro previo (si existe) a eliminar antes de crear el nuevo.
+   */
+  async reemplazarDepartamentoUsuario(
+    idUsuario: number,
+    idDepartamento: number,
+    idUsuarioAdministrador: number,
+    idAsignacionActual?: number,
+  ): Promise<boolean> {
+    try {
+      if (idAsignacionActual) {
+        await this.eliminarDepartamentoUsuario(idAsignacionActual);
+      }
+      const respuesta = await this.agregarDepartamentoUsuario({
+        IdUsuario:              idUsuario,
+        IdDepartamento:         idDepartamento,
+        IdUsuarioAdministrador: idUsuarioAdministrador,
+      });
+      return respuesta.Exito;
+    } catch {
+      return false;
+    }
   }
 }

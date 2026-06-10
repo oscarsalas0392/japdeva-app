@@ -15,4 +15,6 @@ export interface ReclamoRespuestaModel {
   estaEnHistorico: boolean;
   idUsuarioInterno?: number;
   nombreUsuarioInterno?: string;
+  /** Texto de la resolución final. Solo presente cuando el reclamo está Completado o Rechazado. */
+  descripcionResolucion?: string;
 }

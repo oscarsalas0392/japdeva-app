@@ -6,8 +6,8 @@ import { ListaFaqsComponent, FaqItem } from '../../components/lista-faqs/lista-f
 import { GridColumnasComponent } from '../../components/grid-columnas/grid-columnas.component';
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { ParametrosService } from '../../core/services/parametros.service';
+import { ParametrosCacheService } from '../../core/services/parametros-cache.service';
 import { ParametroModel } from '../../core/models/parametros/parametro.model';
-import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
 
 interface InformacionContactoCache {
@@ -29,7 +29,7 @@ interface InformacionContactoCache {
 })
 export class InformacionPage implements OnInit {
   private readonly parametrosService = inject(ParametrosService);
-  private readonly estadoService     = inject(EstadoAppService);
+  private readonly cache             = inject(ParametrosCacheService);
 
   readonly cargando      = signal(true);
   readonly telefono      = signal('');
@@ -40,14 +40,18 @@ export class InformacionPage implements OnInit {
   readonly faqs          = signal<FaqItem[]>([]);
 
   async ngOnInit(): Promise<void> {
-    // Si hay versión cacheada, la mostramos de inmediato.
-    const cacheado = await this.estadoService.obtener<InformacionContactoCache>(ClavesEstado.informacionContacto);
-    if (cacheado) {
-      this.aplicar(cacheado);
-      this.cargando.set(false);
-    }
+    await this.cache.cargarConCache<InformacionContactoCache>(
+      ClavesEstado.informacionContacto,
+      () => this.obtenerDelApi(),
+      (datos) => {
+        this.aplicar(datos);
+        this.cargando.set(false);
+      },
+    );
+    this.cargando.set(false);
+  }
 
-    // Refrescamos en background. Si cambia, actualiza la vista y el cache.
+  private async obtenerDelApi(): Promise<InformacionContactoCache | null> {
     const [contacto, faqsResp] = await Promise.all([
       this.parametrosService.obtenerParametrosPorNombres([
         'TelefonoContacto', 'EmailContacto', 'NombreOficina', 'DireccionOficina', 'HorarioOficina',
@@ -56,6 +60,8 @@ export class InformacionPage implements OnInit {
         'FaqCrearReclamo', 'FaqTiempoResolucion', 'FaqDocumentos', 'FaqSeguimiento',
       ]),
     ]);
+
+    if (!contacto.Exito && !faqsResp.Exito) return null;
 
     const datos: InformacionContactoCache = {
       telefono:      '',
@@ -81,12 +87,7 @@ export class InformacionPage implements OnInit {
       }));
     }
 
-    if (JSON.stringify(datos) !== JSON.stringify(cacheado)) {
-      this.aplicar(datos);
-      await this.estadoService.guardar(ClavesEstado.informacionContacto, datos);
-    }
-
-    this.cargando.set(false);
+    return datos;
   }
 
   private aplicar(datos: InformacionContactoCache): void {

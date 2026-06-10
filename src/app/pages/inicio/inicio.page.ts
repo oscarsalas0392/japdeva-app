@@ -6,9 +6,7 @@ import { SeccionHeaderComponent } from '../../components/seccion-header/seccion-
 import { ListaReclamosComponent } from '../../components/lista-reclamos/lista-reclamos.component';
 import { BotonNuevoReclamoComponent } from '../../components/boton-nuevo-reclamo/boton-nuevo-reclamo.component';
 import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
-import { EstadoAppService } from '../../core/state/app.service';
-import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { SesionService } from '../../core/services/sesion.service';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
 import { ReclamoService } from '../../core/services/reclamo.service';
 
@@ -27,7 +25,7 @@ import { ReclamoService } from '../../core/services/reclamo.service';
   ],
 })
 export class InicioPage implements OnInit {
-  private readonly estadoService  = inject(EstadoAppService);
+  private readonly sesionService  = inject(SesionService);
   private readonly reclamoService = inject(ReclamoService);
   private readonly router         = inject(Router);
 
@@ -42,7 +40,7 @@ export class InicioPage implements OnInit {
   ];
 
   async ngOnInit(): Promise<void> {
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    const usuarioSesion = await this.sesionService.obtenerUsuario();
     if (usuarioSesion) {
       this.usuarioId = usuarioSesion.id;
       this.saludo.set(`Hola, ${usuarioSesion.nombre}`);

@@ -13,9 +13,7 @@ import { BotonCargandoComponent } from '../../components/boton-cargando/boton-ca
 import { GrupoCampoComponent } from '../../components/grupo-campo/grupo-campo.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { UsuariosService } from '../../core/services/usuarios.service';
-import { EstadoAppService } from '../../core/state/app.service';
-import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { SesionService } from '../../core/services/sesion.service';
 import { UsuarioRespuestaModel } from '../../core/models/usuarios/usuario.model';
 import { UsuarioRolRespuestaModel } from '../../core/models/usuarios/usuario-rol.model';
 import { DepartamentoUsuarioRespuestaModel } from '../../core/models/usuarios/departamento-usuario.model';
@@ -41,7 +39,7 @@ import { OpcionSelectModel } from '../../core/models/opcion-select.model';
 })
 export class GestionUsuariosPage implements OnInit {
   private readonly usuariosService = inject(UsuariosService);
-  private readonly estadoService   = inject(EstadoAppService);
+  private readonly sesionService   = inject(SesionService);
   private readonly popup           = inject(PopupAvisoService);
   private readonly translate       = inject(TranslateService);
   private readonly router          = inject(Router);
@@ -96,29 +94,17 @@ export class GestionUsuariosPage implements OnInit {
     this.usuarioRol    = null;
     this.deptoAsignado = null;
 
-    const adminRespuesta = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    this.adminId    = adminRespuesta?.id ?? 0;
+    this.adminId = await this.sesionService.obtenerIdUsuario();
 
-    const [rolesRespuesta, departamentosRespuesta, usuarioRolRespuesta, departamentoRespuesta] = await Promise.all([
-      this.usuariosService.obtenerRoles(),
-      this.usuariosService.obtenerDepartamentos(),
+    const [rolesOpciones, departamentosOpciones, usuarioRolRespuesta, departamentoRespuesta] = await Promise.all([
+      this.usuariosService.obtenerRolesActivosComoOpciones(),
+      this.usuariosService.obtenerDepartamentosActivosComoOpciones(),
       this.usuariosService.obtenerRolPorUsuario(encontrado.id),
       this.usuariosService.obtenerDepartamentoPorUsuario(encontrado.id),
     ]);
 
-    if (rolesRespuesta.Exito && Array.isArray(rolesRespuesta.Datos)) {
-      this.roles.set(rolesRespuesta.Datos
-        .filter(r => r.activo)
-        .map(r => ({ valor: r.id, etiqueta: r.descripcion }))
-      );
-    }
-
-    if (departamentosRespuesta.Exito && Array.isArray(departamentosRespuesta.Datos)) {
-      this.departamentos.set(departamentosRespuesta.Datos
-        .filter(d => d.activo)
-        .map(d => ({ valor: d.id, etiqueta: d.descripcion }))
-      );
-    }
+    this.roles.set(rolesOpciones);
+    this.departamentos.set(departamentosOpciones);
 
     if (usuarioRolRespuesta.Exito && usuarioRolRespuesta.Datos) {
       this.usuarioRol = usuarioRolRespuesta.Datos;
@@ -146,7 +132,12 @@ export class GestionUsuariosPage implements OnInit {
         IdRol:     idRol!,
         IdUsuario: this.usuario()!.id,
       }),
-      this.actualizarDepartamento(idDepartamento!),
+      this.usuariosService.reemplazarDepartamentoUsuario(
+        this.usuario()!.id,
+        idDepartamento!,
+        this.adminId,
+        this.deptoAsignado?.id,
+      ),
     ]);
 
     this.guardando.set(false);
@@ -158,21 +149,5 @@ export class GestionUsuariosPage implements OnInit {
     }
 
     this.popup.mostrar({ tipo: 'exito', titulo: this.translate.instant('exito.titulo'), mensaje: this.translate.instant('gestionUsuarios.exito') });
-  }
-
-  private async actualizarDepartamento(idDepartamento: number): Promise<boolean> {
-    try {
-      if (this.deptoAsignado) {
-        await this.usuariosService.eliminarDepartamentoUsuario(this.deptoAsignado.id);
-      }
-      const agregarDeptoRespuesta = await this.usuariosService.agregarDepartamentoUsuario({
-        IdUsuario:              this.usuario()!.id,
-        IdDepartamento:         idDepartamento,
-        IdUsuarioAdministrador: this.adminId,
-      });
-      return agregarDeptoRespuesta.Exito;
-    } catch {
-      return false;
-    }
   }
 }

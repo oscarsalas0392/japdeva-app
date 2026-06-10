@@ -10,9 +10,9 @@ import { CampoFechaComponent } from '../../components/campo-fecha/campo-fecha.co
 import { BotonCargandoComponent } from '../../components/boton-cargando/boton-cargando.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { AuthService } from '../../core/services/auth.service';
+import { SesionService } from '../../core/services/sesion.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
 
 @Component({
   selector: 'app-editar-perfil',
@@ -32,6 +32,7 @@ import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth
 })
 export class EditarPerfilPage implements OnInit {
   private readonly authService = inject(AuthService);
+  private readonly sesionService = inject(SesionService);
   private readonly estadoService = inject(EstadoAppService);
   private readonly popup = inject(PopupAvisoService);
   private readonly translate = inject(TranslateService);
@@ -51,7 +52,7 @@ export class EditarPerfilPage implements OnInit {
   enviado = false;
 
   async ngOnInit(): Promise<void> {
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    const usuarioSesion = await this.sesionService.obtenerUsuario();
     if (usuarioSesion) {
       this.usuarioId = usuarioSesion.id;
       this.form.patchValue({
@@ -93,7 +94,7 @@ export class EditarPerfilPage implements OnInit {
       return;
     }
 
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    const usuarioSesion = await this.sesionService.obtenerUsuario();
     if (usuarioSesion) {
       await this.estadoService.guardar(ClavesEstado.usuario, {
         ...usuarioSesion,

@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://992b-2803-f340-1205-1602-d520-6aa-8d55-80cd.ngrok-free.app',
+  apiUrl: 'https://unseated-property-ranged.ngrok-free.dev',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {

@@ -14,9 +14,7 @@ import { AdjuntarArchivoComponent } from '../../components/adjuntar-archivo/adju
 import { BotonCargandoComponent } from '../../components/boton-cargando/boton-cargando.component';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { ReclamoService } from '../../core/services/reclamo.service';
-import { EstadoAppService } from '../../core/state/app.service';
-import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
+import { SesionService } from '../../core/services/sesion.service';
 import { ArchivoSolicitudModel } from '../../core/models/reclamos/documento.model';
 import { Router } from '@angular/router';
 
@@ -41,7 +39,7 @@ import { Router } from '@angular/router';
 })
 export class NuevoReclamoPage implements OnInit {
   private readonly reclamoService = inject(ReclamoService);
-  private readonly estadoService  = inject(EstadoAppService);
+  private readonly sesionService  = inject(SesionService);
   private readonly popup          = inject(PopupAvisoService);
   private readonly translate      = inject(TranslateService);
   private readonly router         = inject(Router);
@@ -63,8 +61,7 @@ export class NuevoReclamoPage implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (usuarioSesion) this.usuarioId = usuarioSesion.id;
+    this.usuarioId = await this.sesionService.obtenerIdUsuario();
   }
 
   async enviar(): Promise<void> {

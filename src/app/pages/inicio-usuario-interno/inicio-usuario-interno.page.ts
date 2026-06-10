@@ -7,16 +7,14 @@ import { ListaReclamosComponent } from '../../components/lista-reclamos/lista-re
 import { ReclamoService } from '../../core/services/reclamo.service';
 import { DetalleReclamoService } from '../../core/services/detalle-reclamo.service';
 import { UsuariosService } from '../../core/services/usuarios.service';
+import { ReclamoAccionesService } from '../../core/services/reclamo-acciones.service';
+import { SesionService } from '../../core/services/sesion.service';
 import { EstadoAppService } from '../../core/state/app.service';
 import { PopupAvisoService } from '../../components/popup-aviso/popup-aviso.service';
 import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
 import { DepartamentoUsuarioRespuestaModel } from '../../core/models/usuarios/departamento-usuario.model';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
 import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
-
-const ESTADO_PENDIENTE  = 1;
-const ESTADO_EN_PROCESO = 2;
 
 @Component({
   selector: 'app-inicio-usuario-interno',
@@ -30,6 +28,8 @@ export class InicioUsuarioInternoPage implements OnInit {
   private readonly reclamoService        = inject(ReclamoService);
   private readonly detalleReclamoService = inject(DetalleReclamoService);
   private readonly usuariosService       = inject(UsuariosService);
+  private readonly accionesService       = inject(ReclamoAccionesService);
+  private readonly sesionService         = inject(SesionService);
   private readonly estadoService         = inject(EstadoAppService);
   private readonly router                = inject(Router);
   private readonly popup                 = inject(PopupAvisoService);
@@ -43,24 +43,11 @@ export class InicioUsuarioInternoPage implements OnInit {
   private idDepartamento = 0;
   private idUsuarioActual = 0;
 
-  readonly opcionesReclamo = (reclamo: ReclamoRespuestaModel): OpcionAccionModel[] => {
-    const opciones: OpcionAccionModel[] = [
-      { id: 'ver', etiqueta: 'inicio.acciones.ver' },
-    ];
-
-    if (reclamo.idEstadoDetalleReclamo === ESTADO_PENDIENTE) {
-      opciones.push({ id: 'asignar', etiqueta: 'inicioUsuarioInterno.acciones.asignar' });
-    }
-
-    if (reclamo.idEstadoDetalleReclamo === ESTADO_EN_PROCESO && reclamo.idUsuarioInterno === this.idUsuarioActual) {
-      opciones.push({ id: 'atender', etiqueta: 'atenderReclamo.atender' });
-    }
-
-    return opciones;
-  };
+  readonly opcionesReclamo = (reclamo: ReclamoRespuestaModel): OpcionAccionModel[] =>
+    this.accionesService.opcionesUsuarioInterno(reclamo, this.idUsuarioActual);
 
   async ngOnInit(): Promise<void> {
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
+    const usuarioSesion = await this.sesionService.obtenerUsuario();
     if (usuarioSesion) {
       this.saludo.set(`Hola, ${usuarioSesion.nombre}`);
       this.idUsuarioActual = usuarioSesion.id;
@@ -108,24 +95,11 @@ export class InicioUsuarioInternoPage implements OnInit {
   }
 
   private async asignarReclamo(reclamo: ReclamoRespuestaModel): Promise<void> {
-    const detalleRespuesta = await this.detalleReclamoService.obtenerPorDepartamentoYEstado(
-      reclamo.idDepartamentoActual, ESTADO_PENDIENTE, reclamo.id,
+    const respuesta = await this.detalleReclamoService.asignarPorReclamo(
+      reclamo.id,
+      reclamo.idDepartamentoActual,
+      this.idUsuarioActual,
     );
-
-    if (detalleRespuesta.Manejado) return;
-    if (!detalleRespuesta.Exito || !detalleRespuesta.Datos) {
-      this.popup.mostrar({
-        tipo: 'error',
-        titulo: this.translate.instant('errores.titulo'),
-        mensaje: this.translate.instant('inicioUsuarioInterno.acciones.errorAsignar'),
-      });
-      return;
-    }
-
-    const respuesta = await this.detalleReclamoService.asignar({
-      IdDetalleReclamo: detalleRespuesta.Datos.id,
-      IdUsuarioInterno: this.idUsuarioActual,
-    });
 
     if (respuesta.Manejado) return;
     if (!respuesta.Exito) {

@@ -5,10 +5,8 @@ import { PaginaComponent } from '../../components/pagina/pagina.component';
 import { ChipsFiltroComponent } from '../../components/chips-filtro/chips-filtro.component';
 import { ListaReclamosComponent } from '../../components/lista-reclamos/lista-reclamos.component';
 import { ReclamoService } from '../../core/services/reclamo.service';
-import { EstadoAppService } from '../../core/state/app.service';
+import { SesionService } from '../../core/services/sesion.service';
 import { GeneralesService } from '../../core/services/generales.service';
-import { ClavesEstado } from '../../core/state/claves-estado';
-import { AutenticarUsuarioRespuestaModel } from '../../core/models/usuarios/auth-response.model';
 import { ReclamoRespuestaModel } from '../../core/models/reclamos/reclamo.model';
 import { EstadoReclamoEnum } from '../../core/models/reclamos/estado-reclamo.enum';
 import { OpcionAccionModel } from '../../core/models/opcion-accion.model';
@@ -24,7 +22,7 @@ import { ChipFiltro } from '../../components/chips-filtro/chips-filtro.component
 })
 export class BuscarPage implements OnInit {
   private readonly reclamoService = inject(ReclamoService);
-  private readonly estadoService  = inject(EstadoAppService);
+  private readonly sesionService  = inject(SesionService);
   private readonly router         = inject(Router);
   readonly generales              = inject(GeneralesService);
 
@@ -62,8 +60,7 @@ export class BuscarPage implements OnInit {
   private usuarioId = 0;
 
   async ngOnInit(): Promise<void> {
-    const usuarioSesion = await this.estadoService.obtener<AutenticarUsuarioRespuestaModel>(ClavesEstado.usuario);
-    if (usuarioSesion) this.usuarioId = usuarioSesion.id;
+    this.usuarioId = await this.sesionService.obtenerIdUsuario();
     const reclamosRespuesta = await this.reclamoService.obtenerPorUsuarioOrdenado(this.usuarioId);
     if (reclamosRespuesta.Exito && reclamosRespuesta.Datos?.lista) this.todosReclamos.set(reclamosRespuesta.Datos.lista);
     this.cargando.set(false);
