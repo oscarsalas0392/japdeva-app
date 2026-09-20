@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://unseated-property-ranged.ngrok-free.dev',
+  apiUrl: 'https://implosive-conjure-overpass.ngrok-free.dev',
   timeoutMs: 30000,
   endpoints: {
     usuarios: {

@@ -223,16 +223,27 @@ export class UsuariosService {
     idUsuarioAdministrador: number,
     idAsignacionActual?: number,
   ): Promise<boolean> {
-    try {
-      if (idAsignacionActual) {
-        await this.eliminarDepartamentoUsuario(idAsignacionActual);
-      }
-      const respuesta = await this.agregarDepartamentoUsuario({
-        IdUsuario:              idUsuario,
-        IdDepartamento:         idDepartamento,
-        IdUsuarioAdministrador: idUsuarioAdministrador,
-      });
-      return respuesta.Exito;
+    try 
+    {
+        let eliminar:boolean= true;
+        if (idAsignacionActual)
+        {
+          const respuestaEliminar = await this.eliminarDepartamentoUsuario(idAsignacionActual);
+          eliminar = respuestaEliminar.Exito;
+        }
+
+        if(eliminar)
+        {
+             const respuestaAgregar = await this.agregarDepartamentoUsuario({
+                  IdUsuario:              idUsuario,
+                  IdDepartamento:         idDepartamento,
+                  IdUsuarioAdministrador: idUsuarioAdministrador,
+              });
+
+            return respuestaAgregar.Exito;
+        }
+        
+        return false;
     } catch {
       return false;
     }

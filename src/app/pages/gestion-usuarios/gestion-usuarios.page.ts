@@ -126,19 +126,19 @@ export class GestionUsuariosPage implements OnInit {
     this.guardando.set(true);
     const { idRol, idDepartamento } = this.formAsignacion.getRawValue();
 
-    const [rolRespuesta, departamentoActualizado] = await Promise.all([
-      this.usuariosService.actualizarRolUsuario({
+     let rolRespuesta = await  this.usuariosService.actualizarRolUsuario({
         Id:        this.usuarioRol.id,
         IdRol:     idRol!,
         IdUsuario: this.usuario()!.id,
-      }),
-      this.usuariosService.reemplazarDepartamentoUsuario(
+      });
+
+     let departamentoActualizado = await this.usuariosService.reemplazarDepartamentoUsuario(
         this.usuario()!.id,
         idDepartamento!,
         this.adminId,
         this.deptoAsignado?.id,
-      ),
-    ]);
+      );
+  
 
     this.guardando.set(false);
 

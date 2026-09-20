@@ -178,10 +178,19 @@ export class ApiService {
       tituloPopup = 'errores.sesionVencidaTitulo';
       expulsa = true;
     } else if (error instanceof HttpErrorResponse && error.status >= 500 && error.status < 600) {
-      // Cualquier 5xx (500, 501, 502, 503, 504...) es un fallo del servidor: avisa y expulsa.
-      clave = Mensajes.errores.servidor;
-      tituloPopup = 'errores.titulo';
-      expulsa = true;
+      // 5xx: si trae body con formato RespuestaModel (Exito:false + Mensaje) es un
+      // error de negocio disfrazado — devolvemos el mensaje sin expulsar. Solo
+      // expulsamos cuando el servidor no responde con un cuerpo interpretable.
+      const bodyMensaje = error.error?.Mensaje ?? error.error?.mensaje;
+      const bodyExito   = error.error?.Exito   ?? error.error?.exito;
+      if (bodyMensaje && bodyExito === false) {
+        mensajeApi = bodyMensaje;
+        clave = Mensajes.errores.servidor;
+      } else {
+        clave = Mensajes.errores.servidor;
+        tituloPopup = 'errores.titulo';
+        expulsa = true;
+      }
     } else {
       clave = Mensajes.errores.conexion;
     }
