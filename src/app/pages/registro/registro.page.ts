@@ -122,7 +122,6 @@ export class RegistroPage implements OnInit {
     const tipo = this.tiposCedula().find(t => t.id === idTipo) ?? null;
 
     this.tipoSeleccionado.set(tipo);
-    control.setValue('');
 
     if (tipo?.formato) {
       control.setValidators([Validators.required, Validators.pattern(tipo.formato)]);
